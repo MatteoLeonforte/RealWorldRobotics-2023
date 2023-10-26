@@ -1,0 +1,103 @@
+<mujoco model="hand">
+
+    <!--SETUP-->
+    <compiler autolimits="true" angle="radian"/>
+    <option collision="all"/>
+    <default>
+        <!-- use same geom params as the Shadow Hand model in IsaacGymEnv for now -->
+        <!-- the density is adjusted so that the total weight of the hand part (not including the base) is the same as the real hand (106g) (therefore the base will have a wrong mass, which shouldn't matter for now) -->
+        <geom rgba="1 1 1 1" type="mesh" density="662" friction="1 0.005 0.001" condim="3" margin="0.0005" contype="1" conaffinity="1"/>
+        <!-- use same joint params as IsaacGymEnv for now -->
+        <!-- TODO: joint damping and position control kp should eventually be set to sysID'ed values -->
+        <joint type="hinge" limited="true" damping="0.05" armature="0.001" margin="0.01" frictionloss="0.001"/>
+        <!-- actuator configuration -->
+        <position ctrllimited="true" forcelimited="true" forcerange="-1 1" kp="2."/>
+        <!-- the tendon which limits the two joints creating the rolling joint should be very limited in its length range -->
+        <tendon limited="true" range="-0.001 0.001"/>
+    </default>
+
+    <!--ASSETS-->
+    <asset>
+        <mesh name="index_root" file="assets/Finger_base.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="index_pp" file="assets/Finger_proximal.STL" scale="0.001 0.001 0.001"/>
+        <mesh name="index_mp" file="assets/Finger_middle.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="index_dp" file="assets/Finger_distal.STL" scale="0.001 0.001 0.001"/>
+    </asset>
+
+    <!--CONTACT-->
+    <contact>
+        <exclude body1="index_root" body2="index_pp"/>
+        <exclude body1="index_pp" body2="index_mp"/>
+        <exclude body1="index_mp" body2="index_dp"/>
+    </contact>
+
+    <!--SENSOR-->
+    <sensor>
+        <jointpos name="root2index_pp" joint="root2index_pp"/>
+        <jointpos name="index_pp2mp" joint="index_pp2mp"/>
+        <jointpos name="index_mp2dp" joint="index_mp2dp"/>
+    </sensor>
+
+
+    <!--ACTUATION-->
+    <actuator>
+        <position name="root2index_pp" joint="root2index_pp" ctrlrange="0 0.785"/>
+        <position name="index_pp2mp" joint="index_pp2mp" ctrlrange="0 0.785" kp="4"/>
+    </actuator>
+
+    <!--TENDON CONSTRAIN-->
+    <tendon>
+        <fixed name="root2index_pp">
+            <joint joint="root2index_pp_virt" coef="1"/>
+            <joint joint="root2index_pp" coef="-1"/>
+        </fixed>
+        <fixed name="index_pp2mp">
+            <joint joint="index_pp2mp_virt" coef="1"/>
+            <joint joint="index_pp2mp" coef="-1"/>
+        </fixed>
+        <fixed name="index_jointlink">
+            <joint joint="index_pp2mp" coef="1"/>
+            <joint joint="index_mp2dp_virt" coef="-1"/>
+        </fixed>
+        <fixed name="index_mp2dp">
+            <joint joint="index_mp2dp_virt" coef="1"/>
+            <joint joint="index_mp2dp" coef="-1"/>
+        </fixed>
+    </tendon>
+
+    <!--STRUCTURE-->
+    <worldbody>
+
+        <body name="index_root">
+            <geom type="mesh" mesh="index_root"/>
+
+            <body   name="root2index_pp_virt">
+                <joint name="root2index_pp_virt" type="hinge" pos="0.01 0.01 0" axis="0 0 1" range="0 0.785"/>
+                <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                <body name="index_pp">
+                    <joint name="root2index_pp" type="hinge" pos="0.01 0.03 0" axis="0 0 1" range="0 0.785"/>
+                    <geom type="mesh" mesh="index_pp"/> 
+
+                    <body name="index_mp_virt">
+                        <joint name="index_pp2mp_virt" type="hinge" pos="0.01 0.04 0" axis="0 0 1" range="0 0.785"/>
+                        <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                        <body name="index_mp">
+                            <joint name="index_pp2mp" pos="0.01 0.06 0" axis="0 0 1" range="0 0.785"/>
+                            <geom type="mesh" mesh="index_mp"/>
+
+                            <body name="index_dp_virt">
+                                <joint name="index_mp2dp_virt" pos="0.01 0.07 0" axis="0 0 1" range="0 0.785"/>
+                                <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                                <body name="index_dp">
+                                    <joint name="index_mp2dp" pos="0.01 0.09 0" axis="0 0 1" range="0 0.785"/>
+                                    <geom type="mesh" mesh="index_dp"/>
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+</mujoco>
