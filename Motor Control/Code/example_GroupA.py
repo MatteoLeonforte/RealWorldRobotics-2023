@@ -73,34 +73,41 @@ def trajectory_input(gc: GripperController):
 
     pass
 
-def test_tendons(joint_angles: list):
+def test_tendons():
     
-    print("Required joint angles: ", joint_angles)
+    loop = 0
+    loop = int(input("How many times do you wish to tes the tendons:"))
+    i = 0
+    while(i < loop):
+        joint_angles = [float(x) for x in input("Input desired joint angles in degrees:").split()]
+        print("Desired joint angles: ", joint_angles)
+        
+        tendon_lengths_finger1 = fk.pose2tendon_finger1(joint_angles[0], joint_angles[1], joint_angles[2])
+        print("Tendon lengths Finger1: ", tendon_lengths_finger1)
+        
+        
+        tendon_lengths_finger2 = fk.pose2tendon_finger2(joint_angles[3], joint_angles[4])
+        print("Tendon lengths Finger2: ", tendon_lengths_finger2)
+        
+        tendon_lengths_finger3 = fk.pose2tendon_finger3(joint_angles[5], joint_angles[6])
+        print("Tendon lengths Finger3: ", tendon_lengths_finger3)
+        
+        tendon_lengths_finger4 = fk.pose2tendon_finger4(joint_angles[7], joint_angles[8])
+        print("Tendon lengths Finger4: ", tendon_lengths_finger4)
+        
+        tendon_lengths_finger5 = fk.pose2tendon_finger5(joint_angles[9], joint_angles[10])
+        print("Tendon lengths Finger5: ", tendon_lengths_finger5)
     
-    tendon_lengths_finger1 = fk.pose2tendon_finger1(joint_angles[0], joint_angles[1], joint_angles[2])
-    print("Tendon lengths Finger1: ", tendon_lengths_finger1)
-    
-    tendon_lengths_finger2 = fk.pose2tendon_finger2(joint_angles[3], joint_angles[4])
-    print("Tendon lengths Finger2: ", tendon_lengths_finger2)
-    
-    tendon_lengths_finger3 = fk.pose2tendon_finger3(joint_angles[5], joint_angles[6])
-    print("Tendon lengths Finger3: ", tendon_lengths_finger3)
-    
-    tendon_lengths_finger4 = fk.pose2tendon_finger4(joint_angles[7], joint_angles[8])
-    print("Tendon lengths Finger4: ", tendon_lengths_finger4)
-    
-    tendon_lengths_finger5 = fk.pose2tendon_finger5(joint_angles[9], joint_angles[10])
-    print("Tendon lengths Finger5: ", tendon_lengths_finger5)
-    
+        i = i+1
     pass
 
 def main():
     
     homepos = []
-    goalpos = [15, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0]
+    goalpos = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     
     global gc
-    gc = GripperController(port="/dev/ttyUSB0",calibration=True)
+    gc = GripperController(port="/dev/ttyUSB0",calibration=False)
     
     curr_motor_pos = []
     curr_motor_pos = gc.get_motor_pos()
@@ -110,8 +117,20 @@ def main():
     #curr_joint_angles = gc.
     #print("Current joint_angles: {}")
     
-    #desired_joint_angles_test(gc)
-    test_tendons(goalpos)
+    task = int(input("Select Task: (1) test_tendons, (2) test_desired_joint_angles, (3) trajectory:"))
+    if task == 1:
+        print("Task 1: Test tendon lengths selected!")
+        test_tendons()
+    elif task == 2:
+        print("Task 1: Follow desired joint angles selected!")
+        desired_joint_angles_test(gc)
+    elif task == 3:
+        print("Task 3: Follow predefined trajectory selected!")
+        trajectory_input()
+    else:
+        print("No valid task selected. Process will terminate!")
+    
+    
     gc.terminate()
 
 
