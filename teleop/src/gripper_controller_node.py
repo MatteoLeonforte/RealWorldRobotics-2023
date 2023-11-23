@@ -2,7 +2,7 @@
 
 import time
 import numpy as np
-from src.teleop.src.Motor_Control.Code.gripper_controller_GroupA import GripperController # Adapted this
+from src.teleop.src.low_level_controller.motor_controller.gripper_controller_GroupA import GripperController
 # from low_level_control.gripper_controller import GripperController
 # TODO: change it so that we don't copy gripper_controller.py to this faive_control
 # Do so by making faive_integration as a python package that is installed in the env, then can be called from anywhere
