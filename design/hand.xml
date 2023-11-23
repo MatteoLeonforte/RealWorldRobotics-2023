@@ -6,10 +6,10 @@
     <default>
         <!-- use same geom params as the Shadow Hand model in IsaacGymEnv for now -->
         <!-- the density is adjusted so that the total weight of the hand part (not including the base) is the same as the real hand (106g) (therefore the base will have a wrong mass, which shouldn't matter for now) -->
-        <geom rgba="1 1 1 1" type="mesh" density="662" friction="1 0.005 0.001" condim="3" margin="0.0005" contype="1" conaffinity="1"/>
+        <geom rgba="1 1 1 1" type="mesh" density="662" friction="0.005 0.005 1" condim="3" margin="0" contype="1" conaffinity="1"/>
         <!-- use same joint params as IsaacGymEnv for now -->
         <!-- TODO: joint damping and position control kp should eventually be set to sysID'ed values -->
-        <joint type="hinge" limited="true" damping="0.05" armature="0.001" margin="0.01" frictionloss="0.001"/>
+        <joint type="hinge" limited="true" damping="0.05" armature="0.001" margin="0.001" frictionloss="0.001"/>
         <!-- actuator configuration -->
         <position ctrllimited="true" forcelimited="true" forcerange="-1 1" kp="2."/>
         <!-- the tendon which limits the two joints creating the rolling joint should be very limited in its length range -->
@@ -18,86 +18,400 @@
 
     <!--ASSETS-->
     <asset>
-        <mesh name="index_root" file="assets/Finger_base.stl" scale="0.001 0.001 0.001"/>
-        <mesh name="index_pp" file="assets/Finger_proximal.STL" scale="0.001 0.001 0.001"/>
-        <mesh name="index_mp" file="assets/Finger_middle.stl" scale="0.001 0.001 0.001"/>
-        <mesh name="index_dp" file="assets/Finger_distal.STL" scale="0.001 0.001 0.001"/>
+
+        <mesh name="palm_front" file="mesh/Palm.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="palm_back" file="mesh/Palm2.stl" scale="0.001 0.001 0.001"/>
+
+        <mesh name="plate" file="mesh/Plate.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger1_base" file="mesh/Finger1_base.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger1_pp" file="mesh/Finger1_pp.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger1_mp" file="mesh/Finger1_mp.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger1_dp" file="mesh/Finger1_dp.stl" scale="0.001 0.001 0.001"/>
+
+        <mesh name="finger2_base" file="mesh/Finger2_base.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger2_pp" file="mesh/Finger2_pp.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger2_mp" file="mesh/Finger2_mp.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger2_dp" file="mesh/Finger2_dp.stl" scale="0.001 0.001 0.001"/>
+
+        <mesh name="finger3_base" file="mesh/Finger3_base.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger3_pp" file="mesh/Finger3_pp.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger3_mp" file="mesh/Finger3_mp.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger3_dp" file="mesh/Finger3_dp.stl" scale="0.001 0.001 0.001"/>
+
+        <mesh name="finger4_base" file="mesh/Finger4_base.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger4_pp" file="mesh/Finger4_pp.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger4_mp" file="mesh/Finger4_mp.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger4_dp" file="mesh/Finger4_dp.stl" scale="0.001 0.001 0.001"/>
+
+        <mesh name="finger5_base" file="mesh/Finger5_base.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger5_pp" file="mesh/Finger5_pp.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger5_mp" file="mesh/Finger5_mp.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger5_dp" file="mesh/Finger5_dp.stl" scale="0.001 0.001 0.001"/>
+        
     </asset>
 
     <!--CONTACT-->
     <contact>
-        <exclude body1="index_root" body2="index_pp"/>
-        <exclude body1="index_pp" body2="index_mp"/>
-        <exclude body1="index_mp" body2="index_dp"/>
+
+        
+
+        <exclude body1="hand" body2="plate"/> 
+
+        <exclude body1="hand" body2="finger1_pp"/>
+        <exclude body1="plate" body2="finger1_pp"/>
+        <exclude body1="finger1_pp" body2="finger1_mp"/>
+        <exclude body1="finger1_mp" body2="finger1_dp"/>
+
+        <exclude body1="hand" body2="finger2_pp"/>
+        <exclude body1="finger2_pp" body2="finger2_mp"/>
+        <exclude body1="finger2_mp" body2="finger2_dp"/>
+
+        <exclude body1="hand" body2="finger3_pp"/>
+        <exclude body1="finger3_pp" body2="finger3_mp"/>
+        <exclude body1="finger3_mp" body2="finger3_dp"/>
+
+        <exclude body1="hand" body2="finger4_pp"/>
+        <exclude body1="finger4_pp" body2="finger4_mp"/>
+        <exclude body1="finger4_mp" body2="finger4_dp"/>
+
+        <exclude body1="hand" body2="finger5_pp"/>
+        <exclude body1="finger5_pp" body2="finger5_mp"/>
+        <exclude body1="finger5_mp" body2="finger5_dp"/>
+
     </contact>
 
     <!--SENSOR-->
     <sensor>
-        <jointpos name="root2index_pp" joint="root2index_pp"/>
-        <jointpos name="index_pp2mp" joint="index_pp2mp"/>
-        <jointpos name="index_mp2dp" joint="index_mp2dp"/>
+
+        <jointpos name="palm2plate" joint="palm2plate"/>
+        <jointpos name="finger1_base2pp" joint="finger1_base2pp"/>
+        <jointpos name="finger1_pp2mp" joint="finger1_pp2mp"/>
+        <jointpos name="finger1_mp2dp" joint="finger1_mp2dp"/>
+
+        <jointpos name="finger2_base2pp" joint="finger2_base2pp"/>
+        <jointpos name="finger2_pp2mp" joint="finger2_pp2mp"/>
+        <jointpos name="finger2_mp2dp" joint="finger2_mp2dp"/>
+
+        <jointpos name="finger3_base2pp" joint="finger3_base2pp"/>
+        <jointpos name="finger3_pp2mp" joint="finger3_pp2mp"/>
+        <jointpos name="finger3_mp2dp" joint="finger3_mp2dp"/>
+
+        <jointpos name="finger4_base2pp" joint="finger4_base2pp"/>
+        <jointpos name="finger4_pp2mp" joint="finger4_pp2mp"/>
+        <jointpos name="finger4_mp2dp" joint="finger4_mp2dp"/>
+
+        <jointpos name="finger5_base2pp" joint="finger5_base2pp"/>
+        <jointpos name="finger5_pp2mp" joint="finger5_pp2mp"/>
+        <jointpos name="finger5_mp2dp" joint="finger5_mp2dp"/>
+
     </sensor>
 
 
     <!--ACTUATION-->
     <actuator>
-        <position name="root2index_pp" joint="root2index_pp" ctrlrange="0 0.785"/>
-        <position name="index_pp2mp" joint="index_pp2mp" ctrlrange="0 0.785" kp="4"/>
+        <position name="palm2plate" joint="palm2plate" ctrlrange="-0.785 0.785"/>
+        <position name="finger1_base2pp" joint="finger1_base2pp" ctrlrange="-0.785 0.785"/>
+        <position name="finger1_pp2mp" joint="finger1_pp2mp" ctrlrange="0 0.785"/>
+
+        <position name="finger2_base2pp" joint="finger2_base2pp" ctrlrange="-0.785 0.785"/>
+        <position name="finger2_pp2mp" joint="finger2_pp2mp" ctrlrange="0 0.785"/>
+
+        <position name="finger3_base2pp" joint="finger3_base2pp" ctrlrange="-0.785 0.785"/>
+        <position name="finger3_pp2mp" joint="finger3_pp2mp" ctrlrange="0 0.785"/>
+
+        <position name="finger4_base2pp" joint="finger4_base2pp" ctrlrange="-0.785 0.785"/>
+        <position name="finger4_pp2mp" joint="finger4_pp2mp" ctrlrange="0 0.785"/>
+
+        <position name="finger5_base2pp" joint="finger5_base2pp" ctrlrange="-0.785 0.785"/>
+        <position name="finger5_pp2mp" joint="finger5_pp2mp" ctrlrange="0 0.785"/>
+
     </actuator>
 
     <!--TENDON CONSTRAIN-->
     <tendon>
-        <fixed name="root2index_pp">
-            <joint joint="root2index_pp_virt" coef="1"/>
-            <joint joint="root2index_pp" coef="-1"/>
+
+        <fixed name="finger1_base2pp">
+            <joint joint="finger1_base2pp_virt" coef="1"/>
+            <joint joint="finger1_base2pp" coef="-1"/>
         </fixed>
-        <fixed name="index_pp2mp">
-            <joint joint="index_pp2mp_virt" coef="1"/>
-            <joint joint="index_pp2mp" coef="-1"/>
+        <fixed name="finger1_pp2mp">
+            <joint joint="finger1_pp2mp_virt" coef="1"/>
+            <joint joint="finger1_pp2mp" coef="-1"/>
         </fixed>
-        <fixed name="index_jointlink">
-            <joint joint="index_pp2mp" coef="1"/>
-            <joint joint="index_mp2dp_virt" coef="-1"/>
+        <fixed name="finger1_jointLink">
+            <joint joint="finger1_pp2mp" coef="1"/>
+            <joint joint="finger1_mp2dp_virt" coef="-1"/>
         </fixed>
-        <fixed name="index_mp2dp">
-            <joint joint="index_mp2dp_virt" coef="1"/>
-            <joint joint="index_mp2dp" coef="-1"/>
+        <fixed name="finger1_mp2dp">
+            <joint joint="finger1_mp2dp_virt" coef="1"/>
+            <joint joint="finger1_mp2dp" coef="-1"/>
         </fixed>
+
+
+        <fixed name="finger2_base2pp">
+            <joint joint="finger2_base2pp_virt" coef="1"/>
+            <joint joint="finger2_base2pp" coef="-1"/>
+        </fixed>
+        <fixed name="finger2_pp2mp">
+            <joint joint="finger2_pp2mp_virt" coef="1"/>
+            <joint joint="finger2_pp2mp" coef="-1"/>
+        </fixed>
+        <fixed name="finger2_jointLink">
+            <joint joint="finger2_pp2mp" coef="1"/>
+            <joint joint="finger2_mp2dp_virt" coef="-1"/>
+        </fixed>
+        <fixed name="finger2_mp2dp">
+            <joint joint="finger2_mp2dp_virt" coef="1"/>
+            <joint joint="finger2_mp2dp" coef="-1"/>
+        </fixed>
+       
+
+        <fixed name="finger3_base2pp">
+            <joint joint="finger3_base2pp_virt" coef="1"/>
+            <joint joint="finger3_base2pp" coef="-1"/>
+        </fixed>
+        <fixed name="finger3_pp2mp">
+            <joint joint="finger3_pp2mp_virt" coef="1"/>
+            <joint joint="finger3_pp2mp" coef="-1"/>
+        </fixed>
+        <fixed name="finger3_jointLink">
+            <joint joint="finger3_pp2mp" coef="1"/>
+            <joint joint="finger3_mp2dp_virt" coef="-1"/>
+        </fixed>
+        <fixed name="finger3_mp2dp">
+            <joint joint="finger3_mp2dp_virt" coef="1"/>
+            <joint joint="finger3_mp2dp" coef="-1"/>
+        </fixed>
+
+
+        <fixed name="finger4_base2pp">
+            <joint joint="finger4_base2pp_virt" coef="1"/>
+            <joint joint="finger4_base2pp" coef="-1"/>
+        </fixed>
+        <fixed name="finger4_pp2mp">
+            <joint joint="finger4_pp2mp_virt" coef="1"/>
+            <joint joint="finger4_pp2mp" coef="-1"/>
+        </fixed>
+        <fixed name="finger4_jointLink">
+            <joint joint="finger4_pp2mp" coef="1"/>
+            <joint joint="finger4_mp2dp_virt" coef="-1"/>
+        </fixed>
+        <fixed name="finger4_mp2dp">
+            <joint joint="finger4_mp2dp_virt" coef="1"/>
+            <joint joint="finger4_mp2dp" coef="-1"/>
+        </fixed>
+
+
+        <fixed name="finger5_base2pp">
+            <joint joint="finger5_base2pp_virt" coef="1"/>
+            <joint joint="finger5_base2pp" coef="-1"/>
+        </fixed>
+        <fixed name="finger5_pp2mp">
+            <joint joint="finger5_pp2mp_virt" coef="1"/>
+            <joint joint="finger5_pp2mp" coef="-1"/>
+        </fixed>
+        <fixed name="finger5_jointLink">
+            <joint joint="finger5_pp2mp" coef="1"/>
+            <joint joint="finger5_mp2dp_virt" coef="-1"/>
+        </fixed>
+        <fixed name="finger5_mp2dp">
+            <joint joint="finger5_mp2dp_virt" coef="1"/>
+            <joint joint="finger5_mp2dp" coef="-1"/>
+        </fixed>
+
     </tendon>
 
     <!--STRUCTURE-->
     <worldbody>
 
-        <body name="index_root">
-            <geom type="mesh" mesh="index_root"/>
+        <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
+        <!--geom type="plane" size="1 1 0.001" pos="0 0 -0.05" rgba="0.1 0.8 0.9 1"/>
 
-            <body   name="root2index_pp_virt">
-                <joint name="root2index_pp_virt" type="hinge" pos="0.01 0.01 0" axis="0 0 1" range="0 0.785"/>
-                <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
-                <body name="index_pp">
-                    <joint name="root2index_pp" type="hinge" pos="0.01 0.03 0" axis="0 0 1" range="0 0.785"/>
-                    <geom type="mesh" mesh="index_pp"/> 
+        <body name="pen" pos="0.2 0.02 0.212">
+            <joint type="free"/>
+            <geom type="cylinder" size="0.005 0.1"  rgba="0 .9 0 1"/>
+        </body>
+        <body name="ball" pos="0 0.02 0.112">
+            <joint type="free"/>
+            <geom type="sphere" size="0.035"  rgba="0 .9 0 1"/>
+        </body-->
 
-                    <body name="index_mp_virt">
-                        <joint name="index_pp2mp_virt" type="hinge" pos="0.01 0.04 0" axis="0 0 1" range="0 0.785"/>
-                        <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
-                        <body name="index_mp">
-                            <joint name="index_pp2mp" pos="0.01 0.06 0" axis="0 0 1" range="0 0.785"/>
-                            <geom type="mesh" mesh="index_mp"/>
+        <body name="hand">
 
-                            <body name="index_dp_virt">
-                                <joint name="index_mp2dp_virt" pos="0.01 0.07 0" axis="0 0 1" range="0 0.785"/>
-                                <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
-                                <body name="index_dp">
-                                    <joint name="index_mp2dp" pos="0.01 0.09 0" axis="0 0 1" range="0 0.785"/>
-                                    <geom type="mesh" mesh="index_dp"/>
+
+            <geom type="mesh" mesh="palm_front"/>
+            <geom type="mesh" mesh="palm_back"/>
+
+            <geom type="mesh" mesh="finger2_base"/>
+            <geom type="mesh" mesh="finger3_base"/>
+            <geom type="mesh" mesh="finger4_base"/>
+            <geom type="mesh" mesh="finger5_base"/>
+            
+        
+
+            <body name="plate">
+                <joint name="palm2plate" type="hinge" pos="0 0.03 0.1" axis="0 0 1" range="-0.785 0.785"/>
+                <geom type="mesh" mesh="plate"/>
+                <geom type="mesh" mesh="finger1_base"/>
+
+                <body name="finger1_pp_virt">
+                    <joint name="finger1_base2pp_virt" type="hinge" pos="0  -0.020969867811865   0.034642167811865" axis="-1 0 0" range="-0.785 0.785"/>
+                    <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                    <body name="finger1_pp">
+                        <joint name="finger1_base2pp" pos="0  -0.035112003435596   0.048784303435596" axis="-1 0 0" range="-0.785 0.785"/>
+                        <geom type="mesh" mesh="finger1_pp"/>
+
+
+                        <body name="finger1_mp_virt">
+                            <joint name="finger1_pp2mp_virt" type="hinge" pos="0  -0.042183071247462   0.055855371247462" axis="-1 0 0" range="0 0.785"/>
+                            <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                            <body name="finger1_mp">
+                                <joint name="finger1_pp2mp" pos="0  -0.056325206871193   0.069997506871193" axis="-1 0 0" range="0 0.785"/>
+                                <geom type="mesh" mesh="finger1_mp"/>
+
+                                <body name="finger1_dp_virt">
+                                    <joint name="finger1_mp2dp_virt" type="hinge" pos="0  -0.063396274683058   0.077068574683058" axis="-1 0 0" range="-0 0.785"/>
+                                    <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                                    <body name="finger1_dp">
+                                        <joint name="finger1_mp2dp" pos="0  -0.077538410306789   0.091210710306789" axis="-1 0 0" range="0 0.785"/>
+                                        <geom type="mesh" mesh="finger1_dp"/>
+                                        <body name="fingertip1" pos="0  -0.091680545930520   0.105352845930520" euler="-0.7853982     0  -3.1415927"></body>
+>
+                                    </body>
                                 </body>
                             </body>
                         </body>
                     </body>
                 </body>
             </body>
+
+            <body name="finger2_pp_virt">
+                <joint name="finger2_base2pp_virt" type="hinge" pos="0.043961027018922   0.085683827018922   0.019999967811865" axis="0.965925826289068  -0.258819045102521  0" range="-0.785 0.785"/>
+                <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                <body name="finger2_pp">
+                    <joint name="finger2_base2pp" pos="0.047621281056767   0.099344081056767   0.034142103435596" axis="0.965925826289068  -0.258819045102521  0" range="-0.785 0.785"/>
+                    <geom type="mesh" mesh="finger2_pp"/>
+
+
+                    <body name="finger2_mp_virt">
+                        <joint name="finger2_pp2mp_virt" type="hinge" pos="0.049451408075689   0.106174208075689   0.041213171247462" axis="0.965925826289068  -0.258819045102521  0" range="0 0.785"/>
+                        <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                        <body name="finger2_mp">
+                            <joint name="finger2_pp2mp" pos="0.053111662113533   0.119834462113533   0.055355306871193" axis="0.965925826289068  -0.258819045102521  0" range="0 0.785"/>
+                            <geom type="mesh" mesh="finger2_mp"/>
+
+                            <body name="finger2_dp_virt">
+                                <joint name="finger2_mp2dp_virt" type="hinge" pos="0.054941789132455   0.126664589132455   0.062426374683058" axis="0.965925826289068  -0.258819045102521  0" range="0 0.785"/>
+                                <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                                <body name="finger2_dp">
+                                    <joint name="finger2_mp2dp" pos="0.058602043170300   0.140324843170300   0.076568510306789" axis="0.965925826289068  -0.258819045102521  0" range="0 0.785"/>
+                                    <geom type="mesh" mesh="finger2_dp"/>
+                                    <body name="fingertip2" pos="0.062079284506252   0.153302084506252   0.090003539149334" euler="0.768067518578540  -0.184050041366341  -0.187249099545969"></body>
+
+
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+
+            <body name="finger3_pp_virt">
+                <joint name="finger3_base2pp_virt" type="hinge" pos="0.015010384167162   0.093188460264028   0.019999967811865" axis="0.996194698091746  -0.087155742747658    0" range="-0.785 0.785"/>
+                <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                <body name="finger3_pp">
+                    <joint name="finger3_base2pp" pos="0.016242952501487   0.107276780792083   0.034142103435596" axis="0.996194698091746  -0.087155742747658   0" range="-0.785 0.785"/>
+                    <geom type="mesh" mesh="finger3_pp"/>
+
+
+                    <body name="finger3_mp_virt">
+                        <joint name="finger3_pp2mp_virt" type="hinge" pos="0.016859236668649   0.114320941056110   0.041213171247462" axis="0.996194698091746  -0.087155742747658    0" range="0 0.785"/>
+                        <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                        <body name="finger3_mp">
+                            <joint name="finger3_pp2mp" pos="0.018091805002973   0.128409261584166   0.055355306871193" axis="0.996194698091746  -0.087155742747658    0" range="0 0.785"/>
+                            <geom type="mesh" mesh="finger3_mp"/>
+
+                            <body name="finger3_dp_virt">
+                                <joint name="finger3_mp2dp_virt" type="hinge" pos="0.018708089170135   0.135453421848193   0.062426374683058" axis="0.996194698091746  -0.087155742747658   0" range="0 0.785"/>
+                                <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                                <body name="finger3_dp">
+                                    <joint name="finger3_mp2dp" pos="0.019940657504460   0.149541742376248   0.076568510306789" axis="0.996194698091746  -0.087155742747658   0" range="0 0.785"/>
+                                    <geom type="mesh" mesh="finger3_dp"/>
+                                    <body name="fingertip3" pos="0.021111597422068   0.162925646877901   0.090003539149334" euler="0.783491887770855  -0.061667494964861  -0.061785087617982"></body>
+
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+            
+            <body name="finger4_pp_virt">
+                <joint name="finger4_base2pp_virt" type="hinge" pos="-0.015010384167162   0.093188460264028   0.019999967811865" axis="0.996194698091746   0.087155742747658  0" range="-0.785 0.785"/>
+                <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                <body name="finger4_pp">
+                    <joint name="finger4_base2pp" pos="-0.016242952501487   0.107276780792083   0.034142103435596" axis="0.996194698091746   0.087155742747658 0" range="-0.785 0.785"/>
+                    <geom type="mesh" mesh="finger4_pp"/>
+
+
+                    <body name="finger4_mp_virt">
+                        <joint name="finger4_pp2mp_virt" type="hinge" pos="-0.016859236668649   0.114320941056110   0.041213171247462" axis="0.996194698091746   0.087155742747658 0" range="0 0.785"/>
+                        <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                        <body name="finger4_mp">
+                            <joint name="finger4_pp2mp" pos="-0.018091805002973   0.128409261584166   0.055355306871193" axis="0.996194698091746   0.087155742747658 0" range="0 0.785"/>
+                            <geom type="mesh" mesh="finger4_mp"/>
+
+                            <body name="finger4_dp_virt">
+                                <joint name="finger4_mp2dp_virt" type="hinge" pos="-0.018708089170135   0.135453421848193   0.062426374683058" axis="0.996194698091746   0.087155742747658 0" range="0 0.785"/>
+                                <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                                <body name="finger4_dp">
+                                    <joint name="finger4_mp2dp" pos="-0.019940657504460   0.149541742376248   0.076568510306789" axis="0.996194698091746   0.087155742747658 0" range="0 0.785"/>
+                                    <geom type="mesh" mesh="finger4_dp"/>
+                                    <body name="fingertip4" pos="-0.021111597422068   0.162925646877901   0.090003539149334" euler="0.783491887770855   0.061667494964861   0.061785087617982"></body>
+
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+
+            
+            <body name="finger5_pp_virt">
+                <joint name="finger5_base2pp_virt" type="hinge" pos="-0.043961027018922   0.085683827018922   0.019999967811865" axis="0.965925826289068   0.258819045102521    0" range="-0.785 0.785"/>
+                <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                <body name="finger5_pp">
+                    <joint name="finger5_base2pp" pos="-0.047621281056767   0.099344081056767   0.034142103435596" axis="0.965925826289068   0.258819045102521   0" range="-0.785 0.785"/>
+                    <geom type="mesh" mesh="finger5_pp"/>
+
+
+                    <body name="finger5_mp_virt">
+                        <joint name="finger5_pp2mp_virt" type="hinge" pos="-0.049451408075689   0.106174208075689   0.041213171247462" axis="0.965925826289068   0.258819045102521   0" range="0 0.785"/>
+                        <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                        <body name="finger5_mp">
+                            <joint name="finger5_pp2mp" pos="-0.053111662113533   0.119834462113533   0.055355306871193" axis="0.965925826289068   0.258819045102521   0" range="0 0.785"/>
+                            <geom type="mesh" mesh="finger5_mp"/>
+
+                            <body name="finger5_dp_virt">
+                                <joint name="finger5_mp2dp_virt" type="hinge" pos="-0.054941789132455   0.126664589132455   0.062426374683058" axis="0.965925826289068   0.258819045102521   0" range="0 0.785"/>
+                                <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
+                                <body name="finger5_dp">
+                                    <joint name="finger5_mp2dp" pos="-0.058602043170300   0.140324843170300   0.076568510306789" axis="0.965925826289068   0.258819045102521   0" range="0 0.785"/>
+                                    <geom type="mesh" mesh="finger5_dp"/>
+                                    <body name="fingertip5" pos="-0.062079284506252   0.153302084506252   0.090003539149334" euler="0.768067518578540   0.184050041366341   0.187249099545969"></body>
+
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+                
+            
+
         </body>
     </worldbody>
+
+    
 
 </mujoco>
