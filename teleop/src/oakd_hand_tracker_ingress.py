@@ -19,7 +19,8 @@ import threading
 from copy import deepcopy
 import time
 
-from oakd_driver.oakd_rgbd_driver import OakDDriver
+# from oakd_driver.oakd_rgbd_driver import OakDDriver
+from src.teleop.src.oak_driver.oakd_rgbd_driver import OakDDriver # changed to this bcs i duno how to make the upper path work
 
 from depthai_hand_tracker.HandTrackerEdge import HandTracker
 from depthai_hand_tracker.Filters import LandmarksSmoothingFilter
