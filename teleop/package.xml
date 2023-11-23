@@ -1,0 +1,13 @@
+<package format="2">
+    <name>teleop</name>
+    <version>0.0.1</version>
+    <description>Teleoperation node for RWR Robotic Hand Group A</description>
+    <maintainer email="swotke@student.ethz.ch">Sarah Lia Wotke</maintainer>
+    <license>BSD</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <depend>rospy</depend>
+    <depend>std_msgs</depend>
+
+</package>
