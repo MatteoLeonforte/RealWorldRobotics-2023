@@ -99,7 +99,7 @@ class GripperController:
             for m_i in range(m_nr):
                 m_id = muscle_group.motor_ids[m_i]
                 t_i = muscle_group.motor_map.index(m_id)
-                motor_pos[m_idx + m_i] = 1/2*tendon_lengths[t_idx+t_i]/muscle_group.spool_rad[t_i]
+                motor_pos[m_idx + m_i] = tendon_lengths[t_idx+t_i]/muscle_group.spool_rad[t_i]
             m_idx += m_nr
             t_idx += t_nr
         return motor_pos
@@ -250,7 +250,7 @@ class GripperController:
             input("Move fingers to init posiiton and press Enter to continue...")
             
             # TODO: Add your own calibration procedure here, that move the motors to a defined initial position:
-
+        
 
 
 
@@ -282,15 +282,6 @@ class GripperController:
         motor_pos_des = self.pose2motors(np.deg2rad(joint_angles)) - self.motor_pos_norm + self.motor_id2init_pos
         self.write_desired_motor_pos(motor_pos_des)
         time.sleep(0.01) # wait for the command to be sent
-    
-    def test_desired_joint_angles(self, joint_angles: np.array)->np.array:
-        #Input Alessio to see whether motor positions make sense
-        """
-        Command joint angles in deg
-        :param: joint_angles: [joint 1 angle, joint 2 angle, ...]
-        """
-        motor_pos_des = self.pose2motors(np.deg2rad(joint_angles)) - self.motor_pos_norm + self.motor_id2init_pos
-        return motor_pos_des
 
 if __name__ == "__main__" :
     gc = GripperController("/dev/ttyUSB0")
