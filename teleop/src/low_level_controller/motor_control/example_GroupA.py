@@ -36,11 +36,12 @@ def desired_joint_angles_test(gc: GripperController):
                 print("Input is not acceptable! Try again:")
 
         if desire == "ja":
+            """
             limits = gc.compare_joint_angles_to_limits(goalpos)
-            for i in np.size(limits, 1):
-                if limits[1,i] is False:
+            for i in range(np.size(limits, 1)):
+                if limits[0,i] is False:
                     print("Angle exceeds upper limit for joint angle ", i)
-                elif limits[2,i] is False:
+                elif limits[1,i] is False:
                     print("Angle exceeds lower limit for joint angle ", i)
                 else:
                     print("Desired joint angles are being achieved...")
@@ -48,16 +49,13 @@ def desired_joint_angles_test(gc: GripperController):
                     gc.wait_for_motion()
                     time.sleep(1)
                     print("Desired joint angles achieved!")
-                    
-                
-            
-        
-        # if desire == "mp":
-        #     print("Desired motor positions are being achieved...")
-        #     gc.write_desired_motor_pos(np.array(goalpos_motor))
-        #     gc.wait_for_motion()
-        #     time.sleep(1)
-        #     print("Desired motor positions achieved!")
+            """
+            print("Desired joint angles are being achieved...")
+            gc.write_desired_joint_angles(goalpos)
+            gc.wait_for_motion()
+            time.sleep(1)
+            print("Desired joint angles achieved!")
+             
         i = i+1
 
     print("Process terminated!")

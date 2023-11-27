@@ -223,7 +223,7 @@ class GripperController:
         """
         Set the offsets based on the current (initial) motor positions
         :param calibrate: if True, perform calibration and set the offsets else move to the initial position
-        TODO: Think of a clever way to perform the calibration. How can you make sure that all the motor are in the corect position?
+        TODO: Think of a clever way to perform the calibration. How can you make sure that all the motor are in the correct position?
         """
 
         cal_yaml_fname = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cal.yaml")
@@ -273,12 +273,15 @@ class GripperController:
                 yaml.dump(cal_orig, cal_file, default_flow_style=False)
 
         self.motor_pos_norm = self.pose2motors(np.zeros(len(self.joint_ids)))
+        #self.motor_pos_norm = self.pose2motors([0, -45, 0, -45, 0, -45, 0, -45, 0, -45, 0])
 
     def write_desired_joint_angles(self, joint_angles: np.array):
         """
         Command joint angles in deg
         :param: joint_angles: [joint 1 angle, joint 2 angle, ...]
         """
+        #adder = np.array([0, 45, 0, 45, 0, 45, 0, 45, 0, 45, 0])
+        #joint_angles = joint_angles + adder
         motor_pos_des = self.pose2motors(np.deg2rad(joint_angles)) - self.motor_pos_norm + self.motor_id2init_pos
         self.write_desired_motor_pos(motor_pos_des)
         time.sleep(0.01) # wait for the command to be sent
@@ -305,7 +308,7 @@ class GripperController:
         lower_reach = np.full(11, True)
         
         
-        for i in len(joint_angles_deg):
+        for i in range(len(joint_angles_deg)):
             if joint_angles_deg[i] > ja_upper_limits[i]:
                 upper_reach[i] = False
             elif joint_angles_deg[i] < ja_lower_limits[i]:
