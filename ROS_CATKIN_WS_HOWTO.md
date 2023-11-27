@@ -22,7 +22,7 @@ catkin_make
 4.  It is structured like this: `ln -s /path/to/source /path/to/destination`
 
 ```bash
-ln -s ~/RWR/RealWorldRobotics-2023/Teleop ~/RWR/catkin_ws_rwr/src/Teleop
+ln -s ~/RWR/RealWorldRobotics-2023/teleop ~/RWR/catkin_ws_rwr/src/teleop
 ```
 
 
