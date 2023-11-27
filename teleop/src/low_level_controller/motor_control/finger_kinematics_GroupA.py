@@ -18,18 +18,31 @@ def tendonlength_left_joint0(theta_joint0):
 def tendonlength_right_joint0(theta_joint0):
    '''Input: joint angle of joint0 (rotary thumb) in rad
       Output: total normal lenght of right tendon'''
-      
-   #This calculation needs to be updated according to the routing of the rotary thumb tendons
-   ground_theta = 19.31487/360*2*np.pi
-   ground_dz = 0.0
-   ground_length = 27**2+27**2-2*27*27*np.sin(ground_theta) #length if theta_joint0 = 0
-                                                            #cos(pi/2-x)=sin(x)
-   etha = ground_theta + theta_joint0
-   new_xy = np.sqrt(27**2+27**2-2*27*27*np.sin(etha))
-   dxy = ground_length - new_xy  #in mm
-   delta = dxy/10              #translate into cm
    
-   return delta
+   #dimensions
+   delta_y_plate = 2.54803 #cm
+   delta_x_plate = 0.89305 #cm
+   theta_null = np.arctan(delta_x_plate/ delta_y_plate) #deg
+   theta_joint0_deg = theta_joint0*180/np.pi #deg
+   
+   r_plate = np.sqrt(delta_x_plate**2+delta_y_plate**2)
+   r_palm = 2.7 #cm
+   delta_z = 0.1 #cm
+   
+   #calculate the ground length
+   ground_etha = 90 - theta_null
+   ground_xy = np.sqrt(r_plate**2+r_palm**2-2*r_plate*r_palm*cos(ground_etha))
+   ground_length = np.sqrt(ground_xy**2+delta_z**2)   #length if theta_joint0 = 0
+
+   #calculate th new length
+   etha = 90 - (theta_null + theta_joint0_deg)
+   new_xy = np.sqrt(r_plate**2+r_palm**2-2*r_plate*r_palm*cos(etha))
+   new_length = np.sqrt(new_xy**2+delta_z**2)
+   
+   #calculate difference in tendon length
+   delta_length = new_length -ground_length 
+   
+   return delta_length
 
 #This Formulas are okay
 def tendonlength_flexor_joint1(theta_joint0, theta_joint1):
