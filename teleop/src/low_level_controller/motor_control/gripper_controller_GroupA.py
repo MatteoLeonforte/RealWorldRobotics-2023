@@ -273,6 +273,7 @@ class GripperController:
                 yaml.dump(cal_orig, cal_file, default_flow_style=False)
 
         self.motor_pos_norm = self.pose2motors(np.zeros(len(self.joint_ids)))
+        #Correction for when norm position is the leaning back position
         #self.motor_pos_norm = self.pose2motors([0, -45, 0, -45, 0, -45, 0, -45, 0, -45, 0])
 
     def write_desired_joint_angles(self, joint_angles: np.array):
@@ -280,6 +281,7 @@ class GripperController:
         Command joint angles in deg
         :param: joint_angles: [joint 1 angle, joint 2 angle, ...]
         """
+        #Correction for when the intial position is the leaning back position
         #adder = np.array([0, 45, 0, 45, 0, 45, 0, 45, 0, 45, 0])
         #joint_angles = joint_angles + adder
         motor_pos_des = self.pose2motors(np.deg2rad(joint_angles)) - self.motor_pos_norm + self.motor_id2init_pos
@@ -292,6 +294,8 @@ class GripperController:
         Command joint angles in deg
         :param: joint_angles: [joint 1 angle, joint 2 angle, ...]
         """
+        #adder = np.array([0, 45, 0, 45, 0, 45, 0, 45, 0, 45, 0])
+        #joint_angles = joint_angles + adder
         motor_pos_des = self.pose2motors(np.deg2rad(joint_angles)) - self.motor_pos_norm + self.motor_id2init_pos
         return motor_pos_des
     

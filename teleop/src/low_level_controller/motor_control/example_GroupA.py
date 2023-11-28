@@ -101,6 +101,7 @@ def test_tendons(gc: GripperController):
     i = 0
     
     ja_start_pos = np.zeros(11)
+    #ja_start_pos = np.array([0, -45, 0, -45, 0, -45, 0, -45, 0, -45, 0])
     print("First ground-truth joint angles: ", ja_start_pos)
     motor_pos_start = gc.test_desired_joint_angles(ja_start_pos)
     print("The motors position at start: ", motor_pos_start)
@@ -132,7 +133,7 @@ def test_tendons(gc: GripperController):
         
         print("New Motor position would be: ", motor_pos_des)
         
-        motor_pos_diff = motor_pos_des - motor_pos_start
+        motor_pos_diff = motor_pos_des - gc.motor_id2init_pos
         actual_motor_angles_diff = motor_pos_diff * 180/np.pi
         
         print("The motors actually turned by this amount in deg: ", actual_motor_angles_diff)
@@ -140,16 +141,7 @@ def test_tendons(gc: GripperController):
         i = i+1
     pass
 
-def main():
-    
-    homepos = []
-    goalpos = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    
-    #curr_joint_angles = []
-    #curr_joint_angles = gc.
-    #print("Current joint_angles: {}")
-    global gc
-    gc = GripperController(port="/dev/ttyUSB0",calibration=True)
+def manipulate(gc:GripperController):
     curr_motor_pos = []
     curr_motor_pos = gc.get_motor_pos()
     print("Current Motor-positions: ", curr_motor_pos)
@@ -168,6 +160,37 @@ def main():
             trajectory_input(gc)
     else:
         print("No valid task selected. Process will terminate!")
+
+def test_hand_with_arm(gc: GripperController):
+    max_angles = np.array([0, 90, 0, 90, 0, 90, 0, 90, 0, 90, 0])
+    
+    scaling = 1.0
+    while(scaling != 0.0):
+        scaling = float(input("Scaling factor [0,1]: "))
+        goalpos = scaling * max_angles
+        
+        print("Following joint angles are being achieved: ", goalpos)
+        gc.write_desired_joint_angles(goalpos)
+        gc.wait_for_motion()
+        time.sleep(1)
+    
+    
+def main():
+    
+    homepos = []
+    goalpos = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    
+    #curr_joint_angles = []
+    #curr_joint_angles = gc.
+    #print("Current joint_angles: {}")
+    global gc
+    gc = GripperController(port="/dev/ttyUSB0",calibration=False)
+    
+    #manipulate(gc)
+    test_hand_with_arm(gc)
+    
+    
+    
     
     
     gc.terminate()
