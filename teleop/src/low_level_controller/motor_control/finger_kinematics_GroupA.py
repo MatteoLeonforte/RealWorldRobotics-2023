@@ -55,11 +55,31 @@ def tendonlength_extensor_joint1(theta_joint0, theta_joint1):
    '''Input: joint angle of joint1 (base-pp Finger 1) in rad
       Output: total normal lengths of extensor tendon through joint1'''
    #TODO add correction terms for tendon through CoR
-   delta_x = 0
-   delta_y = radius*sin(theta_joint1)+2*radius*cos(theta_joint1*0.5)-2*radius
-   delta_z = -radius*(cos(theta_joint1)-1) + 2*radius*sin(theta_joint1*0.5)
+   theta_norm = -np.pi/4
+   """
+   y_new = radius*sin(theta_joint1)+2*radius*cos(theta_joint1*0.5)
+   y_norm = radius*sin(theta_norm)+2*radius*cos(theta_norm*0.5)
    
-   return np.sqrt(delta_x**2 + delta_y**2 + delta_z**2)
+   z_new = -radius*(cos(theta_joint1)-1) + 2*radius*sin(theta_joint1*0.5)
+   z_norm = -radius*(cos(-np.pi/4)-1) + 2*radius*sin(-np.pi/4*0.5)
+   
+   delta_x = 0
+   delta_y = y_new - y_norm
+   delta_z = z_new - z_norm
+   length_delta = np.sqrt(delta_x**2 + delta_y**2 + delta_z**2)
+   """
+   y_new = radius*sin(theta_joint1) + 2*radius*cos(theta_joint1*0.5)
+   y_norm = radius*sin(theta_norm) + 2*radius*cos(theta_norm*0.5)
+   
+   z_new = radius*(1-cos(theta_joint1)) + 2*radius*sin(theta_joint1*0.5)
+   z_norm = radius*(1-cos(theta_norm)) + 2*radius*sin(theta_norm*0.5)
+   
+   length_new = np.sqrt(y_new**2 + z_new**2)
+   length_norm = np.sqrt(y_norm**2 + z_norm**2)
+   
+   length_delta = length_new - length_norm
+   
+   return length_delta
 
 def tendonlength_flexor_joint2(theta_joint0, theta_joint2):
    '''Input: joint angle of joint2 (pp-mp Finger1) in rad
@@ -71,8 +91,10 @@ def tendonlength_extensor_joint2(theta_joint0, theta_joint2):
    '''Input: joint angle of joint2 (pp-mp Finger1) in rad
       Output: total normal lengths of extensor tendon through joint2'''
    #TODO add correction terms for tendon through CoR with theta0
+   theta_norm = 0.0
+   
    delta_x = 0
-   delta_y = radius*sin(theta_joint2)+2*radius*cos(theta_joint2*0.5)-2*radius
+   delta_y = radius*sin(theta_joint2)+2*radius*cos(theta_joint2*0.5)-2*radius #norm is 2r because theta_norm = 0
    delta_z = -radius*(cos(theta_joint2)-1) + 2*radius*sin(theta_joint2*0.5)
 
    return 2*np.sqrt(delta_x**2 + delta_y**2 + delta_z**2)
@@ -89,11 +111,35 @@ def tendonlength_flexor_joint3(theta_joint3):
 def tendonlength_extensor_joint3(theta_joint3):
    '''Input: joint angle of joint3 (base-pp Finger2) in rad
       Output: total normal lengths of extensor tendon through joint3'''
+   theta_norm = -np.pi/4
+   """
+   OLD VERSION
+   y_new = radius*sin(theta_joint3)+2*radius*cos(theta_joint3*0.5)
+   y_norm = radius*sin(theta_norm)+2*radius*cos(theta_norm*0.5)
+
+   z_new = -radius*(cos(theta_joint3)-1) + 2*radius*sin(theta_joint3*0.5)
+   z_norm = -radius*(cos(theta_norm)-1) + 2*radius*sin(theta_norm*0.5)
+   
    delta_x = 0
    delta_y = radius*sin(theta_joint3)+2*radius*cos(theta_joint3*0.5)-2*radius
    delta_z = -radius*(cos(theta_joint3)-1) + 2*radius*sin(theta_joint3*0.5)
+   length_delta = np.sqrt(delta_x**2 + delta_y**2 + delta_z**2)
    
    return np.sqrt(delta_x**2 + delta_y**2 + delta_z**2)
+   """
+   
+   y_new = radius*sin(theta_joint3) + 2*radius*cos(theta_joint3*0.5)
+   y_norm = radius*sin(theta_norm) + 2*radius*cos(theta_norm*0.5)
+   
+   z_new = radius*(1-cos(theta_joint3)) + 2*radius*sin(theta_joint3*0.5)
+   z_norm = radius*(1-cos(theta_norm)) + 2*radius*sin(theta_norm*0.5)
+   
+   length_new = np.sqrt(y_new**2 + z_new**2)
+   length_norm = np.sqrt(y_norm**2 + z_norm**2)
+   
+   length_delta = length_new - length_norm
+   
+   return length_delta
 
 def tendonlength_flexor_joint4(theta_joint4):
    '''Input: joint angle of joint4 (pp-mp Finger2) in rad
@@ -103,12 +149,29 @@ def tendonlength_flexor_joint4(theta_joint4):
 def tendonlength_extensor_joint4(theta_joint4):
    '''Input: joint angle of joint2 (pp-mp Finger2) in rad
       Output: total normal lengths of extensor tendon through joint4'''
+   """
    delta_x = 0
-   delta_y = radius*sin(theta_joint4)+2*radius*cos(theta_joint4*0.5)-2*radius
+   delta_y = radius*sin(theta_joint4)+2*radius*cos(theta_joint4*0.5)-2*radius #norm is 2R because theta_norm = 0
    delta_z = -radius*(cos(theta_joint4)-1) + 2*radius*sin(theta_joint4*0.5)
 
    return 2*np.sqrt(delta_x**2 + delta_y**2 + delta_z**2)
+   """
+   theta_norm = 0.0
+   
+   y_new = radius*sin(theta_joint4) + 2*radius*cos(theta_joint4*0.5)
+   y_norm = radius*sin(theta_norm) + 2*radius*cos(theta_norm*0.5)
+   
+   z_new = radius*(1-cos(theta_joint4)) + 2*radius*sin(theta_joint4*0.5)
+   z_norm = radius*(1-cos(theta_norm)) + 2*radius*sin(theta_norm*0.5)
+   
+   length_new = np.sqrt(y_new**2 + z_new**2)
+   length_norm = np.sqrt(y_norm**2 + z_norm**2)
+   
+   length_delta = length_new - length_norm
+   
+   return 2*length_delta
 
+"""
 #Finger 3:
 def tendonlength_flexor_joint5(theta_joint5):
    '''Input: joint angle of joint5 (base-pp Finger3) in rad
@@ -195,13 +258,13 @@ def tendonlength_extensor_joint10(theta_joint10):
    delta_z = -radius*(cos(theta_joint10)-1) + 2*radius*sin(theta_joint10*0.5)
 
    return 2*np.sqrt(delta_x**2 + delta_y**2 + delta_z**2)
-
+"""
 
 
 # ------------------- Calculations of Tendon Lengths for all joints ------------------- #
 # TODO: Add your own functions here to calculate the tendon lengths for all joints and for each finger (if needed)
 
-def pose2tendon_finger1(theta_joint0, theta_joint1, theta_joint2):
+def pose2tendon_thumb(theta_joint0, theta_joint1, theta_joint2):
    '''Input: controllable joint angles
       Output: array of tendon lengths for given joint angles'''
    return [tendonlength_right_joint0(theta_joint0),
@@ -211,14 +274,14 @@ def pose2tendon_finger1(theta_joint0, theta_joint1, theta_joint2):
             tendonlength_flexor_joint2(theta_joint0, theta_joint2),
             tendonlength_extensor_joint2(theta_joint0, theta_joint2)]
 
-def pose2tendon_finger2(theta_joint3, theta_joint4):
+def pose2tendon_finger(theta_joint3, theta_joint4):
    '''Input: controllable joint angles
       Output: array of tendon lengths for given joint angles'''
    return [tendonlength_flexor_joint3(theta_joint3),
             tendonlength_extensor_joint3(theta_joint3),
             tendonlength_flexor_joint4(theta_joint4),
             tendonlength_extensor_joint4(theta_joint4)]
-
+"""
 def pose2tendon_finger3(theta_joint5, theta_joint6):
    '''Input: controllable joint angles
       Output: array of tendon lengths for given joint angles'''
@@ -242,3 +305,4 @@ def pose2tendon_finger5(theta_joint9, theta_joint10):
            tendonlength_extensor_joint9(theta_joint9),
            tendonlength_flexor_joint10(theta_joint10),
            tendonlength_extensor_joint10(theta_joint10)]
+"""

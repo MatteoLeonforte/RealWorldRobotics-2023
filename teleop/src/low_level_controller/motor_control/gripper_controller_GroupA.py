@@ -99,7 +99,7 @@ class GripperController:
             for m_i in range(m_nr):
                 m_id = muscle_group.motor_ids[m_i]
                 t_i = muscle_group.motor_map.index(m_id)
-                motor_pos[m_idx + m_i] = 1/2*tendon_lengths[t_idx+t_i]/muscle_group.spool_rad[t_i]
+                motor_pos[m_idx + m_i] = tendon_lengths[t_idx+t_i]/muscle_group.spool_rad[t_i]
             m_idx += m_nr
             t_idx += t_nr
         return motor_pos
@@ -203,17 +203,17 @@ class GripperController:
             j_nr = len(muscle_group.joint_ids)
             if muscle_group.name == "finger1":
                 #tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger1(joint_angles[j_idx],joint_angles[j_idx+1])
-                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger1(joint_angles[j_idx],joint_angles[j_idx+1], joint_angles[j_idx+2])
+                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_thumb(joint_angles[j_idx],joint_angles[j_idx+1], joint_angles[j_idx+2])
             # TODO: Extend the calculations here for your own fingers:
             # DONE:
             elif muscle_group.name == "finger2":
-                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger2(joint_angles[j_idx],joint_angles[j_idx+1])
+                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger(joint_angles[j_idx],joint_angles[j_idx+1])
             elif muscle_group.name == "finger3":
-                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger3(joint_angles[j_idx],joint_angles[j_idx+1])
+                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger(joint_angles[j_idx],joint_angles[j_idx+1])
             elif muscle_group.name == "finger4":
-                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger4(joint_angles[j_idx],joint_angles[j_idx+1])
+                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger(joint_angles[j_idx],joint_angles[j_idx+1])
             elif muscle_group.name == "finger5":
-                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger5(joint_angles[j_idx],joint_angles[j_idx+1])
+                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger(joint_angles[j_idx],joint_angles[j_idx+1])
 
             j_idx += j_nr
             t_idx += t_nr
@@ -272,9 +272,10 @@ class GripperController:
             with open(cal_yaml_fname, 'w') as cal_file:
                 yaml.dump(cal_orig, cal_file, default_flow_style=False)
 
-        self.motor_pos_norm = self.pose2motors(np.zeros(len(self.joint_ids)))
+        #self.motor_pos_norm = self.pose2motors(np.zeros(len(self.joint_ids)))
         #Correction for when norm position is the leaning back position
-        #self.motor_pos_norm = self.pose2motors([0, -45, 0, -45, 0, -45, 0, -45, 0, -45, 0])
+        thetas_norm = np.array([0, -45, 0, -45, 0, -45, 0, -45, 0, -45, 0])
+        self.motor_pos_norm = self.pose2motors(np.deg2rad(thetas_norm))
 
     def write_desired_joint_angles(self, joint_angles: np.array):
         """

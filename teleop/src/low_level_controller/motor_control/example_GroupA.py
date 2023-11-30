@@ -100,9 +100,10 @@ def test_tendons(gc: GripperController):
     loop = int(input("How many times do you wish to tes the tendons:"))
     i = 0
     
-    ja_start_pos = np.zeros(11)
-    #ja_start_pos = np.array([0, -45, 0, -45, 0, -45, 0, -45, 0, -45, 0])
-    print("First ground-truth joint angles: ", ja_start_pos)
+    #ja_start_pos = np.zeros(11)
+    ja_start_pos = np.array([0, -45, 0, -45, 0, -45, 0, -45, 0, -45, 0])
+    print("Motor position according calibration: ", gc.motor_id2init_pos)
+    
     motor_pos_start = gc.test_desired_joint_angles(ja_start_pos)
     print("The motors position at start: ", motor_pos_start)
     
@@ -112,28 +113,32 @@ def test_tendons(gc: GripperController):
         joint_angles = [float(x) for x in input("Input desired joint angles in degrees:").split()]
         print("Desired joint angles: ", joint_angles)
         
-        tendon_lengths_finger1 = fk.pose2tendon_finger1(joint_angles[0], joint_angles[1], joint_angles[2])
+        motor_pos_des = gc.test_desired_joint_angles(joint_angles)
+        
+        joint_angles = np.deg2rad(joint_angles)
+        
+        tendon_lengths_finger1 = fk.pose2tendon_thumb(joint_angles[0], joint_angles[1], joint_angles[2])
         print("Tendon lengths Finger1: ", tendon_lengths_finger1)
         
         
-        tendon_lengths_finger2 = fk.pose2tendon_finger2(joint_angles[3], joint_angles[4])
+        tendon_lengths_finger2 = fk.pose2tendon_finger(joint_angles[3], joint_angles[4])
         print("Tendon lengths Finger2: ", tendon_lengths_finger2)
         
-        tendon_lengths_finger3 = fk.pose2tendon_finger3(joint_angles[5], joint_angles[6])
+        tendon_lengths_finger3 = fk.pose2tendon_finger(joint_angles[5], joint_angles[6])
         print("Tendon lengths Finger3: ", tendon_lengths_finger3)
         
-        tendon_lengths_finger4 = fk.pose2tendon_finger4(joint_angles[7], joint_angles[8])
+        tendon_lengths_finger4 = fk.pose2tendon_finger(joint_angles[7], joint_angles[8])
         print("Tendon lengths Finger4: ", tendon_lengths_finger4)
         
-        tendon_lengths_finger5 = fk.pose2tendon_finger5(joint_angles[9], joint_angles[10])
+        tendon_lengths_finger5 = fk.pose2tendon_finger(joint_angles[9], joint_angles[10])
         print("Tendon lengths Finger5: ", tendon_lengths_finger5)
         
-        motor_pos_des = gc.test_desired_joint_angles(joint_angles)
+        
         
         
         print("New Motor position would be: ", motor_pos_des)
         
-        motor_pos_diff = motor_pos_des - gc.motor_id2init_pos
+        motor_pos_diff = motor_pos_des - motor_pos_start
         actual_motor_angles_diff = motor_pos_diff * 180/np.pi
         
         print("The motors actually turned by this amount in deg: ", actual_motor_angles_diff)
@@ -184,10 +189,10 @@ def main():
     #curr_joint_angles = gc.
     #print("Current joint_angles: {}")
     global gc
-    gc = GripperController(port="/dev/ttyUSB0",calibration=False)
+    gc = GripperController(port="/dev/ttyUSB0",calibration=True)
     
-    #manipulate(gc)
-    test_hand_with_arm(gc)
+    manipulate(gc)
+    #test_hand_with_arm(gc)
     
     
     
