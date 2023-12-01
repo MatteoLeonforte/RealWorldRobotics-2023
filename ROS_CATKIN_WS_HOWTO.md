@@ -29,7 +29,7 @@ ln -s ~/RWR/RealWorldRobotics-2023/teleop ~/RWR/catkin_ws_rwr/src/teleop
 
 
 
-Now when you work with ros you wan to source it every time before using ros
+Now when you work with ros you wan to source it **every time** before using ros
 
 ```bash
 cd ~/RWR/catkin_ws_rwr
