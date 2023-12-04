@@ -2,7 +2,7 @@
 
     <!--SETUP-->
     <compiler autolimits="true" angle="radian"/>
-    <option collision="all"/>
+    <!--option collision="all"/-->
     <default>
         <!-- use same geom params as the Shadow Hand model in IsaacGymEnv for now -->
         <!-- the density is adjusted so that the total weight of the hand part (not including the base) is the same as the real hand (106g) (therefore the base will have a wrong mass, which shouldn't matter for now) -->
