@@ -53,8 +53,6 @@
     <!--CONTACT-->
     <contact>
 
-        
-
         <exclude body1="hand" body2="plate"/> 
 
         <exclude body1="hand" body2="finger1_pp"/>
