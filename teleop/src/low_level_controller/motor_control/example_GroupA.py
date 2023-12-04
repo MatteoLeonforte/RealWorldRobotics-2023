@@ -53,7 +53,7 @@ def desired_joint_angles_test(gc: GripperController):
             print("Desired joint angles are being achieved...")
             gc.write_desired_joint_angles(goalpos)
             gc.wait_for_motion()
-            time.sleep(1)
+            time.sleep(0.5)
             print("Desired joint angles achieved!")
              
         i = i+1
@@ -170,14 +170,19 @@ def test_hand_with_arm(gc: GripperController):
     max_angles = np.array([0, 90, 0, 90, 0, 90, 0, 90, 0, 90, 0])
     
     scaling = 1.0
-    while(scaling != 0.0):
-        scaling = float(input("Scaling factor [0,1]: "))
-        goalpos = scaling * max_angles
+    while(scaling != 2.0):
+        scaling = float(input("Scaling factor [0,1] (enter 2 to break loop): "))
         
-        print("Following joint angles are being achieved: ", goalpos)
-        gc.write_desired_joint_angles(goalpos)
-        gc.wait_for_motion()
-        time.sleep(1)
+        if scaling > 1.0 and scaling < 0.0:
+            print("Scaling factor too small or too large!")
+        else:
+            goalpos = scaling * max_angles
+            print("Following joint angles are being achieved: ", goalpos)
+            assert(scaling <= 1.0)
+            assert(scaling >=0.0)
+            gc.write_desired_joint_angles(goalpos)
+            gc.wait_for_motion()
+            time.sleep(1)
     
     
 def main():
