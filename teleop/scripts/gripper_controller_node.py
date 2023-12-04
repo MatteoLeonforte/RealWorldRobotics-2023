@@ -7,7 +7,7 @@ from low_level_controller.motor_control.gripper_controller_GroupA import Gripper
 # TODO: change it so that we don't copy gripper_controller.py to this faive_control
 # Do so by making faive_integration as a python package that is installed in the env, then can be called from anywhere
 # faive_integration is NOT a ROS package, it is a python package
-from low_level_controller.MuJoCo_controller.mujoco_controller import *
+from low_level_controller.MuJoCo_controller.mujoco_controller import GripperControllerMujocoSim
 # from low_level_control.gripper_controller_mujoco_sim import GripperControllerMujocoSim
 
 import rospy
@@ -19,10 +19,13 @@ import argparse
 class GripperControlNode:
     def __init__(self, sim=False, sub_queue_size=1) -> None:
         if not sim:
+            print("--------------------------------------------------HEEEEEEEEEEEEEEEEEEEEEEEEYYYYYYYYYYY")
             self.gripper_controller = GripperController("/dev/ttyUSB0")
+            self.gripper_controller.connect_to_dynamixels() # changed this (maybe delete again)
+
         else:
             self.gripper_controller = GripperControllerMujocoSim()
-        self.gripper_controller.connect_to_dynamixels()
+        # self.gripper_controller.connect_to_dynamixels()
         self.gripper_controller.init_joints(calibrate=False)
 
         self.commmand_subscriber = rospy.Subscriber(
@@ -49,7 +52,9 @@ if __name__ == "__main__":
     print(f"GC Subscriber queue size: {args.sub_queue_size}")
 
     rospy.init_node("gripper_control_node")
-    gc_node = GripperControlNode(sim=args.sim, sub_queue_size=args.sub_queue_size)
+    # gc_node = GripperControlNode(sim=args.sim, sub_queue_size=args.sub_queue_size)
+    gc_node = GripperControlNode(sim=True, sub_queue_size=args.sub_queue_size)
+
     r = rospy.Rate(50)
     while not rospy.is_shutdown():
         if time.monotonic() - gc_node.last_received_gc > 3.0:

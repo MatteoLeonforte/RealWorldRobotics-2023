@@ -6,5 +6,8 @@ project(teleop)
 
 # Find Catkin
 find_package(catkin REQUIRED)
-
 catkin_package()
+
+find_package(catkin REQUIRED COMPONENTS
+    dynamixel_sdk
+)

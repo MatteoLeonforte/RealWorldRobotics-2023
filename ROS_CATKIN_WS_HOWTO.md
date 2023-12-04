@@ -25,7 +25,7 @@ catkin_make
 ln -s ~/RWR/RealWorldRobotics-2023/teleop ~/RWR/catkin_ws_rwr/src/teleop
 ```
 
-
+(note i also symlinked the dynamixel thingy into catkin_ws_rwr/src)
 
 
 

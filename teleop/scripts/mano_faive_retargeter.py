@@ -43,8 +43,8 @@ class RetargeterNode:
                 self.joint_map[joint_parameter_names.index(
                     tendon), i] = weight * 0.5
 
-        self.urdf_path = self.base_path + "/../../faive_viz/urdf/" # Change here
-        self.urdf_filename = self.urdf_path + "converted.urdf" # Change here
+        self.urdf_path = self.base_path + "/../../design/" # Change here
+        self.urdf_filename = self.urdf_path + "hand_design.xml" # Change here
 
         prev_cwd = os.getcwd()
         os.chdir(self.urdf_path)
