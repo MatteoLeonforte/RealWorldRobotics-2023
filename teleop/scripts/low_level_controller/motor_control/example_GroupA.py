@@ -63,35 +63,63 @@ def desired_joint_angles_test(gc: GripperController):
     pass
     
 def trajectory_input(gc: GripperController):
-    #NOT COMPLETE
-    ja_first = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ja_second = [0, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
-    ja_third = [0, 90, 0, 90, 0, 90, 0, 90, 0, 90, 0]
-
-    print("First joint angles:", ja_first)
-    print("First joint angles are being achieved...")
+    #Task1
+    ja1 =      [0, -45, 0, -45, 0, -45, 0, -45, 0, -45, 0]
+    
+    #Task2
+    ja2 =   [0, 0, 0, -45, 0, -45, 0, -45, 0, -45, 0]
+    ja3 =   [0, 0, 0, 0, 0, -45, 0, -45, 0, -45, 0]
+    ja4 =   [0, 0, 0, 0, 0, 0, 0, -45, 0, -45, 0]
+    ja5 =   [0, 0, 0, 0, 0, 0, 0, 0, 0, -45, 0]
+    ja6 =   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    
+    #Task3
+    ja7 =   [0, 45, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ja8 =   [0, 45, 0, 45, 0, 0, 0, 0, 0, 0, 0]
+    ja9 =   [0, 45, 0, 45, 0, 45, 0, 0, 0, 0, 0]
+    ja10 =  [0, 45, 0, 45, 0, 45, 0, 45, 0, 0, 0]
+    ja11 =  [0, 45, 0, 45, 0, 45, 0, 45, 0, 45, 0]
+    
+    #Task3.5
+    ja35 =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    #Task4
+    ja12 =  [0, 0, 45, 0, 0, 0, 0, 0, 0, 0, 0]
+    ja13 =  [0, 0, 45, 0, 45, 0, 0, 0, 0, 0, 0]
+    ja14 =  [0, 0, 45, 0, 45, 0, 45, 0, 0, 0, 0]
+    ja15 =  [0, 0, 45, 0, 45, 0, 45, 0, 45, 0, 0]
+    ja16 =  [0, 0, 45, 0, 45, 0, 45, 0, 45, 0, 45]
+    
+    #Task5
+    ja17 =  [0, 0, 90, 0, 45, 0, 45, 0, 45, 0, 45]
+    ja18 =  [0, 0, 90, 0, 90, 0, 45, 0, 45, 0, 45]
+    ja19 =  [0, 0, 90, 0, 90, 0, 90, 0, 45, 0, 45]
+    ja20 =  [0, 0, 90, 0, 90, 0, 90, 0, 90, 0, 45]
+    ja21 =  [0, 0, 90, 0, 90, 0, 90, 0, 90, 0, 90]
+    
+    task1 = [ja1]
+    task2 = [ja2, ja3, ja4, ja5, ja6]
+    task3 = [ja7, ja8, ja9, ja10, ja11]
+    task35 = [ja35]
+    task4 = [ja12, ja13, ja14, ja15, ja16]
+    task5 = [ja17, ja18, ja19, ja20, ja21]
+    
+    tasks = [task1, task2, task3, task35, task4, task5]
+    
+    for task in tasks:
+        print("It's time for task", task.index)
+        for pose in task:
+            print("Next joint angles: ", pose)
+            input("Agree to these joint angles with ENTER.")
+            gc.write_desired_joint_angles(np.array(pose))
+            print("Waiting for motion")
+            gc.wait_for_motion()
+        
+    
+    """
     gc.write_desired_joint_angles(ja_first)
     gc.wait_for_motion()
     time.sleep(1)
-    
-    print("Second joint angles", ja_second)
-    print("Second joint angles are being achieved...")
-    gc.write_desired_joint_angles(ja_second)
-    gc.wait_for_motion()
-    time.sleep(1)
-    
-    print("Third joint angles:", ja_third)
-    print("Third joint angles are being achieved...")
-    gc.write_desired_joint_angles(ja_third)
-    gc.wait_for_motion()
-    time.sleep(1)
-    
-    print("First joint angles:", ja_first)
-    print("First joint angles are being achieved...")
-    gc.write_desired_joint_angles(ja_first)
-    gc.wait_for_motion()
-    time.sleep(1)
-
+    """
     pass
 
 def test_tendons(gc: GripperController):
@@ -167,7 +195,8 @@ def manipulate(gc:GripperController):
         print("No valid task selected. Process will terminate!")
 
 def test_hand_with_arm(gc: GripperController):
-    max_angles = np.array([0, 90, 0, 90, 0, 90, 0, 90, 0, 90, 0])
+    max_angles = np.array([0, 90, 0, 90, 0, 90, 0, 90, 0, 90, 0]) #if only lower joints are used
+    #max_angles = np.array([0, 90, 90, 90, 90, 90, 90, 90, 90, 90]) #if both lower and upper joints are used 
     
     scaling = 1.0
     while(scaling != 2.0):
@@ -196,8 +225,8 @@ def main():
     global gc
     gc = GripperController(port="/dev/ttyUSB0",calibration=True)
     
-    manipulate(gc)
-    #test_hand_with_arm(gc)
+    #manipulate(gc)
+    test_hand_with_arm(gc)
     
     
     

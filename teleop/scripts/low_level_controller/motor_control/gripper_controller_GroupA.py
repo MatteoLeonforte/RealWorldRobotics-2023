@@ -1,11 +1,10 @@
 from re import L
-from .dynamixel_client import *
+from dynamixel_client import *
 import numpy as np
 import time
 import yaml
 import os
-from . import finger_kinematics_GroupA as fk
-# import finger_kinematics_GroupA as fk
+import finger_kinematics_GroupA as fk
 from threading import RLock
 
 
@@ -107,7 +106,7 @@ class GripperController:
 
     def motor_pos2tendon_pos(self, motor_pos):
         """ Input: motor positions
-        Output: tendon lengths """        
+        Output: tendon lengths """
         tendon_lengths = np.zeros(len(self.tendon_ids))
         m_idx = 0
         t_idx = 0
