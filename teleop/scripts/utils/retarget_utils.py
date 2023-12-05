@@ -41,16 +41,16 @@ JOINT_PARAMETER_NAMES = [
 
 GC_TENDONS = {
     'palm2plate': {},
-    'finger1_base2pp': {},
-    'finger1_pp2mp_virt': {'finger1_pp2mp': 1, 'finger1_mp2dp_virt': 0.71, 'finger1_mp2dp': 0.71},
+    'finger1_base2pp_virt': {'finger1_base2pp': 1},
+    'finger1_pp2mp_virt': {'finger1_pp2mp': 1, 'finger1_mp2dp_virt': 1, 'finger1_mp2dp': 1},
     'finger2_base2pp_virt': {'finger2_base2pp': 1},
-    'finger2_pp2mp_virt': {'finger2_pp2mp': 1, 'finger2_mp2dp_virt': 0.71, 'finger2_mp2dp': 0.71},
+    'finger2_pp2mp_virt': {'finger2_pp2mp': 1, 'finger2_mp2dp_virt': 1, 'finger2_mp2dp': 1},
     'finger3_base2pp_virt': {'finger3_base2pp': 1},
-    'finger3_pp2mp_virt': {'finger3_pp2mp': 1, 'finger3_mp2dp_virt': 0.71, 'finger3_mp2dp': 0.71},
+    'finger3_pp2mp_virt': {'finger3_pp2mp': 1, 'finger3_mp2dp_virt': 1, 'finger3_mp2dp': 1},
     'finger4_base2pp_virt': {'finger4_base2pp': 1},
-    'finger4_pp2mp_virt': {'finger4_pp2mp': 1, 'finger4_mp2dp_virt': 0.71, 'finger4_mp2dp': 0.71},
+    'finger4_pp2mp_virt': {'finger4_pp2mp': 1, 'finger4_mp2dp_virt': 1, 'finger4_mp2dp': 1},
     'finger5_base2pp_virt': {'finger5_base2pp': 1},
-    'finger5_pp2mp_virt': {'finger5_pp2mp': 1, 'finger5_mp2dp_virt': 0.71, 'finger5_mp2dp': 0.71},
+    'finger5_pp2mp_virt': {'finger5_pp2mp': 1, 'finger5_mp2dp_virt': 1, 'finger5_mp2dp': 1},
 }
 
 FINGER_CHAINS = {
@@ -59,6 +59,7 @@ FINGER_CHAINS = {
         'world2root_fixed',
         'root',
         'palm2plate',
+        'finger1_base2pp_virt',
         'finger1_base2pp',
         'finger1_pp2mp_virt',
         'finger1_pp2mp',
@@ -112,15 +113,15 @@ FINGER_CHAINS = {
 }
 
 FINGER_TO_TIP: Dict[str, str] = {
-    "finger1": "finger1_fingertip",
-    "finger2": "finger2_fingertip",
-    "finger3": "finger3_fingertip",
-    "finger4": "finger4_fingertip",
-    "finger5": "finger5_fingertip",
+    "finger1": "fingertip1",
+    "finger2": "fingertip2",
+    "finger3": "fingertip3",
+    "finger4": "fingertip4",
+    "finger5": "fingertip5",
 }
 
 FINGER_TO_BASE = {
-    "finger1": "finger1_base",
+    "finger1": "finger1_pp",
     "finger2": "finger2_pp",
     "finger3": "finger3_pp",
     "finger4": "finger4_pp",
