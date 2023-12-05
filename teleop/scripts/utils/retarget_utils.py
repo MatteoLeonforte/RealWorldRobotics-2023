@@ -6,124 +6,125 @@ import numpy as np
 
 
 JOINT_PARAMETER_NAMES = [
-    'root2thumb_base',
-    'thumb_base2pp',
-    'thumb_pp2mp_virt',
-    'thumb_pp2mp',
-    'thumb_mp2dp_virt',
-    'thumb_mp2dp',
-    'root2index_pp_virt',
-    'root2index_pp',
-    'index_pp2mp_virt',
-    'index_pp2mp',
-    'index_mp2dp_virt',
-    'index_mp2dp',
-    'root2middle_pp_virt',
-    'root2middle_pp',
-    'middle_pp2mp_virt',
-    'middle_pp2mp',
-    'middle_mp2dp_virt',
-    'middle_mp2dp',
-    'root2ring_pp_virt',
-    'root2ring_pp',
-    'ring_pp2mp_virt',
-    'ring_pp2mp',
-    'ring_mp2dp_virt',
-    'ring_mp2dp',
-    'root2pinky_pp_virt',
-    'root2pinky_pp',
-    'pinky_pp2mp_virt',
-    'pinky_pp2mp',
-    'pinky_mp2dp_virt',
-    'pinky_mp2dp',
+    'palm2plate',
+    'finger1_base2pp',
+    'finger1_base2pp_virt',
+    'finger1_pp2mp_virt',
+    'finger1_pp2mp',
+    'finger1_mp2dp_virt',
+    'finger1_mp2dp',
+    'finger2_base2pp_virt',
+    'finger2_base2pp',
+    'finger2_pp2mp_virt',
+    'finger2_pp2mp',
+    'finger2_mp2dp_virt',
+    'finger2_mp2dp',
+    'finger3_base2pp_virt',
+    'finger3_base2pp',
+    'finger3_pp2mp_virt',
+    'finger3_pp2mp',
+    'finger3_mp2dp_virt',
+    'finger3_mp2dp',
+    'finger4_base2pp_virt',
+    'finger4_base2pp',
+    'finger4_pp2mp_virt',
+    'finger4_pp2mp',
+    'finger4_mp2dp_virt',
+    'finger4_mp2dp',
+    'finger5_base2pp_virt',
+    'finger5_base2pp',
+    'finger5_pp2mp_virt',
+    'finger5_pp2mp',
+    'finger5_mp2dp_virt',
+    'finger5_mp2dp',
 ]
 
 GC_TENDONS = {
-    'root2thumb_base': {},
-    'thumb_base2pp': {},
-    'thumb_pp2mp_virt': {'thumb_pp2mp': 1, 'thumb_mp2dp_virt': 0.71, 'thumb_mp2dp': 0.71},
-    'root2index_pp_virt': {'root2index_pp': 1},
-    'index_pp2mp_virt': {'index_pp2mp': 1, 'index_mp2dp_virt': 0.71, 'index_mp2dp': 0.71},
-    'root2middle_pp_virt': {'root2middle_pp': 1},
-    'middle_pp2mp_virt': {'middle_pp2mp': 1, 'middle_mp2dp_virt': 0.71, 'middle_mp2dp': 0.71},
-    'root2ring_pp_virt': {'root2ring_pp': 1},
-    'ring_pp2mp_virt': {'ring_pp2mp': 1, 'ring_mp2dp_virt': 0.71, 'ring_mp2dp': 0.71},
-    'root2pinky_pp_virt': {'root2pinky_pp': 1},
-    'pinky_pp2mp_virt': {'pinky_pp2mp': 1, 'pinky_mp2dp_virt': 0.71, 'pinky_mp2dp': 0.71},
+    'palm2plate': {},
+    'finger1_base2pp': {},
+    'finger1_pp2mp_virt': {'finger1_pp2mp': 1, 'finger1_mp2dp_virt': 0.71, 'finger1_mp2dp': 0.71},
+    'finger2_base2pp_virt': {'finger2_base2pp': 1},
+    'finger2_pp2mp_virt': {'finger2_pp2mp': 1, 'finger2_mp2dp_virt': 0.71, 'finger2_mp2dp': 0.71},
+    'finger3_base2pp_virt': {'finger3_base2pp': 1},
+    'finger3_pp2mp_virt': {'finger3_pp2mp': 1, 'finger3_mp2dp_virt': 0.71, 'finger3_mp2dp': 0.71},
+    'finger4_base2pp_virt': {'finger4_base2pp': 1},
+    'finger4_pp2mp_virt': {'finger4_pp2mp': 1, 'finger4_mp2dp_virt': 0.71, 'finger4_mp2dp': 0.71},
+    'finger5_base2pp_virt': {'finger5_base2pp': 1},
+    'finger5_pp2mp_virt': {'finger5_pp2mp': 1, 'finger5_mp2dp_virt': 0.71, 'finger5_mp2dp': 0.71},
 }
 
 FINGER_CHAINS = {
-    'thumb': [
+    'finger1': [
         'world',
         'world2root_fixed',
         'root',
-        'root2thumb_base',
-        'thumb_base2pp',
-        'thumb_pp2mp_virt',
-        'thumb_pp2mp',
-        'thumb_mp2dp_virt',
-        'thumb_mp2dp',
+        'palm2plate',
+        'finger1_base2pp',
+        'finger1_pp2mp_virt',
+        'finger1_pp2mp',
+        'finger1_mp2dp_virt',
+        'finger1_mp2dp',
     ],
-    'index': [
+    'finger2': [
         'world',
         'world2root_fixed',
         'root',
-        'root2index_pp_virt',
-        'root2index_pp',
-        'index_pp2mp_virt',
-        'index_pp2mp',
-        'index_mp2dp_virt',
-        'index_mp2dp',
+        'finger2_base2pp_virt',
+        'finger2_base2pp',
+        'finger2_pp2mp_virt',
+        'finger2_pp2mp',
+        'finger2_mp2dp_virt',
+        'finger2_mp2dp',
     ],
-    'middle': [
+    'finger3': [
         'world',
         'world2root_fixed',
         'root',
-        'root2middle_pp_virt',
-        'root2middle_pp',
-        'middle_pp2mp_virt',
-        'middle_pp2mp',
-        'middle_mp2dp_virt',
-        'middle_mp2dp',
+        'finger3_base2pp_virt',
+        'finger3_base2pp',
+        'finger3_pp2mp_virt',
+        'finger3_pp2mp',
+        'finger3_mp2dp_virt',
+        'finger3_mp2dp',
     ],
-    'ring': [
+    'finger4': [
         'world',
         'world2root_fixed',
         'root',
-        'root2ring_pp_virt',
-        'root2ring_pp',
-        'ring_pp2mp_virt',
-        'ring_pp2mp',
-        'ring_mp2dp_virt',
-        'ring_mp2dp',
+        'finger4_base2pp_virt',
+        'finger4_base2pp',
+        'finger4_pp2mp_virt',
+        'finger4_pp2mp',
+        'finger4_mp2dp_virt',
+        'finger4_mp2dp',
     ],
-    'pinky': [
+    'finger5': [
         'world',
         'world2root_fixed',
         'root',
-        'root2pinky_pp_virt',
-        'root2pinky_pp',
-        'pinky_pp2mp_virt',
-        'pinky_pp2mp',
-        'pinky_mp2dp_virt',
-        'pinky_mp2dp',
+        'finger5_base2pp_virt',
+        'finger5_base2pp',
+        'finger5_pp2mp_virt',
+        'finger5_pp2mp',
+        'finger5_mp2dp_virt',
+        'finger5_mp2dp',
     ],
 }
 
 FINGER_TO_TIP: Dict[str, str] = {
-    "thumb": "thumb_fingertip",
-    "index": "index_fingertip",
-    "middle": "middle_fingertip",
-    "ring": "ring_fingertip",
-    "pinky": "pinky_fingertip",
+    "finger1": "finger1_fingertip",
+    "finger2": "finger2_fingertip",
+    "finger3": "finger3_fingertip",
+    "finger4": "finger4_fingertip",
+    "finger5": "finger5_fingertip",
 }
 
 FINGER_TO_BASE = {
-    "thumb": "thumb_base",
-    "index": "index_pp",
-    "middle": "middle_pp",
-    "ring": "ring_pp",
-    "pinky": "pinky_pp",
+    "finger1": "finger1_base",
+    "finger2": "finger2_pp",
+    "finger3": "finger3_pp",
+    "finger4": "finger4_pp",
+    "finger5": "finger5_pp",
 }
 
 
@@ -134,76 +135,76 @@ def get_mano_joints_dict(joints: torch.Tensor, include_wrist=False, batch_proces
     if not batch_processing:
         if not include_wrist:
             return {
-                "thumb": joints[1:5, :],
-                "index": joints[5:9, :],
-                "middle": joints[9:13, :],
-                "ring": joints[13:17, :],
-                "pinky": joints[17:21, :],
+                "finger1": joints[1:5, :],
+                "finger2": joints[5:9, :],
+                "finger3": joints[9:13, :],
+                "finger4": joints[13:17, :],
+                "finger5": joints[17:21, :],
             }
         else:
             return {
                 "wrist": joints[0, :],
-                "thumb": joints[1:5, :],
-                "index": joints[5:9, :],
-                "middle": joints[9:13, :],
-                "ring": joints[13:17, :],
-                "pinky": joints[17:21, :],
+                "finger1": joints[1:5, :],
+                "finger2": joints[5:9, :],
+                "finger3": joints[9:13, :],
+                "finger4": joints[13:17, :],
+                "finger5": joints[17:21, :],
             }
     else:
         if not include_wrist:
             return {
-                "thumb": joints[:, 1:5, :],
-                "index": joints[:, 5:9, :],
-                "middle": joints[:, 9:13, :],
-                "ring": joints[:, 13:17, :],
-                "pinky": joints[:, 17:21, :],
+                "finger1": joints[:, 1:5, :],
+                "finger2": joints[:, 5:9, :],
+                "finger3": joints[:, 9:13, :],
+                "finger4": joints[:, 13:17, :],
+                "finger5": joints[:, 17:21, :],
             }
         else:
             return {
                 "wrist": joints[:, 0, :],
-                "thumb": joints[:, 1:5, :],
-                "index": joints[:, 5:9, :],
-                "middle": joints[:, 9:13, :],
-                "ring": joints[:, 13:17, :],
-                "pinky": joints[:, 17:21, :],
+                "finger1": joints[:, 1:5, :],
+                "finger2": joints[:, 5:9, :],
+                "finger3": joints[:, 9:13, :],
+                "finger4": joints[:, 13:17, :],
+                "finger5": joints[:, 17:21, :],
             }
 
 
 def get_mano_fingertips_batch(mano_joints_dict):
     return {
-        "thumb": mano_joints_dict["thumb"][:, [3], :],
-        "index": mano_joints_dict["index"][:, [3], :],
-        "middle": mano_joints_dict["middle"][:, [3], :],
-        "ring": mano_joints_dict["ring"][:, [3], :],
-        "pinky": mano_joints_dict["pinky"][:, [3], :],
+        "finger1": mano_joints_dict["finger1"][:, [3], :],
+        "finger2": mano_joints_dict["finger2"][:, [3], :],
+        "finger3": mano_joints_dict["finger3"][:, [3], :],
+        "finger4": mano_joints_dict["finger4"][:, [3], :],
+        "finger5": mano_joints_dict["finger5"][:, [3], :],
     }
 
 def get_mano_pps_batch(mano_joints_dict):
     return {
-        "thumb": mano_joints_dict["thumb"][:, [0], :],
-        "index": mano_joints_dict["index"][:, [0], :],
-        "middle": mano_joints_dict["middle"][:, [0], :],
-        "ring": mano_joints_dict["ring"][:, [0], :],
-        "pinky": mano_joints_dict["pinky"][:, [0], :],
+        "finger1": mano_joints_dict["finger1"][:, [0], :],
+        "finger2": mano_joints_dict["finger2"][:, [0], :],
+        "finger3": mano_joints_dict["finger3"][:, [0], :],
+        "finger4": mano_joints_dict["finger4"][:, [0], :],
+        "finger5": mano_joints_dict["finger5"][:, [0], :],
     }
 
 def get_keyvectors(fingertips: Dict[str, torch.Tensor], palm: torch.Tensor):
     return {
-        'palm2thumb': fingertips['thumb'] - palm,
-        'palm2index': fingertips['index'] - palm,
-        'palm2middle': fingertips['middle'] - palm,
-        'palm2ring': fingertips['ring'] - palm,
-        'palm2pinky': fingertips['pinky'] - palm,
-        'thumb2index': fingertips['index'] - fingertips['thumb'],
-        'thumb2middle': fingertips['middle'] - fingertips['thumb'],
-        'thumb2ring': fingertips['ring'] - fingertips['thumb'],
-        'thumb2pinky': fingertips['pinky'] - fingertips['thumb'],
-        'index2middle': fingertips['middle'] - fingertips['index'],
-        'index2ring': fingertips['ring'] - fingertips['index'],
-        'index2pinky': fingertips['pinky'] - fingertips['index'],
-        'middle2ring': fingertips['ring'] - fingertips['middle'],
-        'middle2pinky': fingertips['pinky'] - fingertips['middle'],
-        'ring2pinky': fingertips['pinky'] - fingertips['ring'],
+        'palm2finger1': fingertips['finger1'] - palm,
+        'palm2finger2': fingertips['finger2'] - palm,
+        'palm2finger3': fingertips['finger3'] - palm,
+        'palm2finger4': fingertips['finger4'] - palm,
+        'palm2finger5': fingertips['finger5'] - palm,
+        'finger12finger2': fingertips['finger2'] - fingertips['finger1'],
+        'finger12finger3': fingertips['finger3'] - fingertips['finger1'],
+        'finger12finger4': fingertips['finger4'] - fingertips['finger1'],
+        'finger12finger5': fingertips['finger5'] - fingertips['finger1'],
+        'finger22finger3': fingertips['finger3'] - fingertips['finger2'],
+        'finger22finger4': fingertips['finger4'] - fingertips['finger2'],
+        'finger22finger5': fingertips['finger5'] - fingertips['finger2'],
+        'finger32finger4': fingertips['finger4'] - fingertips['finger3'],
+        'finger32finger5': fingertips['finger5'] - fingertips['finger3'],
+        'finger42finger5': fingertips['finger5'] - fingertips['finger4'],
     }
 
 
@@ -253,15 +254,15 @@ def get_hand_rotation_matrix(joint_pos):
     wrist_point = joint_pos[0, :]
     joint_pos -= wrist_point
 
-    # construct a plane from wrist, first index finger joint, first pinky joint
+    # construct a plane from wrist, first finger2 finger joint, first finger5 joint
     joint_dict = get_mano_joints_dict(joint_pos, include_wrist=True)
     wrist_point = joint_dict['wrist']
-    index_point = joint_dict['index'][0]
-    pinky_point = joint_dict['pinky'][0]
+    finger2_point = joint_dict['finger2'][0]
+    finger5_point = joint_dict['finger5'][0]
 
     # find basis vectors for the plane
-    base_1 = index_point - wrist_point
-    base_2 = pinky_point - wrist_point
+    base_1 = finger2_point - wrist_point
+    base_2 = finger5_point - wrist_point
     normal_vec = np.cross(base_1, base_2)
     base_2 = np.cross(normal_vec, base_1)
 
@@ -289,15 +290,15 @@ def normalize_points(joint_pos, flip_x_axis=True, flip_y_axis=False, add_z_rotat
     wrist_point = joint_pos[0, :]
     joint_pos -= wrist_point
 
-    # construct a plane from wrist, first index finger joint, first pinky joint
+    # construct a plane from wrist, first finger2 finger joint, first finger5 joint
     joint_dict = get_mano_joints_dict(joint_pos, include_wrist=True)
     wrist_point = joint_dict['wrist']
-    index_point = joint_dict['index'][0]
-    pinky_point = joint_dict['pinky'][0]
+    finger2_point = joint_dict['finger2'][0]
+    finger5_point = joint_dict['finger5'][0]
 
     # find basis vectors for the plane
-    base_1 = index_point - wrist_point
-    base_2 = pinky_point - wrist_point
+    base_1 = finger2_point - wrist_point
+    base_2 = finger5_point - wrist_point
     normal_vec = np.cross(base_1, base_2)
     base_2 = np.cross(normal_vec, base_1)
 
@@ -339,7 +340,7 @@ def get_unoccluded_hand_joint_idx(joint_pos):
 
 def get_wrist_translation(joint_idx, joint_pos):
     '''
-    param: joint_idx, the index of the joint with the highest y value
+    param: joint_idx, the finger2 of the joint with the highest y value
     param: joint_pos, a numpy array of 3D joint positions (MANO format), not normalized
     Returns the translation of the wrist in the hand frame relative to the joint_idx joint
     '''
@@ -412,14 +413,14 @@ def normalize_points_rokoko(joint_pos, mirror_x=False, flip_y_axis=False, flip_x
     wrist_point = joint_pos[0, :]
     joint_pos -= wrist_point
 
-    # construct a plane from wrist, first index finger joint, first pinky joint
+    # construct a plane from wrist, first finger2 finger joint, first finger5 joint
     joint_dict = get_mano_joints_dict(joint_pos, include_wrist=True)
     wrist_point = joint_dict['wrist']
-    middle_point = joint_dict['middle'][0]
-    pinky_point = joint_dict['pinky'][0]
+    finger3_point = joint_dict['finger3'][0]
+    finger5_point = joint_dict['finger5'][0]
     # find basis vectors for the plane
-    base_1 = middle_point - wrist_point
-    base_2 = pinky_point - wrist_point
+    base_1 = finger3_point - wrist_point
+    base_2 = finger5_point - wrist_point
     normal_vec = np.cross(base_1, base_2)
     base_2 = np.cross(normal_vec, base_1)
 
@@ -446,7 +447,7 @@ def normalize_points_rokoko(joint_pos, mirror_x=False, flip_y_axis=False, flip_x
 
     rot_matrix = base_matrix
 
-    z_axis = wrist_point - middle_point
+    z_axis = wrist_point - finger3_point
     
     rot_matrix[:,0] = -base_2
     rot_matrix[:,1] = -normal_vec
