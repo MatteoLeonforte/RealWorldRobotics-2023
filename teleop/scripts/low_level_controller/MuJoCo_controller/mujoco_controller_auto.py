@@ -52,10 +52,90 @@ class GripperControllerMujocoSim:
 if __name__ == '__main__':
 
   gc = GripperControllerMujocoSim()
+  target = math.pi/2
+  angles = [0]*11
+
   while True:
-    angles = [math.pi/2]*11
+    
+    angles[0] = target
     gc.command_joint_angles(angles)
     time.sleep(1)
+
+    angles[0] = -target
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+
+
+    angles = [0]*11
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+
+    angles[1] = target
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+    angles = [0]*11
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+    angles[2] = target
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+    
+    angles = [0]*11
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+
+    angles[3] = target
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+    angles = [0]*11
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+    angles[4] = target
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+
+    angles = [0]*11
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+
+    angles[5] = target
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+    angles = [0]*11
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+    angles[6] = target
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+
+    angles = [0]*11
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+
+    angles[7] = target
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+    angles = [0]*11
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+    angles[8] = target
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+
+    angles = [0]*11
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+
+    angles[9] = target
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+    angles = [0]*11
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+    angles[10] = target
+    gc.command_joint_angles(angles)
+    time.sleep(1)
+
     angles = [0]*11
     gc.command_joint_angles(angles)
     time.sleep(1)
