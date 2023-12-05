@@ -43,12 +43,12 @@ class RetargeterNode:
                 self.joint_map[joint_parameter_names.index(
                     tendon), i] = weight * 0.5
 
-        self.urdf_path = self.base_path + "/../../design/" # Change here
-        self.urdf_filename = self.urdf_path + "hand_design.xml" # Change here
+        self.urdf_path = self.base_path + "/../../design/"              # Change here
+        self.urdf_filename = self.urdf_path + "hand_design.xml"         # Change here
 
         prev_cwd = os.getcwd()
         os.chdir(self.urdf_path)
-        self.chain = pk.build_chain_from_urdf(
+        self.chain = pk.build_chain_from_mjcf(                          # changed this to get mjcf and not urdf
             open(self.urdf_filename).read()).to(device=self.device)
         os.chdir(prev_cwd)
 
