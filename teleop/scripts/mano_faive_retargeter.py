@@ -31,7 +31,9 @@ class RetargeterNode:
         
         self.base_path = os.path.dirname(os.path.realpath(__file__))
 
-        self.joint_map = torch.zeros(30, 11).to(device)
+        # self.joint_map = torch.zeros(30, 11).to(device)
+        self.joint_map = torch.zeros(31, 11).to(device) # changed to this
+
 
         joint_parameter_names = retarget_utils.JOINT_PARAMETER_NAMES
         gc_tendons = retarget_utils.GC_TENDONS
@@ -93,6 +95,7 @@ class RetargeterNode:
         9-12: middle
         13-16: ring
         17-20: pinky
+        --> changed these namings to finger1 - finger5
         """
 
         print(f"Retargeting: Warm: {warm} Opt steps: {opt_steps}")
@@ -118,7 +121,7 @@ class RetargeterNode:
         for finger, finger_joints in mano_joints_dict.items():
             mano_pps[finger] = finger_joints[[0], :]
 
-        mano_palm = torch.mean(torch.cat([joints[[0], :], mano_pps["index"], mano_pps["pinky"]], dim=0).to(
+        mano_palm = torch.mean(torch.cat([joints[[0], :], mano_pps["finger2"], mano_pps["finger5"]], dim=0).to(     # Changed naming here
             self.device), dim=0, keepdim=True)
 
         keyvectors_mano = retarget_utils.get_keyvectors(
@@ -137,7 +140,7 @@ class RetargeterNode:
                 fingertips[finger] = chain_transforms[finger_tip].transform_points(
                     self.root)
 
-            palm = chain_transforms["root"].transform_points(
+            palm = chain_transforms["hand"].transform_points(       # Changed root --> hand
                 self.root) + self.palm_offset
 
             keyvectors_faive = retarget_utils.get_keyvectors(fingertips, palm)

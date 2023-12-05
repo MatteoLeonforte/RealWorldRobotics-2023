@@ -19,7 +19,6 @@ import argparse
 class GripperControlNode:
     def __init__(self, sim=False, sub_queue_size=1) -> None:
         if not sim:
-            print("--------------------------------------------------HEEEEEEEEEEEEEEEEEEEEEEEEYYYYYYYYYYY")
             self.gripper_controller = GripperController("/dev/ttyUSB0")
             self.gripper_controller.connect_to_dynamixels() # changed this (maybe delete again)
 
@@ -38,6 +37,7 @@ class GripperControlNode:
         unpacked_msg = np.array(msg.data, dtype=np.float32).flatten()
         rospy.loginfo("Received message for GC")
         print(unpacked_msg.shape)
+        print("[gripper_controller_node] Angles:",unpacked_msg) # added
         self.gripper_controller.command_joint_angles(unpacked_msg)
         self.last_received_gc = time.monotonic()
 

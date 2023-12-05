@@ -149,7 +149,9 @@ class OakDIngress:
         # if len(self.recorded_mano_joints) > 2000:
         #     arr = np.array(self.recorded_mano_joints)
         #     np.save('mano_joints_recorded.npy', arr)
-        #     print('Saved recorded mano joints')
+        #     print('Saved recorded mano joints')$
+
+        print("[DEBUG: oak_hand_tracker_ingress] normalized_joint_pos: ", normalized_joint_pos)
 
         self.publish_joints(normalized_joint_pos)
 
