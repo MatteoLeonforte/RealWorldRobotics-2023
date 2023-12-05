@@ -57,7 +57,7 @@ FINGER_CHAINS = {
     'finger1': [
         'world',
         'world2root_fixed',
-        'root',
+        'hand',
         'palm2plate',
         'finger1_base2pp_virt',
         'finger1_base2pp',
@@ -69,7 +69,7 @@ FINGER_CHAINS = {
     'finger2': [
         'world',
         'world2root_fixed',
-        'root',
+        'hand',
         'finger2_base2pp_virt',
         'finger2_base2pp',
         'finger2_pp2mp_virt',
@@ -80,7 +80,7 @@ FINGER_CHAINS = {
     'finger3': [
         'world',
         'world2root_fixed',
-        'root',
+        'hand',
         'finger3_base2pp_virt',
         'finger3_base2pp',
         'finger3_pp2mp_virt',
@@ -91,7 +91,7 @@ FINGER_CHAINS = {
     'finger4': [
         'world',
         'world2root_fixed',
-        'root',
+        'hand',
         'finger4_base2pp_virt',
         'finger4_base2pp',
         'finger4_pp2mp_virt',
@@ -102,7 +102,7 @@ FINGER_CHAINS = {
     'finger5': [
         'world',
         'world2root_fixed',
-        'root',
+        'hand',
         'finger5_base2pp_virt',
         'finger5_base2pp',
         'finger5_pp2mp_virt',
