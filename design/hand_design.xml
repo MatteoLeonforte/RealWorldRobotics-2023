@@ -107,20 +107,20 @@
 
     <!--ACTUATION-->
     <actuator>
-        <position name="palm2plate" joint="palm2plate" ctrlrange="-0.785 0.785"/>
-        <position name="finger1_base2pp" joint="finger1_base2pp" ctrlrange="-0.785 0.785"/>
+        <position name="palm2plate" joint="palm2plate" ctrlrange="-1.13446 1.13446"/>
+        <position name="finger1_base2pp" joint="finger1_base2pp" ctrlrange="-0.392699 0.785"/>
         <position name="finger1_pp2mp" joint="finger1_pp2mp" ctrlrange="0 0.785"/>
 
-        <position name="finger2_base2pp" joint="finger2_base2pp" ctrlrange="-0.785 0.785"/>
+        <position name="finger2_base2pp" joint="finger2_base2pp" ctrlrange="-0.392699 0.785"/>
         <position name="finger2_pp2mp" joint="finger2_pp2mp" ctrlrange="0 0.785"/>
 
-        <position name="finger3_base2pp" joint="finger3_base2pp" ctrlrange="-0.785 0.785"/>
+        <position name="finger3_base2pp" joint="finger3_base2pp" ctrlrange="-0.392699 0.785"/>
         <position name="finger3_pp2mp" joint="finger3_pp2mp" ctrlrange="0 0.785"/>
 
-        <position name="finger4_base2pp" joint="finger4_base2pp" ctrlrange="-0.785 0.785"/>
+        <position name="finger4_base2pp" joint="finger4_base2pp" ctrlrange="-0.392699 0.785"/>
         <position name="finger4_pp2mp" joint="finger4_pp2mp" ctrlrange="0 0.785"/>
 
-        <position name="finger5_base2pp" joint="finger5_base2pp" ctrlrange="-0.785 0.785"/>
+        <position name="finger5_base2pp" joint="finger5_base2pp" ctrlrange="-0.392699 0.785"/>
         <position name="finger5_pp2mp" joint="finger5_pp2mp" ctrlrange="0 0.785"/>
 
     </actuator>
@@ -248,15 +248,15 @@
         
 
             <body name="plate">
-                <joint name="palm2plate" type="hinge" pos="0 0.03 0.1" axis="0 0 1" range="-0.785 0.785"/>
+                <joint name="palm2plate" type="hinge" pos="0 0.03 0.1" axis="0 0 1" range="-1.13446 1.13446"/>
                 <geom type="mesh" mesh="plate"/>
                 <geom type="mesh" mesh="finger1_base"/>
 
                 <body name="finger1_pp_virt">
-                    <joint name="finger1_base2pp_virt" type="hinge" pos="0  -0.020969867811865   0.034642167811865" axis="-1 0 0" range="-0.785 0.785"/>
+                    <joint name="finger1_base2pp_virt" type="hinge" pos="0  -0.020969867811865   0.034642167811865" axis="-1 0 0" range="-0.392699 0.785"/>
                     <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
                     <body name="finger1_pp">
-                        <joint name="finger1_base2pp" pos="0  -0.035112003435596   0.048784303435596" axis="-1 0 0" range="-0.785 0.785"/>
+                        <joint name="finger1_base2pp" pos="0  -0.035112003435596   0.048784303435596" axis="-1 0 0" range="-0.392699 0.785"/>
                         <geom type="mesh" mesh="finger1_pp"/>
 
 
@@ -284,10 +284,10 @@
             </body>
 
             <body name="finger2_pp_virt">
-                <joint name="finger2_base2pp_virt" type="hinge" pos="0.043961027018922   0.085683827018922   0.019999967811865" axis="0.965925826289068  -0.258819045102521  0" range="-0.785 0.785"/>
+                <joint name="finger2_base2pp_virt" type="hinge" pos="0.043961027018922   0.085683827018922   0.019999967811865" axis="0.965925826289068  -0.258819045102521  0" range="-0.392699 0.785"/>
                 <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
                 <body name="finger2_pp">
-                    <joint name="finger2_base2pp" pos="0.047621281056767   0.099344081056767   0.034142103435596" axis="0.965925826289068  -0.258819045102521  0" range="-0.785 0.785"/>
+                    <joint name="finger2_base2pp" pos="0.047621281056767   0.099344081056767   0.034142103435596" axis="0.965925826289068  -0.258819045102521  0" range="-0.392699 0.785"/>
                     <geom type="mesh" mesh="finger2_pp"/>
 
 
@@ -315,10 +315,10 @@
             </body>
 
             <body name="finger3_pp_virt">
-                <joint name="finger3_base2pp_virt" type="hinge" pos="0.015010384167162   0.093188460264028   0.019999967811865" axis="0.996194698091746  -0.087155742747658    0" range="-0.785 0.785"/>
+                <joint name="finger3_base2pp_virt" type="hinge" pos="0.015010384167162   0.093188460264028   0.019999967811865" axis="0.996194698091746  -0.087155742747658    0" range="-0.392699 0.785"/>
                 <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
                 <body name="finger3_pp">
-                    <joint name="finger3_base2pp" pos="0.016242952501487   0.107276780792083   0.034142103435596" axis="0.996194698091746  -0.087155742747658   0" range="-0.785 0.785"/>
+                    <joint name="finger3_base2pp" pos="0.016242952501487   0.107276780792083   0.034142103435596" axis="0.996194698091746  -0.087155742747658   0" range="-0.392699 0.785"/>
                     <geom type="mesh" mesh="finger3_pp"/>
 
 
@@ -345,10 +345,10 @@
             </body>
             
             <body name="finger4_pp_virt">
-                <joint name="finger4_base2pp_virt" type="hinge" pos="-0.015010384167162   0.093188460264028   0.019999967811865" axis="0.996194698091746   0.087155742747658  0" range="-0.785 0.785"/>
+                <joint name="finger4_base2pp_virt" type="hinge" pos="-0.015010384167162   0.093188460264028   0.019999967811865" axis="0.996194698091746   0.087155742747658  0" range="-0.392699 0.785"/>
                 <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
                 <body name="finger4_pp">
-                    <joint name="finger4_base2pp" pos="-0.016242952501487   0.107276780792083   0.034142103435596" axis="0.996194698091746   0.087155742747658 0" range="-0.785 0.785"/>
+                    <joint name="finger4_base2pp" pos="-0.016242952501487   0.107276780792083   0.034142103435596" axis="0.996194698091746   0.087155742747658 0" range="-0.392699 0.785"/>
                     <geom type="mesh" mesh="finger4_pp"/>
 
 
@@ -376,10 +376,10 @@
 
             
             <body name="finger5_pp_virt">
-                <joint name="finger5_base2pp_virt" type="hinge" pos="-0.043961027018922   0.085683827018922   0.019999967811865" axis="0.965925826289068   0.258819045102521    0" range="-0.785 0.785"/>
+                <joint name="finger5_base2pp_virt" type="hinge" pos="-0.043961027018922   0.085683827018922   0.019999967811865" axis="0.965925826289068   0.258819045102521    0" range="-0.392699 0.785"/>
                 <inertial pos="0 0 0" mass="0.001" diaginertia="4E-10 4E-10 3E-10" />
                 <body name="finger5_pp">
-                    <joint name="finger5_base2pp" pos="-0.047621281056767   0.099344081056767   0.034142103435596" axis="0.965925826289068   0.258819045102521   0" range="-0.785 0.785"/>
+                    <joint name="finger5_base2pp" pos="-0.047621281056767   0.099344081056767   0.034142103435596" axis="0.965925826289068   0.258819045102521   0" range="-0.392699 0.785"/>
                     <geom type="mesh" mesh="finger5_pp"/>
 
 
