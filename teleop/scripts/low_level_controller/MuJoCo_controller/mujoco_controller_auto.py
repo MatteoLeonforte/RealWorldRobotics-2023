@@ -46,12 +46,30 @@ class GripperControllerMujocoSim:
 
 
 
+def flex_finger(finger: int, gc: GripperControllerMujocoSim, angle: float, finger_dict: dict):
+
+
+
+  pass
+def extend_finger(finger:int, gc: GripperControllerMujocoSim, angle: float):
+ 
+
+  pass
 
 # Main function
 
 if __name__ == '__main__':
 
   gc = GripperControllerMujocoSim()
+
+  finger_dict = {
+    'thumb': [0,1,2],
+    'index': [3,4],
+    'middle': [5,6],
+    'ring': [7,8],
+    'pinky': [9,10]
+  }
+
   target = math.pi/2
   angles = [0]*11
 
