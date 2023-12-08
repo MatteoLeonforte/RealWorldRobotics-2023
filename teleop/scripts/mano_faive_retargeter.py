@@ -217,10 +217,10 @@ class RetargeterNode:
 
 
         #for finger, finger_joints in finger_joints_dict.items():
-        point1 = list(joints[0, :])
-        point2 = list(joints[5, :])
-        point3 = list(joints[6, :])
-        point4 = list(joints[7, :])
+        point1 = joints[0, :]
+        point2 = joints[5, :]
+        point3 = joints[6, :]
+        point4 = joints[7, :]
         
 
         angle_1 = calculate_angle(point1, point2, point3)
