@@ -193,11 +193,11 @@ class RetargeterNode:
         ''' Here I take the normalized joint positions from the MANO and I calculate the joint angles of the fingers'''
 
         finger_joints_dict = {
-            "finger1": [0, 1, 2, 3, 4],
+            #"finger1": [0, 1, 2, 3, 4],
             "finger2": [0, 5, 6, 7],
-            "finger3": [0, 9, 10, 11],
-            "finger4": [0, 13, 14, 15],
-            "finger5": [0, 17, 18, 19],
+            #"finger3": [0, 9, 10, 11],
+            #"finger4": [0, 13, 14, 15],
+            #"finger5": [0, 17, 18, 19],
         }
         
         real_hand_joint_angles = []
