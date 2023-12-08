@@ -217,13 +217,19 @@ class RetargeterNode:
 
 
         for finger, finger_joints in finger_joints_dict.items():
-            angle_1 = calculate_angle(finger_joints[0], finger_joints[1], finger_joints[2])
-            angle_2 = calculate_angle(finger_joints[1], finger_joints[2], finger_joints[3])
+            point1 = joints[finger_joints[0], :]
+            point2 = joints[finger_joints[1], :]
+            point3 = joints[finger_joints[2], :]
+            point4 = joints[finger_joints[3], :]
+            point5 = joints[finger_joints[4], :]
+
+            angle_1 = calculate_angle(point1, point2, point3)
+            angle_2 = calculate_angle(point2, point3, point4)
             real_hand_joint_angles.append(angle_1)
             real_hand_joint_angles.append(angle_2)
 
             if finger == "finger1":
-                angle_3 = calculate_angle(finger_joints[2], finger_joints[3], finger_joints[4])
+                angle_3 = calculate_angle(point3, point4, point5)
                 real_hand_joint_angles.append(angle_3)
             
         assert len(real_hand_joint_angles) == 11, "Expected 11 joint angles"
