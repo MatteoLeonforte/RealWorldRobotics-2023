@@ -151,7 +151,7 @@ class OakDIngress:
         #     np.save('mano_joints_recorded.npy', arr)
         #     print('Saved recorded mano joints')$
 
-        print("[DEBUG: oak_hand_tracker_ingress] normalized_joint_pos: ", normalized_joint_pos)
+        #print("[DEBUG: oak_hand_tracker_ingress] normalized_joint_pos: ", normalized_joint_pos)  # uncomment
 
         self.publish_joints(normalized_joint_pos)
 
