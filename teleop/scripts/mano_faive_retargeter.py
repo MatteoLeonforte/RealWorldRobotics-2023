@@ -257,17 +257,18 @@ class RetargeterNode:
 
 
         # Mapping
-        real_hand_joint_angles[0] = map_angle(angle_plate, min_angle=0.5, max_angle=3)
-        real_hand_joint_angles[1] = map_angle(angle_low_thumb, min_angle=0.5, max_angle=1.2)
-        real_hand_joint_angles[2] = map_angle(angle_high_thumb, min_angle=0.5, max_angle=1.2)
-        real_hand_joint_angles[3] = map_angle(angle_low_index)
-        real_hand_joint_angles[4] = map_angle(angle_high_index)
-        real_hand_joint_angles[5] = map_angle(angle_low_middle)
-        real_hand_joint_angles[6] = map_angle(angle_high_middle)
-        real_hand_joint_angles[7] = map_angle(angle_low_ring)
-        real_hand_joint_angles[8] = map_angle(angle_high_ring)
-        real_hand_joint_angles[9] = map_angle(angle_low_pinky)
-        real_hand_joint_angles[10] = map_angle(angle_high_pinky)
+        real_hand_joint_angles[0] = angle_plate
+        real_hand_joint_angles[1] = angle_low_thumb
+        real_hand_joint_angles[2] = angle_high_thumb
+        real_hand_joint_angles[3] = angle_low_index
+        real_hand_joint_angles[4] = angle_high_index
+        real_hand_joint_angles[5] = angle_low_middle
+        real_hand_joint_angles[6] = angle_high_middle
+        real_hand_joint_angles[7] = angle_low_ring
+        real_hand_joint_angles[8] = angle_high_ring
+        real_hand_joint_angles[9] = angle_low_pinky
+        real_hand_joint_angles[10] = angle_high_pinky
+        
         
             
         assert len(real_hand_joint_angles) == 11, "Expected 11 joint angles"
