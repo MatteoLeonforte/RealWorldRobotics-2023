@@ -194,6 +194,12 @@ class RetargeterNode:
             msg.layout.dim[0].size, msg.layout.dim[1].size)
        
         self.target_angles = self.retarget_finger_mano_joints(joints)
+        # DESIRED ANGLES - IMPORTANT
+        print(f"THUMB: {self.target_angles[0:3]}")
+        print(f"INDEX: {self.target_angles[3:5]}")
+        print(f"MIDDLE: {self.target_angles[5:7]}")
+        print(f"RING: {self.target_angles[7:9]}")
+        print(f"PINKY: {self.target_angles[9:11]}")
 
         time = rospy.Time.now()
         assert self.target_angles.shape == (
