@@ -221,7 +221,7 @@ class RetargeterNode:
             point2 = joints[finger_joints[1], :]
             point3 = joints[finger_joints[2], :]
             point4 = joints[finger_joints[3], :]
-            point5 = joints[finger_joints[4], :]
+            
 
             angle_1 = calculate_angle(point1, point2, point3)
             angle_2 = calculate_angle(point2, point3, point4)
@@ -229,6 +229,7 @@ class RetargeterNode:
             real_hand_joint_angles.append(angle_2)
 
             if finger == "finger1":
+                point5 = joints[finger_joints[4], :]
                 angle_3 = calculate_angle(point3, point4, point5)
                 real_hand_joint_angles.append(angle_3)
             
