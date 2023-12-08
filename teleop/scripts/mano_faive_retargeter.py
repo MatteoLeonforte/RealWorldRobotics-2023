@@ -207,7 +207,7 @@ class RetargeterNode:
 
             return angle
         
-        def map_angle(angle, min_angle=0.2, max_angle=1.6):
+        def map_angle(angle, min_angle=0.3, max_angle=1.8):
 
             mapped_angle = (angle - min_angle) / (max_angle - min_angle)
             return mapped_angle
@@ -256,8 +256,8 @@ class RetargeterNode:
 
 
         # Mapping
-        real_hand_joint_angles[0] = map_angle(angle_plate)
-        real_hand_joint_angles[1] = map_angle(angle_low_thumb)
+        real_hand_joint_angles[0] = map_angle(angle_plate, min_angle=0.5, max_angle=3)
+        real_hand_joint_angles[1] = map_angle(angle_low_thumb, min_angle=0.4, max_angle=1.8)
         real_hand_joint_angles[2] = map_angle(angle_high_thumb)
         real_hand_joint_angles[3] = map_angle(angle_low_index)
         real_hand_joint_angles[4] = map_angle(angle_high_index)
