@@ -98,7 +98,7 @@ class RetargeterNode:
         --> changed these namings to finger1 - finger5
         """
 
-        print(f"Retargeting: Warm: {warm} Opt steps: {opt_steps}")
+        #print(f"Retargeting: Warm: {warm} Opt steps: {opt_steps}")  # uncomment
         
         start_time = time.time()
 
@@ -162,8 +162,8 @@ class RetargeterNode:
                             keyvector_mano, p=2) / torch.norm(keyvector_faive, p=2)
                         self.scaling_coeffs[i] = scaling_factor
                     
-                    print(
-                        f'Keyvector {i} length ratio: {torch.norm(keyvector_mano, p=2) / (self.scaling_coeffs[i] * torch.norm(keyvector_faive, p=2))}')
+                    #print(  # uncomment
+                     #   f'Keyvector {i} length ratio: {torch.norm(keyvector_mano, p=2) / (self.scaling_coeffs[i] * torch.norm(keyvector_faive, p=2))}')
 
             for i, (keyvector_faive, keyvector_mano) in enumerate(zip(keyvectors_faive.values(), keyvectors_mano.values())):
                 if not self.use_scalar_distance[i]:
@@ -184,7 +184,7 @@ class RetargeterNode:
 
         finger_joint_angles = self.gc_joints.detach().cpu().numpy()
 
-        print(f'Retarget time: {(time.time() - start_time) * 1000} ms')
+        #print(f'Retarget time: {(time.time() - start_time) * 1000} ms') # uncomment
 
         return finger_joint_angles
 

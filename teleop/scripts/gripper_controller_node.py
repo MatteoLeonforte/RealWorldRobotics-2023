@@ -36,8 +36,8 @@ class GripperControlNode:
     def write_gripper_angles(self, msg):
         unpacked_msg = np.array(msg.data, dtype=np.float32).flatten()
         rospy.loginfo("Received message for GC")
-        print(unpacked_msg.shape)
-        print("[gripper_controller_node] Angles:",unpacked_msg) # added
+        #print(unpacked_msg.shape)  # uncomment
+        #print("[gripper_controller_node] Angles:",unpacked_msg)  # uncomment
         self.gripper_controller.command_joint_angles(unpacked_msg)
         self.last_received_gc = time.monotonic()
 
@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     args, _ = parser.parse_known_args()
 
-    print(f"GC Subscriber queue size: {args.sub_queue_size}")
+    #print(f"GC Subscriber queue size: {args.sub_queue_size}")  # uncomment
 
     rospy.init_node("gripper_control_node")
     # gc_node = GripperControlNode(sim=args.sim, sub_queue_size=args.sub_queue_size)
