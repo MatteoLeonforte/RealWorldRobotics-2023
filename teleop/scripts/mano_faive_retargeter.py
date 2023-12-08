@@ -214,7 +214,13 @@ class RetargeterNode:
             angle = np.arccos(cosine_angle)
 
             return angle
+        
+        def map_angle(angle):
+            min_angle = 0.2
+            max_angle = 1.6
 
+            mapped_angle = (angle - min_angle) / (max_angle - min_angle)
+            return mapped_angle
 
         #for finger, finger_joints in finger_joints_dict.items():
         point1 = joints[0, :]
@@ -229,8 +235,11 @@ class RetargeterNode:
         angle_3 = calculate_angle(point3, point4, point5)
 
         #real_hand_joint_angles[0] = angle_1
-        real_hand_joint_angles[4] = angle_1
+        real_hand_joint_angles[3] = map_angle(angle_1)
+        real_hand_joint_angles[4] = map(angle_2)
         #real_hand_joint_angles[2] = angle_3
+
+        
             
         assert len(real_hand_joint_angles) == 11, "Expected 11 joint angles"
 
