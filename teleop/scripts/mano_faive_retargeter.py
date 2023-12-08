@@ -240,7 +240,7 @@ class RetargeterNode:
         # Thumb
         angle_low_thumb = calculate_angle(vector(thumb_0, thumb_1), vector(thumb_1, thumb_2))
         angle_low_thumb = np.deg2rad(map_angle(angle_low_thumb, from_range=[5,30], to_range=[0,90]))
-        angle_high_thumb = calculate_angle(thumb_1, thumb_2, thumb_tip)
+        angle_high_thumb = calculate_angle(vector(thumb_1, thumb_2), vector(thumb_2, thumb_tip))
         angle_high_thumb = np.deg2rad(map_angle(angle_high_thumb, from_range=[5,80], to_range=[0,90]))
 
         angle_low_index = calculate_angle(vector(wrist, index_0), vector(index_0, index_1))
