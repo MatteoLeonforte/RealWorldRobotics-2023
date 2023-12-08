@@ -192,14 +192,6 @@ class RetargeterNode:
         # HARDCODING JOINT ANGLES IN DEGREES - MATTEO
         ''' Here I take the normalized joint positions from the MANO and I calculate the joint angles of the fingers'''
 
-        finger_joints_dict = {
-            #"finger1": [0, 1, 2, 3, 4],
-            "finger2": [0, 5, 6, 7],
-            #"finger3": [0, 9, 10, 11],
-            #"finger4": [0, 13, 14, 15],
-            #"finger5": [0, 17, 18, 19],
-        }
-        
         real_hand_joint_angles = np.zeros(11)
 
         def calculate_angle(point1, point2, point3):
@@ -215,30 +207,66 @@ class RetargeterNode:
 
             return angle
         
-        def map_angle(angle):
-            min_angle = 0.2
-            max_angle = 1.6
+        def map_angle(angle, min_angle=0.2, max_angle=1.6):
 
             mapped_angle = (angle - min_angle) / (max_angle - min_angle)
             return mapped_angle
 
-        #for finger, finger_joints in finger_joints_dict.items():
-        point1 = joints[0, :]
-        point2 = joints[5, :]
-        point3 = joints[6, :]
-        point4 = joints[7, :]
-        point5 = joints[8, :]
+        # MAPPING
+        wrist = joints[0, :]
+        thumb_0 = joints[1, :]
+        thumb_1 = joints[2, :]
+        thumb_2 = joints[3, :]
+        thumb_tip = joints[4, :]
+        index_0 = joints[5, :]
+        index_1 = joints[6, :]
+        index_2 = joints[7, :]
+        index_tip = joints[8, :]
+        middle_0 = joints[9, :]
+        middle_1 = joints[10, :]
+        middle_2 = joints[11, :]
+        middle_tip = joints[12, :]
+        ring_0 = joints[13, :]
+        ring_1 = joints[14, :]
+        ring_2 = joints[15, :]
+        ring_tip = joints[16, :]
+        pinky_0 = joints[17, :]
+        pinky_1 = joints[18, :]
+        pinky_2 = joints[19, :]
+        pinky_tip = joints[20, :]
         
+        # Plate
+        angle_plate = calculate_angle(wrist, thumb_0, thumb_1)
 
-        angle_1 = calculate_angle(point1, point2, point3)
-        angle_2 = calculate_angle(point2, point3, point4)
-        angle_3 = calculate_angle(point3, point4, point5)
+        # Thumb
+        angle_low_thumb = calculate_angle(thumb_0, thumb_1, thumb_2)
+        angle_high_thumb = calculate_angle(thumb_1, thumb_2, thumb_tip)
 
-        #real_hand_joint_angles[0] = angle_1
-        real_hand_joint_angles[3] = map_angle(angle_1)
-        real_hand_joint_angles[4] = map_angle(angle_2)
-        #real_hand_joint_angles[2] = angle_3
+        angle_low_index = calculate_angle(wrist, index_0, index_1)
+        angle_high_index = calculate_angle(index_0, index_1, index_2)
 
+        angle_low_middle = calculate_angle(wrist, middle_0, middle_1)
+        angle_high_middle = calculate_angle(middle_0, middle_1, middle_2)
+
+        angle_low_ring = calculate_angle(wrist, ring_0, ring_1)
+        angle_high_ring = calculate_angle(ring_0, ring_1, ring_2)
+
+        angle_low_pinky = calculate_angle(wrist, pinky_0, pinky_1)
+        angle_high_pinky = calculate_angle(pinky_0, pinky_1, pinky_2)
+
+
+        # Mapping
+        real_hand_joint_angles[0] = map_angle(angle_plate)
+        real_hand_joint_angles[1] = map_angle(angle_low_thumb)
+        real_hand_joint_angles[2] = map_angle(angle_high_thumb)
+        real_hand_joint_angles[3] = map_angle(angle_low_index)
+        real_hand_joint_angles[4] = map_angle(angle_high_index)
+        real_hand_joint_angles[5] = map_angle(angle_low_middle)
+        real_hand_joint_angles[6] = map_angle(angle_high_middle)
+        real_hand_joint_angles[7] = map_angle(angle_low_ring)
+        real_hand_joint_angles[8] = map_angle(angle_high_ring)
+        real_hand_joint_angles[9] = map_angle(angle_low_pinky)
+        real_hand_joint_angles[10] = map_angle(angle_high_pinky)
         
             
         assert len(real_hand_joint_angles) == 11, "Expected 11 joint angles"
