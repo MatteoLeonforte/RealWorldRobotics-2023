@@ -38,6 +38,8 @@ class RetargeterNode:
         joint_parameter_names = retarget_utils.JOINT_PARAMETER_NAMES
         gc_tendons = retarget_utils.GC_TENDONS
 
+        # CHECK FUNCTION
+
         for i, (name, tendons) in enumerate(gc_tendons.items()):
             self.joint_map[joint_parameter_names.index(
                 name), i] = 1 if len(tendons) == 0 else 0.5
@@ -61,11 +63,11 @@ class RetargeterNode:
         self.opt = torch.optim.RMSprop([self.gc_joints], lr=self.lr)
 
         self.root = torch.zeros(1, 3).to(self.device)
-        self.palm_offset = torch.tensor([0.0, 0.1, 0.02]).to(self.device) # changed this
+        self.palm_offset = torch.tensor([0.0, 0.06, 0.03]).to(self.device) # changed this (palm offset of robot hand)
 
         
-        self.scaling_coeffs = torch.tensor([0.7143, 0.8296296296, 0.8214285714, 0.7857142857, 0.7037037037, 0.5897435897, 0.6976744186, 0.6595744681, 0.6274509804,
-                                            0.9523809524, 0.7294117647, 0.8130081301, 0.6666666667, 0.7590361446, 1]).to(self.device)
+        self.scaling_coeffs = torch.ones(11).to(self.device)#torch.tensor([0.7143, 0.8296296296, 0.8214285714, 0.7857142857, 0.7037037037, 0.5897435897, 0.6976744186, 0.6595744681, 0.6274509804,
+                                            #0.9523809524, 0.7294117647, 0.8130081301, 0.6666666667, 0.7590361446, 1]).to(self.device)  #DEBUG
         
         self.scaling_factors_set = hardcoded_keyvector_scaling
         
