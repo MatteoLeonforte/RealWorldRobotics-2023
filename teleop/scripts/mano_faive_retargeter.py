@@ -213,7 +213,7 @@ class RetargeterNode:
             cosine_angle = dot_product / (norm_a * norm_b)
             angle = np.arccos(cosine_angle)
 
-            return np.degrees(angle)
+            return angle
 
 
         #for finger, finger_joints in finger_joints_dict.items():
