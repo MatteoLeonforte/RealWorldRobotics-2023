@@ -5,13 +5,17 @@ import mujoco.viewer
 import math
 import threading
 import numpy as np
+import os
 
 
 class GripperControllerMujocoSim:
   """A class that runs a MuJoCo simulation, sending joint commands to the gripper"""
 
   def __init__(self)->None:
-    self.m = mujoco.MjModel.from_xml_path('/home/sarah-lia/RWR/RealWorldRobotics-2023/design/hand_design.xml') # ADAPT HERE
+    self.base_path = os.path.dirname(os.path.realpath(__file__))
+    self.xml_path = self.base_path + "/../../../../design/hand_design.xml"
+
+    self.m = mujoco.MjModel.from_xml_path(self.xml_path) # ADAPT HERE
     self.d = mujoco.MjData(self.m)
     self.simulation_thread = threading.Thread(target=self.run_viewer)
     self.lock = threading.Lock()
