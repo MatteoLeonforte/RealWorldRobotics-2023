@@ -51,7 +51,7 @@ class RetargeterNode:
         prev_cwd = os.getcwd()
         os.chdir(self.urdf_path)
         self.chain = pk.build_chain_from_mjcf(                          # changed this to get mjcf and not urdf
-            open(self.urdf_filename).read()).to(device=self.device)
+            open(self.urdf_filename).read(), 'hand').to(device=self.device) # Changed root --> hand
         os.chdir(prev_cwd)
 
         self.gc_joints = torch.ones(11).to(self.device) * 30.0
@@ -61,7 +61,7 @@ class RetargeterNode:
         self.opt = torch.optim.RMSprop([self.gc_joints], lr=self.lr)
 
         self.root = torch.zeros(1, 3).to(self.device)
-        self.palm_offset = torch.tensor([0.0, 0.055, 0.0]).to(self.device)
+        self.palm_offset = torch.tensor([0.0, 0.1, 0.02]).to(self.device) # changed this
 
         
         self.scaling_coeffs = torch.tensor([0.7143, 0.8296296296, 0.8214285714, 0.7857142857, 0.7037037037, 0.5897435897, 0.6976744186, 0.6595744681, 0.6274509804,
