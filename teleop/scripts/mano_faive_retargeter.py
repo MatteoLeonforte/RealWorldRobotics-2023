@@ -209,7 +209,7 @@ class RetargeterNode:
             return b-a
         def map_angle(angle, from_range: list, to_range: list):
             mapped_angle = (angle - from_range[0]) * (to_range[1] - to_range[0]) / (from_range[1] - from_range[0]) + to_range[0]
-            return mapped_angle
+            return np.deg2rad(mapped_angle)
 
         # MAPPING
         wrist = joints[0, :]
@@ -236,12 +236,12 @@ class RetargeterNode:
         
         # Plate
         angle_plate = calculate_angle(vector(thumb_0, thumb_2), vector(thumb_0, pinky_0))
-        angle_plate = np.deg2rad(map_angle(angle_plate, from_range=[90,5], to_range=[50,-50]))
+        angle_plate = map_angle(angle_plate, from_range=[80,20], to_range=[50,-50])
         # Thumb
         angle_low_thumb = calculate_angle(vector(thumb_0, thumb_1), vector(thumb_1, thumb_2))
-        angle_low_thumb = np.deg2rad(map_angle(angle_low_thumb, from_range=[5,30], to_range=[0,90]))
+        angle_low_thumb = map_angle(angle_low_thumb, from_range=[5,30], to_range=[0,90])
         angle_high_thumb = calculate_angle(vector(thumb_1, thumb_2), vector(thumb_2, thumb_tip))
-        angle_high_thumb = np.deg2rad(map_angle(angle_high_thumb, from_range=[5,80], to_range=[0,90]))
+        angle_high_thumb = map_angle(angle_high_thumb, from_range=[5,80], to_range=[0,90])
 
         angle_low_index = calculate_angle(vector(wrist, index_0), vector(index_0, index_1))
         angle_high_index = calculate_angle(vector(index_0, index_1), vector(index_1, index_2))
@@ -268,7 +268,7 @@ class RetargeterNode:
         real_hand_joint_angles[8] = angle_high_ring
         real_hand_joint_angles[9] = angle_low_pinky
         real_hand_joint_angles[10] = angle_high_pinky
-        
+
         
             
         assert len(real_hand_joint_angles) == 11, "Expected 11 joint angles"
