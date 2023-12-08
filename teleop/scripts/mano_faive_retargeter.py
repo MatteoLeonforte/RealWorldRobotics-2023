@@ -243,17 +243,17 @@ class RetargeterNode:
         angle_high_thumb = calculate_angle(thumb_1, thumb_2, thumb_tip)
         angle_high_thumb = np.deg2rad(map_angle(angle_high_thumb, from_range=[5,80], to_range=[0,90]))
 
-        angle_low_index = calculate_angle(wrist, index_0, index_1)
-        angle_high_index = calculate_angle(index_0, index_1, index_2)
+        angle_low_index = calculate_angle(vector(wrist, index_0), vector(index_0, index_1))
+        angle_high_index = calculate_angle(vector(index_0, index_1), vector(index_1, index_2))
 
-        angle_low_middle = calculate_angle(wrist, middle_0, middle_1)
-        angle_high_middle = calculate_angle(middle_0, middle_1, middle_2)
+        angle_low_middle = calculate_angle(vector(wrist, middle_0), vector(middle_0, middle_1))
+        angle_high_middle = calculate_angle(vector(middle_0, middle_1), vector(middle_1, middle_2))
 
-        angle_low_ring = calculate_angle(wrist, ring_0, ring_1)
-        angle_high_ring = calculate_angle(ring_0, ring_1, ring_2)
+        angle_low_ring = calculate_angle(vector(wrist, ring_0), vector(ring_0, ring_1))
+        angle_high_ring = calculate_angle(vector(ring_0, ring_1), vector(ring_1, ring_2))
 
-        angle_low_pinky = calculate_angle(wrist, pinky_0, pinky_1)
-        angle_high_pinky = calculate_angle(pinky_0, pinky_1, pinky_2)
+        angle_low_pinky = calculate_angle(vector(wrist, pinky_0), vector(pinky_0, pinky_1))
+        angle_high_pinky = calculate_angle(vector(pinky_0, pinky_1), vector(pinky_1, pinky_2))
 
 
         # Mapping
