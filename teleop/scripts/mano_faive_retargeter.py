@@ -236,7 +236,7 @@ class RetargeterNode:
 
         #real_hand_joint_angles[0] = angle_1
         real_hand_joint_angles[3] = map_angle(angle_1)
-        real_hand_joint_angles[4] = map(angle_2)
+        real_hand_joint_angles[4] = map_angle(angle_2)
         #real_hand_joint_angles[2] = angle_3
 
         
