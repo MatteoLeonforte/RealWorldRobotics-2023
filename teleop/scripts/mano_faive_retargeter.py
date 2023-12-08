@@ -194,9 +194,7 @@ class RetargeterNode:
 
         real_hand_joint_angles = np.zeros(11)
 
-        def calculate_angle(point1, point2, point3):
-            vector_a = point2 - point1
-            vector_b = point3 - point2
+        def calculate_angle(vector_a, vector_b):
 
             dot_product = np.dot(vector_a, vector_b)
             norm_a = np.linalg.norm(vector_a)
@@ -205,11 +203,12 @@ class RetargeterNode:
             cosine_angle = dot_product / (norm_a * norm_b)
             angle = np.arccos(cosine_angle)
 
-            return angle
+            return np.rad2deg(angle)
         
-        def map_angle(angle, min_angle=0.3, max_angle=1.8):
-
-            mapped_angle = (angle - min_angle) / (max_angle - min_angle)
+        def vector(a, b):
+            return b-a
+        def map_angle(angle, from_range: list, to_range: list):
+            mapped_angle = (angle - from_range[0]) * (to_range[1] - to_range[0]) / (from_range[1] - from_range[0]) + to_range[0]
             return mapped_angle
 
         # MAPPING
@@ -236,11 +235,13 @@ class RetargeterNode:
         pinky_tip = joints[20, :]
         
         # Plate
-        angle_plate = calculate_angle(wrist, thumb_0, thumb_1)
-
+        angle_plate = calculate_angle(vector(thumb_0, thumb_2), vector(thumb_0, pinky_0))
+        angle_plate = np.deg2rad(map_angle(angle_plate, from_range=[90,5], to_range=[50,-50]))
         # Thumb
-        angle_low_thumb = calculate_angle(thumb_0, thumb_1, thumb_2)
+        angle_low_thumb = calculate_angle(vector(thumb_0, thumb_1), vector(thumb_1, thumb_2))
+        angle_low_thumb = np.deg2rad(map_angle(angle_low_thumb, from_range=[5,30], to_range=[0,90]))
         angle_high_thumb = calculate_angle(thumb_1, thumb_2, thumb_tip)
+        angle_high_thumb = np.deg2rad(map_angle(angle_high_thumb, from_range=[5,80], to_range=[0,90]))
 
         angle_low_index = calculate_angle(wrist, index_0, index_1)
         angle_high_index = calculate_angle(index_0, index_1, index_2)
@@ -257,8 +258,8 @@ class RetargeterNode:
 
         # Mapping
         real_hand_joint_angles[0] = map_angle(angle_plate, min_angle=0.5, max_angle=3)
-        real_hand_joint_angles[1] = map_angle(angle_low_thumb, min_angle=0.4, max_angle=1.8)
-        real_hand_joint_angles[2] = map_angle(angle_high_thumb)
+        real_hand_joint_angles[1] = map_angle(angle_low_thumb, min_angle=0.5, max_angle=1.2)
+        real_hand_joint_angles[2] = map_angle(angle_high_thumb, min_angle=0.5, max_angle=1.2)
         real_hand_joint_angles[3] = map_angle(angle_low_index)
         real_hand_joint_angles[4] = map_angle(angle_high_index)
         real_hand_joint_angles[5] = map_angle(angle_low_middle)
