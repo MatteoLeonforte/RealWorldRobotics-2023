@@ -202,18 +202,6 @@ class RetargeterNode:
         
         real_hand_joint_angles = []
 
-        for finger, finger_joints in finger_joints_dict.items():
-            angle_1 = calculate_angle(finger_joints[0], finger_joints[1], finger_joints[2])
-            angle_2 = calculate_angle(finger_joints[1], finger_joints[2], finger_joints[3])
-            real_hand_joint_angles.append(angle_1)
-            real_hand_joint_angles.append(angle_2)
-
-            if finger == "finger1":
-                angle_3 = calculate_angle(finger_joints[2], finger_joints[3], finger_joints[4])
-                real_hand_joint_angles.append(angle_3)
-            
-        assert len(real_hand_joint_angles) == 11, "Expected 11 joint angles"
-
         def calculate_angle(point1, point2, point3):
             vector_a = point2 - point1
             vector_b = point3 - point2
@@ -226,6 +214,20 @@ class RetargeterNode:
             angle = np.arccos(cosine_angle)
 
             return np.degrees(angle)
+
+
+        for finger, finger_joints in finger_joints_dict.items():
+            angle_1 = calculate_angle(finger_joints[0], finger_joints[1], finger_joints[2])
+            angle_2 = calculate_angle(finger_joints[1], finger_joints[2], finger_joints[3])
+            real_hand_joint_angles.append(angle_1)
+            real_hand_joint_angles.append(angle_2)
+
+            if finger == "finger1":
+                angle_3 = calculate_angle(finger_joints[2], finger_joints[3], finger_joints[4])
+                real_hand_joint_angles.append(angle_3)
+            
+        assert len(real_hand_joint_angles) == 11, "Expected 11 joint angles"
+
 
         return real_hand_joint_angles
         #return finger_joint_angles
