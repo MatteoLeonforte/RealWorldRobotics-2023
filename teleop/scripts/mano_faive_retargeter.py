@@ -66,7 +66,7 @@ class RetargeterNode:
         self.palm_offset = torch.tensor([0.0, 0.06, 0.03]).to(self.device) # changed this (palm offset of robot hand)
 
         
-        self.scaling_coeffs = torch.ones(11).to(self.device)#torch.tensor([0.7143, 0.8296296296, 0.8214285714, 0.7857142857, 0.7037037037, 0.5897435897, 0.6976744186, 0.6595744681, 0.6274509804,
+        self.scaling_coeffs = torch.ones(15).to(self.device)#torch.tensor([0.7143, 0.8296296296, 0.8214285714, 0.7857142857, 0.7037037037, 0.5897435897, 0.6976744186, 0.6595744681, 0.6274509804,
                                             #0.9523809524, 0.7294117647, 0.8130081301, 0.6666666667, 0.7590361446, 1]).to(self.device)  #DEBUG
         
         self.scaling_factors_set = hardcoded_keyvector_scaling
