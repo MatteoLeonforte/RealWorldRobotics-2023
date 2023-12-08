@@ -9,6 +9,7 @@ import rospy
 from std_msgs.msg import Float32MultiArray, MultiArrayDimension
 
 from utils import retarget_utils, gripper_utils
+import numpy as np
 
 
 class RetargeterNode:
@@ -66,8 +67,8 @@ class RetargeterNode:
         self.palm_offset = torch.tensor([0.0, 0.06, 0.03]).to(self.device) # changed this (palm offset of robot hand)
 
         
-        self.scaling_coeffs = torch.ones(15).to(self.device)#torch.tensor([0.7143, 0.8296296296, 0.8214285714, 0.7857142857, 0.7037037037, 0.5897435897, 0.6976744186, 0.6595744681, 0.6274509804,
-                                            #0.9523809524, 0.7294117647, 0.8130081301, 0.6666666667, 0.7590361446, 1]).to(self.device)  #DEBUG
+        self.scaling_coeffs = torch.tensor([0.7143, 0.8296296296, 0.8214285714, 0.7857142857, 0.7037037037, 0.5897435897, 0.6976744186, 0.6595744681, 0.6274509804,
+                                            0.9523809524, 0.7294117647, 0.8130081301, 0.6666666667, 0.7590361446, 1]).to(self.device) # tuned
         
         self.scaling_factors_set = hardcoded_keyvector_scaling
         
@@ -89,7 +90,7 @@ class RetargeterNode:
 
     def retarget_finger_mano_joints(self, joints: np.array, warm: bool = True, opt_steps: int = 2, dynamic_keyvector_scaling: bool = False):
         """
-        Process the MANO joints and update the finger joint angles
+        Process the real MANO (nomalized) joint positions and update the finger joint angles
         joints: (21, 3)
         Over the 21 dims:
         0-4: thumb (from hand base)
@@ -188,7 +189,46 @@ class RetargeterNode:
 
         #print(f'Retarget time: {(time.time() - start_time) * 1000} ms') # uncomment
 
-        return finger_joint_angles
+        # HARDCODING JOINT ANGLES IN DEGREES - MATTEO
+        ''' Here I take the normalized joint positions from the MANO and I calculate the joint angles of the fingers'''
+
+        finger_joints_dict = {
+            "finger1": [0, 1, 2, 3, 4],
+            "finger2": [0, 5, 6, 7],
+            "finger3": [0, 9, 10, 11],
+            "finger4": [0, 13, 14, 15],
+            "finger5": [0, 17, 18, 19],
+        }
+        
+        real_hand_joint_angles = []
+
+        for finger, finger_joints in finger_joints_dict.items():
+            angle_1 = calculate_angle(finger_joints[0], finger_joints[1], finger_joints[2])
+            angle_2 = calculate_angle(finger_joints[1], finger_joints[2], finger_joints[3])
+            real_hand_joint_angles.append(angle_1)
+            real_hand_joint_angles.append(angle_2)
+
+            if finger == "finger1":
+                angle_3 = calculate_angle(finger_joints[2], finger_joints[3], finger_joints[4])
+                real_hand_joint_angles.append(angle_3)
+            
+        assert len(real_hand_joint_angles) == 11, "Expected 11 joint angles"
+
+        def calculate_angle(point1, point2, point3):
+            vector_a = point2 - point1
+            vector_b = point3 - point2
+
+            dot_product = np.dot(vector_a, vector_b)
+            norm_a = np.linalg.norm(vector_a)
+            norm_b = np.linalg.norm(vector_b)
+
+            cosine_angle = dot_product / (norm_a * norm_b)
+            angle = np.arccos(cosine_angle)
+
+            return np.degrees(angle)
+
+        return real_hand_joint_angles
+        #return finger_joint_angles
 
     def callback(self, msg):
         # Convert the flattened data back to a 2D numpy array
