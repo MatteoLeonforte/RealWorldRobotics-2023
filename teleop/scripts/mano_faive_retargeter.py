@@ -272,9 +272,10 @@ class RetargeterNode:
 
 
         # Plate
-        angle_plate = calculate_angle(vector(thumb_0, thumb_2), vector(thumb_0, pinky_0)) # DEGREES
+        angle_plate = calculate_angle(vector(thumb_0, thumb_2), vector(thumb_0, pinky_0)) # RADIANS
+        angle_plate = angle_plate + np.deg2rad(10) # RADIANS
         #range = self._update_finger_range(angle_plate, 'plate_range')
-        #angle_plate = map_angle(angle_plate, from_range=range, to_range=[50,-50])       # RADIANS
+        #angle_plate = map_angle(angle_plate, from_range=range, to_range=[50,-50])       # 
         print ('Angle plate: ', np.rad2deg(angle_plate))
 
         # Thumb
@@ -285,14 +286,16 @@ class RetargeterNode:
         
         # Index
         angle_low_index = calculate_angle(vector(wrist, index_0), vector(index_0, index_1))
+        angle_low_index = angle_low_index + np.deg2rad(10) # RADIANS
         #range = self._update_finger_range(angle_low_index, 'low_index_range')
         #angle_low_index = map_angle(angle_low_index, from_range=range, to_range=[0,90])
         print ('Angle low index: ', np.rad2deg(angle_low_index))
 
         angle_high_index = calculate_angle(vector(index_0, index_1), vector(index_1, index_2))
+        angle_high_index = angle_high_index + np.deg2rad(15) # RADIANS
         #range = self._update_finger_range(angle_high_index, 'high_index_range')
         #angle_high_index = map_angle(angle_high_index, from_range=range, to_range=[0,90])
-        print ('Angle low index: ', np.rad2deg(angle_low_index))
+        print ('Angle high index: ', np.rad2deg(angle_high_index))
 
         # Middle
         angle_low_middle = calculate_angle(vector(wrist, middle_0), vector(middle_0, middle_1))
