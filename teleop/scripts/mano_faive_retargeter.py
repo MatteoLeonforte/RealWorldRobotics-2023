@@ -107,14 +107,17 @@ class RetargeterNode:
     def _update_finger_range(self, angle, finger_name):     # INPUT IN DEGREES
         if self.fingers_range_dict[finger_name][0] is None:
             print("RANGE UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED")
+            time.sleep(2)
             self.fingers_range_dict[finger_name] = [angle, angle]
 
         elif angle < self.fingers_range_dict[finger_name][0]:
             print("RANGE UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED")
+            time.sleep(2)
             self.fingers_range_dict[finger_name][0] = angle
 
         elif angle > self.fingers_range_dict[finger_name][1]:
             print("RANGE UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED")
+            time.sleep(2)
             self.fingers_range_dict[finger_name][1] = angle
 
         assert not self.fingers_range_dict[finger_name] is None, "Finger range not updated"
