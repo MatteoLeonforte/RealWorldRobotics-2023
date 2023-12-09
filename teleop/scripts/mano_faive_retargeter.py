@@ -326,7 +326,7 @@ class RetargeterNode:
             
         assert len(real_hand_joint_angles) == 11, "Expected 11 joint angles"
 
-
+        time.sleep(0.5)
         return torch.Tensor(real_hand_joint_angles)
         #return finger_joint_angles
 
