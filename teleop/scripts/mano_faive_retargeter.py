@@ -239,7 +239,7 @@ class RetargeterNode:
             cosine_angle = dot_product / (norm_a * norm_b)
             angle = np.arccos(cosine_angle)
 
-            return np.rad2deg(angle)
+            return angle#np.rad2deg(angle)
         def vector(a, b):
             return b-a
         def map_angle(angle, from_range: list, to_range: list): # INPUT IN DEGREES
@@ -273,39 +273,42 @@ class RetargeterNode:
 
         # Plate
         angle_plate = calculate_angle(vector(thumb_0, thumb_2), vector(thumb_0, pinky_0)) # DEGREES
-        range = self._update_finger_range(angle_plate, 'plate_range')
-        angle_plate = map_angle(angle_plate, from_range=range, to_range=[50,-50])       # RADIANS
+        #range = self._update_finger_range(angle_plate, 'plate_range')
+        #angle_plate = map_angle(angle_plate, from_range=range, to_range=[50,-50])       # RADIANS
+        print ('Angle plate: ', np.rad2deg(angle_plate))
 
         # Thumb
         angle_low_thumb = calculate_angle(vector(thumb_0, thumb_1), vector(thumb_1, thumb_2))
-        angle_low_thumb = map_angle(angle_low_thumb, from_range=[5,30], to_range=[0,90])
+        #angle_low_thumb = map_angle(angle_low_thumb, from_range=[5,30], to_range=[0,90])
         angle_high_thumb = calculate_angle(vector(thumb_1, thumb_2), vector(thumb_2, thumb_tip))
-        angle_high_thumb = map_angle(angle_high_thumb, from_range=[5,80], to_range=[0,90])
+        #angle_high_thumb = map_angle(angle_high_thumb, from_range=[5,80], to_range=[0,90])
         
         # Index
         angle_low_index = calculate_angle(vector(wrist, index_0), vector(index_0, index_1))
-        range = self._update_finger_range(angle_low_index, 'low_index_range')
-        angle_low_index = map_angle(angle_low_index, from_range=range, to_range=[0,90])
+        #range = self._update_finger_range(angle_low_index, 'low_index_range')
+        #angle_low_index = map_angle(angle_low_index, from_range=range, to_range=[0,90])
+        print ('Angle low index: ', np.rad2deg(angle_low_index))
 
         angle_high_index = calculate_angle(vector(index_0, index_1), vector(index_1, index_2))
-        range = self._update_finger_range(angle_high_index, 'high_index_range')
-        angle_high_index = map_angle(angle_high_index, from_range=range, to_range=[0,90])
+        #range = self._update_finger_range(angle_high_index, 'high_index_range')
+        #angle_high_index = map_angle(angle_high_index, from_range=range, to_range=[0,90])
+        print ('Angle low index: ', np.rad2deg(angle_low_index))
 
         # Middle
         angle_low_middle = calculate_angle(vector(wrist, middle_0), vector(middle_0, middle_1))
-        angle_low_middle = map_angle(angle_low_middle, from_range=[0,90], to_range=[0,90])
+        #angle_low_middle = map_angle(angle_low_middle, from_range=[0,90], to_range=[0,90])
         angle_high_middle = calculate_angle(vector(middle_0, middle_1), vector(middle_1, middle_2))
-        angle_high_middle = map_angle(angle_high_middle, from_range=[00,90], to_range=[0,90])
+        #angle_high_middle = map_angle(angle_high_middle, from_range=[00,90], to_range=[0,90])
         # Ring
         angle_low_ring = calculate_angle(vector(wrist, ring_0), vector(ring_0, ring_1))
-        angle_low_ring = map_angle(angle_low_ring, from_range=[0,90], to_range=[0,90])
+        #angle_low_ring = map_angle(angle_low_ring, from_range=[0,90], to_range=[0,90])
         angle_high_ring = calculate_angle(vector(ring_0, ring_1), vector(ring_1, ring_2))
-        angle_high_ring = map_angle(angle_high_ring, from_range=[0,90], to_range=[0,90])
+        #angle_high_ring = map_angle(angle_high_ring, from_range=[0,90], to_range=[0,90])
         # Pinky
         angle_low_pinky = calculate_angle(vector(wrist, pinky_0), vector(pinky_0, pinky_1))
-        angle_low_pinky = map_angle(angle_low_pinky, from_range=[0,90], to_range=[0,90])
+        #angle_low_pinky = map_angle(angle_low_pinky, from_range=[0,90], to_range=[0,90])
         angle_high_pinky = calculate_angle(vector(pinky_0, pinky_1), vector(pinky_1, pinky_2))
-        angle_high_pinky = map_angle(angle_high_pinky, from_range=[0,90], to_range=[0,90])
+        #angle_high_pinky = map_angle(angle_high_pinky, from_range=[0,90], to_range=[0,90])
         
 
 
