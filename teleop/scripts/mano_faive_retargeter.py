@@ -106,19 +106,15 @@ class RetargeterNode:
     # MATTEO
     def _update_finger_range(self, angle, finger_name):     # INPUT IN DEGREES
         if self.fingers_range_dict[finger_name][0] is None:
-            print("RANGE UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED")
-            time.sleep(2)
             self.fingers_range_dict[finger_name] = [angle, angle]
 
         elif angle < self.fingers_range_dict[finger_name][0]:
-            print("RANGE UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED")
-            time.sleep(2)
-            self.fingers_range_dict[finger_name][0] = angle
+            
+            self.fingers_range_dict[finger_name][0] = max(angle,0)
 
         elif angle > self.fingers_range_dict[finger_name][1]:
-            print("RANGE UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED")
-            time.sleep(2)
-            self.fingers_range_dict[finger_name][1] = angle
+        
+            self.fingers_range_dict[finger_name][1] = min(angle,90)
 
         assert not self.fingers_range_dict[finger_name] is None, "Finger range not updated"
         
@@ -243,7 +239,7 @@ class RetargeterNode:
             cosine_angle = dot_product / (norm_a * norm_b)
             angle = np.arccos(cosine_angle)
 
-            return np.rad2deg(abs(angle))
+            return np.rad2deg(angle)
         def vector(a, b):
             return b-a
         def map_angle(angle, from_range: list, to_range: list): # INPUT IN DEGREES
@@ -297,19 +293,19 @@ class RetargeterNode:
 
         # Middle
         angle_low_middle = calculate_angle(vector(wrist, middle_0), vector(middle_0, middle_1))
-        angle_low_middle = map_angle(angle_low_middle, from_range=[20,70], to_range=[0,90])
+        angle_low_middle = map_angle(angle_low_middle, from_range=[0,90], to_range=[0,90])
         angle_high_middle = calculate_angle(vector(middle_0, middle_1), vector(middle_1, middle_2))
-        angle_high_middle = map_angle(angle_high_middle, from_range=[20,70], to_range=[0,90])
+        angle_high_middle = map_angle(angle_high_middle, from_range=[00,90], to_range=[0,90])
         # Ring
         angle_low_ring = calculate_angle(vector(wrist, ring_0), vector(ring_0, ring_1))
-        angle_low_ring = map_angle(angle_low_ring, from_range=[30,60], to_range=[0,90])
+        angle_low_ring = map_angle(angle_low_ring, from_range=[0,90], to_range=[0,90])
         angle_high_ring = calculate_angle(vector(ring_0, ring_1), vector(ring_1, ring_2))
-        angle_high_ring = map_angle(angle_high_ring, from_range=[30,60], to_range=[0,90])
+        angle_high_ring = map_angle(angle_high_ring, from_range=[0,90], to_range=[0,90])
         # Pinky
         angle_low_pinky = calculate_angle(vector(wrist, pinky_0), vector(pinky_0, pinky_1))
-        angle_low_pinky = map_angle(angle_low_pinky, from_range=[40,50], to_range=[0,90])
+        angle_low_pinky = map_angle(angle_low_pinky, from_range=[0,90], to_range=[0,90])
         angle_high_pinky = calculate_angle(vector(pinky_0, pinky_1), vector(pinky_1, pinky_2))
-        angle_high_pinky = map_angle(angle_high_pinky, from_range=[40,50], to_range=[0,90])
+        angle_high_pinky = map_angle(angle_high_pinky, from_range=[0,90], to_range=[0,90])
         
 
 
