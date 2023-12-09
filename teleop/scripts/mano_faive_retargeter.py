@@ -281,13 +281,13 @@ class RetargeterNode:
         
         # Index
         angle_low_index = calculate_angle(vector(wrist, index_0), vector(index_0, index_1))
-        range = self._update_finger_range(angle_plate, 'low_index')
+        range = self._update_finger_range(angle_plate, 'low_index_range')
         angle_low_index = map_angle(angle_low_index, from_range=range, to_range=[0,90])
 
         angle_high_index = calculate_angle(vector(index_0, index_1), vector(index_1, index_2))
-        range = self._update_finger_range(angle_plate, 'high_index')
+        range = self._update_finger_range(angle_plate, 'high_index_range')
         angle_high_index = map_angle(angle_high_index, from_range=range, to_range=[0,90])
-        
+
         # Middle
         angle_low_middle = calculate_angle(vector(wrist, middle_0), vector(middle_0, middle_1))
         angle_low_middle = map_angle(angle_low_middle, from_range=[20,70], to_range=[0,90])
