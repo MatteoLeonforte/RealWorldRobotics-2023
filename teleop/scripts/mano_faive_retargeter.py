@@ -243,7 +243,7 @@ class RetargeterNode:
             cosine_angle = dot_product / (norm_a * norm_b)
             angle = np.arccos(cosine_angle)
 
-            return np.rad2deg(angle)
+            return np.rad2deg(abs(angle))
         def vector(a, b):
             return b-a
         def map_angle(angle, from_range: list, to_range: list): # INPUT IN DEGREES
