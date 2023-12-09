@@ -46,5 +46,5 @@ class GripperControllerMujocoSim:
 
   def command_joint_angles(self, angles):
     with self.lock:
-      print("commanding angles", angles)
+      print("Commanding angles", angles)
       self.d.ctrl[:] = angles

@@ -106,13 +106,18 @@ class RetargeterNode:
     # MATTEO
     def _update_finger_range(self, angle, finger_name):     # INPUT IN DEGREES
         if self.fingers_range_dict[finger_name][0] is None:
+            print("RANGE UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED")
             self.fingers_range_dict[finger_name] = [angle, angle]
 
         elif angle < self.fingers_range_dict[finger_name][0]:
+            print("RANGE UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED")
             self.fingers_range_dict[finger_name][0] = angle
 
         elif angle > self.fingers_range_dict[finger_name][1]:
+            print("RANGE UPDATEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED")
             self.fingers_range_dict[finger_name][1] = angle
+
+        assert not self.fingers_range_dict[finger_name] is None, "Finger range not updated"
         
         return self.fingers_range_dict[finger_name] # OUTPUT IN DEGREES
 
@@ -236,7 +241,6 @@ class RetargeterNode:
             angle = np.arccos(cosine_angle)
 
             return np.rad2deg(angle)
-        
         def vector(a, b):
             return b-a
         def map_angle(angle, from_range: list, to_range: list): # INPUT IN DEGREES
@@ -281,11 +285,11 @@ class RetargeterNode:
         
         # Index
         angle_low_index = calculate_angle(vector(wrist, index_0), vector(index_0, index_1))
-        range = self._update_finger_range(angle_plate, 'low_index_range')
+        range = self._update_finger_range(angle_low_index, 'low_index_range')
         angle_low_index = map_angle(angle_low_index, from_range=range, to_range=[0,90])
 
         angle_high_index = calculate_angle(vector(index_0, index_1), vector(index_1, index_2))
-        range = self._update_finger_range(angle_plate, 'high_index_range')
+        range = self._update_finger_range(angle_high_index, 'high_index_range')
         angle_high_index = map_angle(angle_high_index, from_range=range, to_range=[0,90])
 
         # Middle
