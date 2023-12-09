@@ -292,7 +292,7 @@ class RetargeterNode:
         print ('Angle low index: ', np.rad2deg(angle_low_index))
 
         angle_high_index = calculate_angle(vector(index_0, index_1), vector(index_1, index_2))
-        angle_high_index = angle_high_index + np.deg2rad(15) # RADIANS
+        angle_high_index = angle_high_index + np.deg2rad(-15) # RADIANS
         #range = self._update_finger_range(angle_high_index, 'high_index_range')
         #angle_high_index = map_angle(angle_high_index, from_range=range, to_range=[0,90])
         print ('Angle high index: ', np.rad2deg(angle_high_index))
