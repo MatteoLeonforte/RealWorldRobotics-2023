@@ -286,7 +286,7 @@ class RetargeterNode:
         
         # Index
         angle_low_index = calculate_angle(vector(wrist, index_0), vector(index_0, index_1))
-        angle_low_index = angle_low_index + np.deg2rad(10) # RADIANS
+        angle_low_index = angle_low_index + np.deg2rad(-10) # RADIANS
         #range = self._update_finger_range(angle_low_index, 'low_index_range')
         #angle_low_index = map_angle(angle_low_index, from_range=range, to_range=[0,90])
         print ('Angle low index: ', np.rad2deg(angle_low_index))
