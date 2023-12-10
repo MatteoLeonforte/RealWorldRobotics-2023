@@ -301,8 +301,8 @@ class RetargeterNode:
 
 
         # Plate
-        angle_plate = calculate_angle(vector(thumb_0, thumb_2), vector(thumb_0, pinky_0)) # RADIANS
-        angle_plate = angle_plate + np.deg2rad(10)                                        # RADIANS
+        angle_plate = calculate_angle(vector(thumb_0, thumb_2), vector(thumb_0, index_0)) # RADIANS
+        angle_plate = angle_plate*2.5                                        # RADIANS
         #angle_plate = map_angle(angle_plate, from_range=range, to_range=[50,-50])
 
         # Thumb
@@ -345,7 +345,7 @@ class RetargeterNode:
 
 
         # Mapping
-        real_hand_joint_angles[0] = np.deg2rad(50)
+        real_hand_joint_angles[0] = angle_plate
         real_hand_joint_angles[1] = angle_low_thumb
         real_hand_joint_angles[2] = angle_high_thumb
         real_hand_joint_angles[3] = angle_low_index
