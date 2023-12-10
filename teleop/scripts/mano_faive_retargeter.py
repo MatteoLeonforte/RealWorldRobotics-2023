@@ -6,7 +6,7 @@ from torch.nn.functional import normalize
 import os
 import pytorch_kinematics as pk
 import rospy
-from std_msgs.msg import Float32MultiArray, MultiArrayDimension
+from std_msgs.msg import Float32MultiArray, MultiArrayDimension, MarkerArray, Point
 
 from utils import retarget_utils, gripper_utils
 import numpy as np
@@ -102,6 +102,9 @@ class RetargeterNode:
             '/ingress/mano', Float32MultiArray, self.callback, queue_size=1, buff_size=2**24)
         self.pub = rospy.Publisher(
             '/faive/policy_output', Float32MultiArray, queue_size=10)
+        # NEW PUBLISHER A ROS MARKERARRAY -> TO-DO
+        self.pub_marker = rospy.Publisher(
+            '/mano_viz', MarkerArray, queue_size=10)
     
     # MATTEO
     def _update_finger_range(self, angle, finger_name):     # INPUT IN DEGREES
@@ -120,6 +123,12 @@ class RetargeterNode:
         
         return self.fingers_range_dict[finger_name] # OUTPUT IN DEGREES
 
+
+    def convert_to_point(self, joint, joint_id)->Point:
+        point = Point()
+        point.x, point.y, point.z = joint
+        point.name = str(joint_id)
+        return point
 
     def retarget_finger_mano_joints(self, joints: np.array, warm: bool = True, opt_steps: int = 2, dynamic_keyvector_scaling: bool = False):
         """
@@ -249,10 +258,15 @@ class RetargeterNode:
 
         # MAPPING
         wrist = joints[0, :]
+        wrist_point = self.convert_to_point(wrist,0)
         thumb_0 = joints[1, :]
+        thumb_0_point = self.convert_to_point(thumb_0,1)
         thumb_1 = joints[2, :]
+        thumb_1_point = self.convert_to_point(thumb_1,2)
         thumb_2 = joints[3, :]
+        thumb_2_point = self.convert_to_point(thumb_2,3)
         thumb_tip = joints[4, :]
+        thumb_tip_point = self.convert_to_point(thumb_tip,4)
         index_0 = joints[5, :]
         index_1 = joints[6, :]
         index_2 = joints[7, :]
@@ -335,23 +349,38 @@ class RetargeterNode:
         real_hand_joint_angles[8] = angle_high_ring
         real_hand_joint_angles[9] = angle_low_pinky
         real_hand_joint_angles[10] = angle_high_pinky
-
-        
             
         assert len(real_hand_joint_angles) == 11, "Expected 11 joint angles"
 
-        time.sleep(0.5)
+        # For visualization
+        # Given joints compute the lines (LINE_STRIp), store them in a LineMarkerArray and publish it on topic /mano_viz
+        line_markers = LineMarkerArray()
+
+        # Thumb
+        marker = LineMarker()
+        marker.points.append(wrist_point)
+        marker.points.append(thumb_0_point)
+        marker.points.append(thumb_1_point)
+        marker.points.append(thumb_2_point)
+        marker.points.append(thumb_tip_point)
+
+        line_markers.markers.append(marker)
+
+
+        self.pub_marker.publish(retarget_utils(line_markers)) # check
+
+        time.sleep(0.5) # Uncomment
         return torch.Tensor(real_hand_joint_angles)
         #return finger_joint_angles
 
     def callback(self, msg):
-        # Convert the flattened data back to a 2D numpy array
+        # Convert the flattened data back to a 2D numpy array (normalized)
         joints = np.array(msg.data, dtype=np.float32).reshape(
             msg.layout.dim[0].size, msg.layout.dim[1].size)
+    
        
         self.target_angles = self.retarget_finger_mano_joints(joints)
-        # DESIRED ANGLES - IMPORTANT
-        #print(f"Angles: {self.target_angles}")
+        
 
         time = rospy.Time.now()
         assert self.target_angles.shape == (

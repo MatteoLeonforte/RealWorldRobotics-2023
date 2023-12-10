@@ -3,6 +3,7 @@ from typing import Dict
 
 import torch
 import numpy as np
+from std_msgs.msg import LineMarkerArray, LineMarker # added by Matteo
 
 
 JOINT_PARAMETER_NAMES = [
@@ -127,6 +128,7 @@ FINGER_TO_BASE = {
     "finger4": "finger4_pp",
     "finger5": "finger5_pp",
 }
+
 
 
 def get_mano_joints_dict(joints: torch.Tensor, include_wrist=False, batch_processing=False):
