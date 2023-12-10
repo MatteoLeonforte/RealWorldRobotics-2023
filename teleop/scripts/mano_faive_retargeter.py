@@ -114,9 +114,6 @@ class RetargeterNode:
         tf_broadcaster.sendTransform(transform_stamped)
 
         print("CCCCCCCCCCCCCCCCCCCCC")
-
-        rospy.spin()
-
         print("DDDDDDDDDDDDDDDDDDDD")
         
         # Set up hand visualization publisher
