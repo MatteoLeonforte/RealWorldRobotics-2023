@@ -7,7 +7,7 @@ import os
 import pytorch_kinematics as pk
 import rospy
 from std_msgs.msg import Float32MultiArray, MultiArrayDimension 
-from visualization_msgs.msg import LineMarkerArray,MarkerArray
+from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Point
 
 from utils import retarget_utils, gripper_utils
@@ -356,20 +356,14 @@ class RetargeterNode:
 
         # For visualization
         # Given joints compute the lines (LINE_STRIp), store them in a LineMarkerArray and publish it on topic /mano_viz
-        line_markers = LineMarkerArray()
 
         # Thumb
-        marker = LineMarker()
-        marker.points.append(wrist_point)
-        marker.points.append(thumb_0_point)
-        marker.points.append(thumb_1_point)
-        marker.points.append(thumb_2_point)
-        marker.points.append(thumb_tip_point)
-
-        line_markers.markers.append(marker)
+        line_thumb = Marker()
+        line_thumb.points = [wrist_point, thumb_0_point, thumb_1_point, thumb_2_point, thumb_tip_point]
+        line_thumb.type = Marker.LINE_STRIP
 
 
-        self.pub_marker.publish(retarget_utils(line_markers)) # check
+        self.pub_marker.publish(retarget_utils(line_thumb)) # check
 
         time.sleep(0.5) # Uncomment
         return torch.Tensor(real_hand_joint_angles)
