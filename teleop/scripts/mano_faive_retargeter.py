@@ -94,7 +94,10 @@ class RetargeterNode:
             '/faive/policy_output', Float32MultiArray, queue_size=10)
         
         # RVIZ
+        rospy.init_node('static_transform_publisher')
+        tf_buffer = tf2_ros.Buffer()
         tf_broadcaster = tf2_ros.TransformBroadcaster()
+        print("AAAAAAAAAAAAAAAAAA")
         # Set up map fram in RVIZ
         transform_stamped = TransformStamped()
         transform_stamped.header.stamp = rospy.Time.now()
@@ -107,8 +110,15 @@ class RetargeterNode:
         transform_stamped.transform.rotation.y = 0.0
         transform_stamped.transform.rotation.z = 0.0
         transform_stamped.transform.rotation.w = 1.0
+        print("BBBBBBBBBBBBBBBBBBB")
 
         tf_broadcaster.sendTransform(transform_stamped)
+
+        print("CCCCCCCCCCCCCCCCCCCCC")
+
+        rospy.spin()
+
+        print("DDDDDDDDDDDDDDDDDDDD")
         
         # Set up hand visualization publisher
         self.pub_marker = rospy.Publisher(
