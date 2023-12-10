@@ -94,7 +94,6 @@ class RetargeterNode:
             '/faive/policy_output', Float32MultiArray, queue_size=10)
         
         # RVIZ
-        rospy.init_node('static_transform_publisher')
         tf_buffer = tf2_ros.Buffer()
         tf_broadcaster = tf2_ros.TransformBroadcaster()
         print("AAAAAAAAAAAAAAAAAA")
