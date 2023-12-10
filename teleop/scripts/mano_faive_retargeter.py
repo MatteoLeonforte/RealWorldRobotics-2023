@@ -368,7 +368,7 @@ class RetargeterNode:
         line_thumb.type = Marker.LINE_STRIP
 
         lines.markers.append(line_thumb)
-        self.pub_marker.publish(retarget_utils(lines)) # check
+        self.pub_marker.publish(lines) # check
 
         time.sleep(0.5) # Uncomment
         return torch.Tensor(real_hand_joint_angles)
