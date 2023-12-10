@@ -131,7 +131,7 @@ class RetargeterNode:
     '''
 
 
-    def convert_to_point(self, joint, joint_id)->Point:
+    def convert_to_point(self, joint)->Point:
         point = Point()
         point.x, point.y, point.z = joint
         return point
