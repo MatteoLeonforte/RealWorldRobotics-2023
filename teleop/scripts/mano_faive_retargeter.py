@@ -134,7 +134,6 @@ class RetargeterNode:
     def convert_to_point(self, joint, joint_id)->Point:
         point = Point()
         point.x, point.y, point.z = joint
-        point.name = str(joint_id)
         return point
 
     def retarget_finger_mano_joints(self, joints: np.array, warm: bool = True, opt_steps: int = 2, dynamic_keyvector_scaling: bool = False):
@@ -265,15 +264,15 @@ class RetargeterNode:
 
         # MAPPING
         wrist = joints[0, :]
-        wrist_point = self.convert_to_point(wrist,0)
+        wrist_point = self.convert_to_point(wrist)
         thumb_0 = joints[1, :]
-        thumb_0_point = self.convert_to_point(thumb_0,1)
+        thumb_0_point = self.convert_to_point(thumb_0)
         thumb_1 = joints[2, :]
-        thumb_1_point = self.convert_to_point(thumb_1,2)
+        thumb_1_point = self.convert_to_point(thumb_1)
         thumb_2 = joints[3, :]
-        thumb_2_point = self.convert_to_point(thumb_2,3)
+        thumb_2_point = self.convert_to_point(thumb_2)
         thumb_tip = joints[4, :]
-        thumb_tip_point = self.convert_to_point(thumb_tip,4)
+        thumb_tip_point = self.convert_to_point(thumb_tip)
         index_0 = joints[5, :]
         index_1 = joints[6, :]
         index_2 = joints[7, :]
