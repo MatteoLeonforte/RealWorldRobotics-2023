@@ -302,14 +302,15 @@ class RetargeterNode:
 
         # Plate
         angle_plate = calculate_angle(vector(thumb_0, thumb_2), vector(thumb_0, index_0)) # RADIANS
-        angle_plate = angle_plate*1.5                                        # RADIANS
+        angle_plate = np.deg2rad(50)-angle_plate*1.5                                        # RADIANS
         #angle_plate = map_angle(angle_plate, from_range=range, to_range=[50,-50])
 
         # Thumb
         angle_low_thumb = calculate_angle(vector(thumb_0, thumb_1), vector(thumb_1, thumb_2))
+        angle_low_thumb = angle_low_thumb + np.deg2rad(-20) # RADIANS
         #angle_low_thumb = map_angle(angle_low_thumb, from_range=[5,30], to_range=[0,90])
         angle_high_thumb = calculate_angle(vector(thumb_1, thumb_2), vector(thumb_2, thumb_tip))
-        angle_high_thumb = angle_high_thumb + np.deg2rad(-10) # RADIANS
+        angle_high_thumb = angle_high_thumb + np.deg2rad(-20) # RADIANS
         #angle_high_thumb = map_angle(angle_high_thumb, from_range=[5,80], to_range=[0,90])
         
         # Index
@@ -330,18 +331,18 @@ class RetargeterNode:
 
         # Ring
         angle_low_ring = calculate_angle(vector(wrist, ring_0), vector(ring_0, ring_1))
-        angle_low_ring = angle_low_ring + np.deg2rad(-20) # RADIANS
+        angle_low_ring = angle_low_ring + np.deg2rad(-10) # RADIANS
         #angle_low_ring = map_angle(angle_low_ring, from_range=[0,90], to_range=[0,90])
         angle_high_ring = calculate_angle(vector(ring_0, ring_1), vector(ring_1, ring_2))
-        angle_high_ring = angle_high_ring + np.deg2rad(-20) # RADIANS
+        angle_high_ring = angle_high_ring + np.deg2rad(-10) # RADIANS
         #angle_high_ring = map_angle(angle_high_ring, from_range=[0,90], to_range=[0,90])
         # Pinky
         angle_low_pinky = calculate_angle(vector(wrist, pinky_0), vector(pinky_0, pinky_1))
-        angle_low_pinky = angle_low_pinky + np.deg2rad(-20) # RADIANS
+        angle_low_pinky = angle_low_pinky + np.deg2rad(-25) # RADIANS
 
         #angle_low_pinky = map_angle(angle_low_pinky, from_range=[0,90], to_range=[0,90])
         angle_high_pinky = calculate_angle(vector(pinky_0, pinky_1), vector(pinky_1, pinky_2))
-        angle_high_pinky = angle_high_pinky + np.deg2rad(-20) # RADIANS
+        angle_high_pinky = angle_high_pinky + np.deg2rad(-15) # RADIANS
 
         #angle_high_pinky = map_angle(angle_high_pinky, from_range=[0,90], to_range=[0,90])
         
