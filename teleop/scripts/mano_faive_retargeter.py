@@ -6,9 +6,10 @@ from torch.nn.functional import normalize
 import os
 import pytorch_kinematics as pk
 import rospy
+import tf2_ros
 from std_msgs.msg import Float32MultiArray, MultiArrayDimension 
 from visualization_msgs.msg import Marker, MarkerArray
-from geometry_msgs.msg import Point
+from geometry_msgs.msg import Point, TransformStamped
 
 from utils import retarget_utils, gripper_utils
 import numpy as np
@@ -91,7 +92,27 @@ class RetargeterNode:
             '/ingress/mano', Float32MultiArray, self.callback, queue_size=1, buff_size=2**24)
         self.pub = rospy.Publisher(
             '/faive/policy_output', Float32MultiArray, queue_size=10)
-        # NEW PUBLISHER A ROS MARKERARRAY -> TO-DO
+        
+        # RVIZ
+
+        # Set up map fram in RVIZ
+        rospy.init_node('map_publisher', anonymous=True)
+        static_broadcaster = tf2_ros.StaticTransformBroadcaster()
+        transform_stamped = TransformStamped()
+        transform_stamped.header.stamp = rospy.Time.now()
+        transform_stamped.header.frame_id = "world"
+        transform_stamped.child_frame_id = "map"
+        transform_stamped.transform.translation.x = 0.0
+        transform_stamped.transform.translation.y = 0.0
+        transform_stamped.transform.translation.z = 0.0
+        transform_stamped.transform.rotation.x = 0.0
+        transform_stamped.transform.rotation.y = 0.0
+        transform_stamped.transform.rotation.z = 0.0
+        transform_stamped.transform.rotation.w = 1.0
+        static_broadcaster.sendTransform(transform_stamped)
+        rospy.spin()
+
+        # Set up hand visualization publisher
         self.pub_marker = rospy.Publisher(
             '/mano_viz', MarkerArray, queue_size=10)
 
@@ -334,14 +355,15 @@ class RetargeterNode:
             
         assert len(real_hand_joint_angles) == 11, "Expected 11 joint angles"
 
-        # For visualization
-        # Given joints compute the lines (LINE_STRIp), store them in a LineMarkerArray and publish it on topic /mano_viz
+        
+        # RVIZ
 
-        # Thumb
+        # Generate lines for RVIZ
         lines = MarkerArray()
 
         line_palm  = Marker()
         line_palm.points = [wrist_point, index_0_point, middle_0_point, ring_0_point, pinky_0_point, wrist_point]
+        line_palm.type = Marker.LINE_STRIP
 
         line_thumb = Marker()
         line_thumb.points = [wrist_point, thumb_0_point, thumb_1_point, thumb_2_point, thumb_tip_point]
