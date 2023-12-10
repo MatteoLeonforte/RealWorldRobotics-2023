@@ -302,7 +302,7 @@ class RetargeterNode:
 
         # Plate
         angle_plate = calculate_angle(vector(thumb_0, thumb_2), vector(thumb_0, index_0)) # RADIANS
-        angle_plate = angle_plate*2.5                                        # RADIANS
+        angle_plate = angle_plate*1.5                                        # RADIANS
         #angle_plate = map_angle(angle_plate, from_range=range, to_range=[50,-50])
 
         # Thumb
