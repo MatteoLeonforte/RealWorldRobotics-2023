@@ -345,7 +345,7 @@ class RetargeterNode:
 
 
         # Mapping
-        real_hand_joint_angles[0] = 0
+        real_hand_joint_angles[0] = np.deg2rad(50)
         real_hand_joint_angles[1] = angle_low_thumb
         real_hand_joint_angles[2] = angle_high_thumb
         real_hand_joint_angles[3] = angle_low_index
