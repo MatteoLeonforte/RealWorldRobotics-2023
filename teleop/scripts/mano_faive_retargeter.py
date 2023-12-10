@@ -7,7 +7,7 @@ import os
 import pytorch_kinematics as pk
 import rospy
 from std_msgs.msg import Float32MultiArray, MultiArrayDimension 
-from rospy import LineMarkerArray,MarkerArray
+from visualization_msgs.msg import LineMarkerArray,MarkerArray
 from geometry_msgs.msg import Point
 
 from utils import retarget_utils, gripper_utils
