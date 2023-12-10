@@ -3,7 +3,6 @@ from typing import Dict
 
 import torch
 import numpy as np
-from std_msgs.msg import LineMarkerArray, LineMarker # added by Matteo
 
 
 JOINT_PARAMETER_NAMES = [
