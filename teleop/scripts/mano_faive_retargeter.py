@@ -34,74 +34,58 @@ class RetargeterNode:
         
         self.base_path = os.path.dirname(os.path.realpath(__file__))
 
-        ### MATTEO
-        ''' Here I create some variables to store the maximum and minimum angles reached by the joints in the real hand.'''
-        
-        '''self.fingers_range_dict = {
-            'plate_range': [None, None],
-            'low_thumb_range': [None, None],
-            'high_thumb_range': [None, None],
-            'low_index_range': [None, None],
-            'high_index_range': [None, None],
-            'low_middle_range': [None, None],
-            'high_middle_range': [None, None],
-            'low_ring_range': [None, None],
-            'high_ring_range': [None, None],
-            'low_pinky_range': [None, None],
-            'high_pinky_range': [None, None]
-        }
+        def hide_code_MATTEO():
+            '''
+            # self.joint_map = torch.zeros(30, 11).to(device)
+            self.joint_map = torch.zeros(31, 11).to(device) # changed to this
 
-        # END MATTEO
+            joint_parameter_names = retarget_utils.JOINT_PARAMETER_NAMES
+            gc_tendons = retarget_utils.GC_TENDONS
 
-        # self.joint_map = torch.zeros(30, 11).to(device)
-        self.joint_map = torch.zeros(31, 11).to(device) # changed to this
+            # CHECK FUNCTION
+            
 
-        joint_parameter_names = retarget_utils.JOINT_PARAMETER_NAMES
-        gc_tendons = retarget_utils.GC_TENDONS
-
-        # CHECK FUNCTION
-        
-
-        for i, (name, tendons) in enumerate(gc_tendons.items()):
-            self.joint_map[joint_parameter_names.index(
-                name), i] = 1 if len(tendons) == 0 else 0.5
-            for tendon, weight in tendons.items():
+            for i, (name, tendons) in enumerate(gc_tendons.items()):
                 self.joint_map[joint_parameter_names.index(
-                    tendon), i] = weight * 0.5
+                    name), i] = 1 if len(tendons) == 0 else 0.5
+                for tendon, weight in tendons.items():
+                    self.joint_map[joint_parameter_names.index(
+                        tendon), i] = weight * 0.5
 
-        self.urdf_path = self.base_path + "/../../design/"              # Change here
-        self.urdf_filename = self.urdf_path + "hand_design.xml"         # Change here
+            self.urdf_path = self.base_path + "/../../design/"              # Change here
+            self.urdf_filename = self.urdf_path + "hand_design.xml"         # Change here
 
-        prev_cwd = os.getcwd()
-        os.chdir(self.urdf_path)
-        self.chain = pk.build_chain_from_mjcf(                          # changed this to get mjcf and not urdf
-            open(self.urdf_filename).read(), 'hand').to(device=self.device) # Changed root --> hand
-        os.chdir(prev_cwd)
+            prev_cwd = os.getcwd()
+            os.chdir(self.urdf_path)
+            self.chain = pk.build_chain_from_mjcf(                          # changed this to get mjcf and not urdf
+                open(self.urdf_filename).read(), 'hand').to(device=self.device) # Changed root --> hand
+            os.chdir(prev_cwd)
 
-        self.gc_joints = torch.ones(11).to(self.device) * 30.0
-        self.gc_joints.requires_grad_()
+            self.gc_joints = torch.ones(11).to(self.device) * 30.0
+            self.gc_joints.requires_grad_()
 
-        self.lr = lr
-        self.opt = torch.optim.RMSprop([self.gc_joints], lr=self.lr)
+            self.lr = lr
+            self.opt = torch.optim.RMSprop([self.gc_joints], lr=self.lr)
 
-        self.root = torch.zeros(1, 3).to(self.device)
-        self.palm_offset = torch.tensor([0.0, 0.06, 0.03]).to(self.device) # changed this (palm offset of robot hand)
+            self.root = torch.zeros(1, 3).to(self.device)
+            self.palm_offset = torch.tensor([0.0, 0.06, 0.03]).to(self.device) # changed this (palm offset of robot hand)
 
 
-        self.scaling_coeffs = torch.tensor([0.7143, 0.8296296296, 0.8214285714, 0.7857142857, 0.7037037037, 0.5897435897, 0.6976744186, 0.6595744681, 0.6274509804,
-                                            0.9523809524, 0.7294117647, 0.8130081301, 0.6666666667, 0.7590361446, 1]).to(self.device) # tuned
+            self.scaling_coeffs = torch.tensor([0.7143, 0.8296296296, 0.8214285714, 0.7857142857, 0.7037037037, 0.5897435897, 0.6976744186, 0.6595744681, 0.6274509804,
+                                                0.9523809524, 0.7294117647, 0.8130081301, 0.6666666667, 0.7590361446, 1]).to(self.device) # tuned
 
-        self.scaling_factors_set = hardcoded_keyvector_scaling
+            self.scaling_factors_set = hardcoded_keyvector_scaling
 
-        self.loss_coeffs = torch.tensor([5.0, 5.0, 5.0, 5.0, 5.0, 1.0, 1.0, 1.0, 1.0,
-                                            1.0, 1.0, 1.0, 1.0, 1.0, 1.0]).to(self.device)
+            self.loss_coeffs = torch.tensor([5.0, 5.0, 5.0, 5.0, 5.0, 1.0, 1.0, 1.0, 1.0,
+                                                1.0, 1.0, 1.0, 1.0, 1.0, 1.0]).to(self.device)
 
-        if use_scalar_distance_palm:
-            self.use_scalar_distance = [False, True, True, True, True, False, False, False, False, False, False, False, False, False, False]
-        else:
-            self.use_scalar_distance = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
+            if use_scalar_distance_palm:
+                self.use_scalar_distance = [False, True, True, True, True, False, False, False, False, False, False, False, False, False, False]
+            else:
+                self.use_scalar_distance = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
 
-        '''
+            '''
+            pass
 
         self.sub = rospy.Subscriber(
             '/ingress/mano', Float32MultiArray, self.callback, queue_size=1, buff_size=2**24)
@@ -110,25 +94,7 @@ class RetargeterNode:
         # NEW PUBLISHER A ROS MARKERARRAY -> TO-DO
         self.pub_marker = rospy.Publisher(
             '/mano_viz', MarkerArray, queue_size=10)
-    
-    # MATTEO
-    '''
-    def _update_finger_range(self, angle, finger_name):     # INPUT IN DEGREES
-        if self.fingers_range_dict[finger_name][0] is None:
-            self.fingers_range_dict[finger_name] = [angle, angle]
 
-        elif angle < self.fingers_range_dict[finger_name][0]:
-            
-            self.fingers_range_dict[finger_name][0] = max(angle,0)
-
-        elif angle > self.fingers_range_dict[finger_name][1]:
-        
-            self.fingers_range_dict[finger_name][1] = min(angle,90)
-
-        assert not self.fingers_range_dict[finger_name] is None, "Finger range not updated"
-        
-        return self.fingers_range_dict[finger_name] # OUTPUT IN DEGREES
-    '''
 
 
     def convert_to_point(self, joint)->Point:
@@ -163,82 +129,84 @@ class RetargeterNode:
         joints = torch.from_numpy(joints).to(self.device)
 
         # The following commented code is the original remapping of the MANO joints to the faive joints
-        '''
+        def hide_code_ORIGINAL_MATTEO():
+            '''
 
-        mano_joints_dict = retarget_utils.get_mano_joints_dict(joints)
+            mano_joints_dict = retarget_utils.get_mano_joints_dict(joints)
 
-        mano_fingertips = {}
-        for finger, finger_joints in mano_joints_dict.items():
-            mano_fingertips[finger] = finger_joints[[-1], :]
+            mano_fingertips = {}
+            for finger, finger_joints in mano_joints_dict.items():
+                mano_fingertips[finger] = finger_joints[[-1], :]
 
-        mano_pps = {}
-        for finger, finger_joints in mano_joints_dict.items():
-            mano_pps[finger] = finger_joints[[0], :]
+            mano_pps = {}
+            for finger, finger_joints in mano_joints_dict.items():
+                mano_pps[finger] = finger_joints[[0], :]
 
-        mano_palm = torch.mean(torch.cat([joints[[0], :], mano_pps["finger2"], mano_pps["finger5"]], dim=0).to(     # Changed naming here
-            self.device), dim=0, keepdim=True)
+            mano_palm = torch.mean(torch.cat([joints[[0], :], mano_pps["finger2"], mano_pps["finger5"]], dim=0).to(     # Changed naming here
+                self.device), dim=0, keepdim=True)
 
-        keyvectors_mano = retarget_utils.get_keyvectors(
-            mano_fingertips, mano_palm)
-        # norms_mano = {k: torch.norm(v) for k, v in keyvectors_mano.items()}
-        # print(f"keyvectors_mano: {norms_mano}")
+            keyvectors_mano = retarget_utils.get_keyvectors(
+                mano_fingertips, mano_palm)
+            # norms_mano = {k: torch.norm(v) for k, v in keyvectors_mano.items()}
+            # print(f"keyvectors_mano: {norms_mano}")
 
-        gc_limits_lower = gripper_utils.GC_LIMITS_LOWER
-        gc_limits_upper = gripper_utils.GC_LIMITS_UPPER
+            gc_limits_lower = gripper_utils.GC_LIMITS_LOWER
+            gc_limits_upper = gripper_utils.GC_LIMITS_UPPER
 
-        for step in range(opt_steps):
-            chain_transforms = self.chain.forward_kinematics(
-                self.joint_map @ (self.gc_joints/(180/np.pi)))
-            fingertips = {}
-            for finger, finger_tip in retarget_utils.FINGER_TO_TIP.items():
-                fingertips[finger] = chain_transforms[finger_tip].transform_points(
-                    self.root)
+            for step in range(opt_steps):
+                chain_transforms = self.chain.forward_kinematics(
+                    self.joint_map @ (self.gc_joints/(180/np.pi)))
+                fingertips = {}
+                for finger, finger_tip in retarget_utils.FINGER_TO_TIP.items():
+                    fingertips[finger] = chain_transforms[finger_tip].transform_points(
+                        self.root)
 
-            palm = chain_transforms["hand"].transform_points(       # Changed root --> hand
-                self.root) + self.palm_offset
+                palm = chain_transforms["hand"].transform_points(       # Changed root --> hand
+                    self.root) + self.palm_offset
 
-            keyvectors_faive = retarget_utils.get_keyvectors(fingertips, palm)
-            # norms_faive = {k: torch.norm(v) for k, v in keyvectors_faive.items()}
-            # print(f"keyvectors_faive: {norms_faive}")
+                keyvectors_faive = retarget_utils.get_keyvectors(fingertips, palm)
+                # norms_faive = {k: torch.norm(v) for k, v in keyvectors_faive.items()}
+                # print(f"keyvectors_faive: {norms_faive}")
 
-            # if step == 0:
-            #     for i, (keyvector_faive, keyvector_mano) in enumerate(zip(keyvectors_faive.values(), keyvectors_mano.values())):
-            #         self.scaling_coeffs[i] = torch.norm(
-            #             keyvector_mano, p=2) / torch.norm(keyvector_faive, p=2)
-            # print(f'Scaling factors: {self.scaling_coeffs.shape}')
+                # if step == 0:
+                #     for i, (keyvector_faive, keyvector_mano) in enumerate(zip(keyvectors_faive.values(), keyvectors_mano.values())):
+                #         self.scaling_coeffs[i] = torch.norm(
+                #             keyvector_mano, p=2) / torch.norm(keyvector_faive, p=2)
+                # print(f'Scaling factors: {self.scaling_coeffs.shape}')
 
-            loss = 0
-            
-            if dynamic_keyvector_scaling or not self.scaling_factors_set:
+                loss = 0
+                
+                if dynamic_keyvector_scaling or not self.scaling_factors_set:
+                    for i, (keyvector_faive, keyvector_mano) in enumerate(zip(keyvectors_faive.values(), keyvectors_mano.values())):
+                        with torch.no_grad():
+                            scaling_factor = torch.norm(
+                                keyvector_mano, p=2) / torch.norm(keyvector_faive, p=2)
+                            self.scaling_coeffs[i] = scaling_factor
+                        
+                        #print(  # uncomment
+                        #   f'Keyvector {i} length ratio: {torch.norm(keyvector_mano, p=2) / (self.scaling_coeffs[i] * torch.norm(keyvector_faive, p=2))}')
+
                 for i, (keyvector_faive, keyvector_mano) in enumerate(zip(keyvectors_faive.values(), keyvectors_mano.values())):
-                    with torch.no_grad():
-                        scaling_factor = torch.norm(
-                            keyvector_mano, p=2) / torch.norm(keyvector_faive, p=2)
-                        self.scaling_coeffs[i] = scaling_factor
-                    
-                    #print(  # uncomment
-                     #   f'Keyvector {i} length ratio: {torch.norm(keyvector_mano, p=2) / (self.scaling_coeffs[i] * torch.norm(keyvector_faive, p=2))}')
+                    if not self.use_scalar_distance[i]:
+                        loss += self.loss_coeffs[i] * torch.norm(keyvector_mano -
+                                        keyvector_faive * self.scaling_coeffs[i].detach()) ** 2
+                    else:
+                        loss += self.loss_coeffs[i] * torch.norm(torch.norm(keyvector_mano) -
+                                        torch.norm(keyvector_faive * self.scaling_coeffs[i].detach())) ** 2
 
-            for i, (keyvector_faive, keyvector_mano) in enumerate(zip(keyvectors_faive.values(), keyvectors_mano.values())):
-                if not self.use_scalar_distance[i]:
-                    loss += self.loss_coeffs[i] * torch.norm(keyvector_mano -
-                                    keyvector_faive * self.scaling_coeffs[i].detach()) ** 2
-                else:
-                    loss += self.loss_coeffs[i] * torch.norm(torch.norm(keyvector_mano) -
-                                    torch.norm(keyvector_faive * self.scaling_coeffs[i].detach())) ** 2
+                self.scaling_factors_set = True
+                rospy.loginfo(f"Retargeting: Step: {step} Loss: {loss.item()}")
+                self.opt.zero_grad()
+                loss.backward()
+                self.opt.step()
+                with torch.no_grad():
+                    self.gc_joints[:] = torch.clamp(self.gc_joints, torch.tensor(gc_limits_lower).to(
+                        self.device), torch.tensor(gc_limits_upper).to(self.device))
 
-            self.scaling_factors_set = True
-            rospy.loginfo(f"Retargeting: Step: {step} Loss: {loss.item()}")
-            self.opt.zero_grad()
-            loss.backward()
-            self.opt.step()
-            with torch.no_grad():
-                self.gc_joints[:] = torch.clamp(self.gc_joints, torch.tensor(gc_limits_lower).to(
-                    self.device), torch.tensor(gc_limits_upper).to(self.device))
-
-        finger_joint_angles = self.gc_joints.detach().cpu().numpy()
-        '''
-        #print(f'Retarget time: {(time.time() - start_time) * 1000} ms') # uncomment 
+            finger_joint_angles = self.gc_joints.detach().cpu().numpy()
+            '''
+            #print(f'Retarget time: {(time.time() - start_time) * 1000} ms') # uncomment 
+            pass
 
         # HARDCODING JOINT ANGLES IN DEGREES - MATTEO
         ''' Here I take the normalized joint positions from the MANO and I calculate the joint angles of the fingers'''
@@ -274,29 +242,43 @@ class RetargeterNode:
         thumb_tip = joints[4, :]
         thumb_tip_point = self.convert_to_point(thumb_tip)
         index_0 = joints[5, :]
+        index_0_point = self.convert_to_point(index_0)
         index_1 = joints[6, :]
+        index_1_point = self.convert_to_point(index_1)
         index_2 = joints[7, :]
+        index_2_point = self.convert_to_point(index_2)
         index_tip = joints[8, :]
+        index_tip_point = self.convert_to_point(index_tip)
         middle_0 = joints[9, :]
+        middle_0_point = self.convert_to_point(middle_0)
         middle_1 = joints[10, :]
+        middle_1_point = self.convert_to_point(middle_1)
         middle_2 = joints[11, :]
+        middle_2_point = self.convert_to_point(middle_2)
         middle_tip = joints[12, :]
+        middle_tip_point = self.convert_to_point(middle_tip)
         ring_0 = joints[13, :]
+        ring_0_point = self.convert_to_point(ring_0)
         ring_1 = joints[14, :]
+        ring_1_point = self.convert_to_point(ring_1)
         ring_2 = joints[15, :]
+        ring_2_point = self.convert_to_point(ring_2)
         ring_tip = joints[16, :]
+        ring_tip_point = self.convert_to_point(ring_tip)
         pinky_0 = joints[17, :]
+        pinky_0_point = self.convert_to_point(pinky_0)
         pinky_1 = joints[18, :]
+        pinky_1_point = self.convert_to_point(pinky_1)
         pinky_2 = joints[19, :]
+        pinky_2_point = self.convert_to_point(pinky_2)
         pinky_tip = joints[20, :]
+        pinky_tip_point = self.convert_to_point(pinky_tip)
 
 
         # Plate
         angle_plate = calculate_angle(vector(thumb_0, thumb_2), vector(thumb_0, pinky_0)) # RADIANS
-        angle_plate = angle_plate + np.deg2rad(10) # RADIANS
-        #range = self._update_finger_range(angle_plate, 'plate_range')
-        #angle_plate = map_angle(angle_plate, from_range=range, to_range=[50,-50])       # 
-        print ('Angle plate: ', np.rad2deg(angle_plate))
+        angle_plate = angle_plate + np.deg2rad(10)                                        # RADIANS
+        #angle_plate = map_angle(angle_plate, from_range=range, to_range=[50,-50])
 
         # Thumb
         angle_low_thumb = calculate_angle(vector(thumb_0, thumb_1), vector(thumb_1, thumb_2))
@@ -306,16 +288,9 @@ class RetargeterNode:
         
         # Index
         angle_low_index = calculate_angle(vector(wrist, index_0), vector(index_0, index_1))
-        angle_low_index = angle_low_index + np.deg2rad(-10) # RADIANS
-        #range = self._update_finger_range(angle_low_index, 'low_index_range')
         #angle_low_index = map_angle(angle_low_index, from_range=range, to_range=[0,90])
-        print ('Angle low index: ', np.rad2deg(angle_low_index))
-
         angle_high_index = calculate_angle(vector(index_0, index_1), vector(index_1, index_2))
-        angle_high_index = angle_high_index + np.deg2rad(-15) # RADIANS
-        #range = self._update_finger_range(angle_high_index, 'high_index_range')
         #angle_high_index = map_angle(angle_high_index, from_range=range, to_range=[0,90])
-        print ('Angle high index: ', np.rad2deg(angle_high_index))
 
         # Middle
         angle_low_middle = calculate_angle(vector(wrist, middle_0), vector(middle_0, middle_1))
@@ -324,6 +299,7 @@ class RetargeterNode:
         angle_high_middle = calculate_angle(vector(middle_0, middle_1), vector(middle_1, middle_2))
         angle_high_middle = angle_high_middle + np.deg2rad(-20) # RADIANS
         #angle_high_middle = map_angle(angle_high_middle, from_range=[00,90], to_range=[0,90])
+
         # Ring
         angle_low_ring = calculate_angle(vector(wrist, ring_0), vector(ring_0, ring_1))
         angle_low_ring = angle_low_ring + np.deg2rad(-20) # RADIANS
@@ -363,14 +339,41 @@ class RetargeterNode:
 
         # Thumb
         lines = MarkerArray()
+
+        line_palm  = Marker()
+        line_palm.points = [wrist_point, index_0_point, middle_0_point, ring_0_point, pinky_0_point, wrist_point]
+
         line_thumb = Marker()
         line_thumb.points = [wrist_point, thumb_0_point, thumb_1_point, thumb_2_point, thumb_tip_point]
         line_thumb.type = Marker.LINE_STRIP
 
-        lines.markers.append(line_thumb)
-        self.pub_marker.publish(lines) # check
+        line_index = Marker()
+        line_index.points = [index_0_point, index_1_point, index_2_point, index_tip_point]
+        line_index.type = Marker.LINE_STRIP
 
-        time.sleep(0.5) # Uncomment
+        line_middle = Marker()
+        line_middle.points = [middle_0_point, middle_1_point, middle_2_point, middle_tip_point]
+        line_middle.type = Marker.LINE_STRIP
+
+        line_ring = Marker()
+        line_ring.points = [ring_0_point, ring_1_point, ring_2_point, ring_tip_point]
+        line_ring.type = Marker.LINE_STRIP
+
+        line_pinky = Marker()
+        line_pinky.points = [pinky_0_point, pinky_1_point, pinky_2_point, pinky_tip_point]
+        line_pinky.type = Marker.LINE_STRIP
+
+        lines.markers.append(line_palm)
+        lines.markers.append(line_thumb)
+        lines.markers.append(line_index)
+        lines.markers.append(line_middle)
+        lines.markers.append(line_ring)
+        lines.markers.append(line_pinky)
+
+        self.pub_marker.publish(lines)
+        print ("Published marker array")
+
+        #time.sleep(0.5)
         return torch.Tensor(real_hand_joint_angles)
         #return finger_joint_angles
 
