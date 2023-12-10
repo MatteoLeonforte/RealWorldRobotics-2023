@@ -7,7 +7,7 @@ import os
 import pytorch_kinematics as pk
 import rospy
 from std_msgs.msg import Float32MultiArray, MultiArrayDimension 
-from visualization_msgs.msg import Marker
+from visualization_msgs.msg import Marker, MarkerArray
 from geometry_msgs.msg import Point
 
 from utils import retarget_utils, gripper_utils
@@ -37,7 +37,7 @@ class RetargeterNode:
         ### MATTEO
         ''' Here I create some variables to store the maximum and minimum angles reached by the joints in the real hand.'''
         
-        self.fingers_range_dict = {
+        '''self.fingers_range_dict = {
             'plate_range': [None, None],
             'low_thumb_range': [None, None],
             'high_thumb_range': [None, None],
@@ -51,6 +51,8 @@ class RetargeterNode:
             'high_pinky_range': [None, None]
         }
 
+        # END MATTEO
+
         # self.joint_map = torch.zeros(30, 11).to(device)
         self.joint_map = torch.zeros(31, 11).to(device) # changed to this
 
@@ -58,6 +60,7 @@ class RetargeterNode:
         gc_tendons = retarget_utils.GC_TENDONS
 
         # CHECK FUNCTION
+        
 
         for i, (name, tendons) in enumerate(gc_tendons.items()):
             self.joint_map[joint_parameter_names.index(
@@ -98,7 +101,7 @@ class RetargeterNode:
         else:
             self.use_scalar_distance = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
 
-
+        '''
 
         self.sub = rospy.Subscriber(
             '/ingress/mano', Float32MultiArray, self.callback, queue_size=1, buff_size=2**24)
@@ -109,6 +112,7 @@ class RetargeterNode:
             '/mano_viz', MarkerArray, queue_size=10)
     
     # MATTEO
+    '''
     def _update_finger_range(self, angle, finger_name):     # INPUT IN DEGREES
         if self.fingers_range_dict[finger_name][0] is None:
             self.fingers_range_dict[finger_name] = [angle, angle]
@@ -124,6 +128,7 @@ class RetargeterNode:
         assert not self.fingers_range_dict[finger_name] is None, "Finger range not updated"
         
         return self.fingers_range_dict[finger_name] # OUTPUT IN DEGREES
+    '''
 
 
     def convert_to_point(self, joint, joint_id)->Point:
@@ -149,7 +154,7 @@ class RetargeterNode:
         
         start_time = time.time()
 
-        if not warm:
+        if not warm: # CHECK
             self.gc_joints = torch.ones(11).to(self.device) * 30.0
             self.gc_joints.requires_grad_()
 
@@ -358,12 +363,13 @@ class RetargeterNode:
         # Given joints compute the lines (LINE_STRIp), store them in a LineMarkerArray and publish it on topic /mano_viz
 
         # Thumb
+        lines = MarkerArray()
         line_thumb = Marker()
         line_thumb.points = [wrist_point, thumb_0_point, thumb_1_point, thumb_2_point, thumb_tip_point]
         line_thumb.type = Marker.LINE_STRIP
 
-
-        self.pub_marker.publish(retarget_utils(line_thumb)) # check
+        lines.markers.append(line_thumb)
+        self.pub_marker.publish(retarget_utils(lines)) # check
 
         time.sleep(0.5) # Uncomment
         return torch.Tensor(real_hand_joint_angles)
