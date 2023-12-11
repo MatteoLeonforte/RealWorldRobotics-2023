@@ -1,10 +1,12 @@
 from re import L
-from .dynamixel_client import *
+#from .dynamixel_client import *
+from dynamixel_client import *
 import numpy as np
 import time
 import yaml
 import os
-from . import finger_kinematics_GroupA as fk
+#from . import finger_kinematics_GroupA as fk
+import finger_kinematics_GroupA as fk
 from threading import RLock
 
 
@@ -277,6 +279,30 @@ class GripperController:
         thetas_norm = np.array([0, -45, 0, -45, 0, -45, 0, -45, 0, -45, 0])
         self.motor_pos_norm = self.pose2motors(np.deg2rad(thetas_norm))
 
+    def correct_desired_motor_pos(self, motor_pos_des: np.array)->np.array:
+
+        motor_pos_max = self.motor_id2init_pos
+        motor_pos_max[0] = 5.510058879852295
+        
+        motor_pos_min = np.array([-0.5783107280731201,-1.9435536861419678,
+                                  2.0340585708618164, 1.7165244817733765,
+                                  1.6582332849502563, 2.420621633529663,
+                                  -0.1227184608578682, -1.7763497829437256,
+                                  1.4526797533035278, -0.6626796722412109,
+                                  1.5278449058532715])
+        
+        motor_pos_corr = np.array(motor_pos_des)
+        
+        for i in range(11):
+            if motor_pos_des[i] < motor_pos_min[i]:
+                motor_pos_corr[i] = motor_pos_min[i]
+                print("Motor position corrected to minimum of motor ", i+1)
+            elif motor_pos_des[i] > motor_pos_max[i]:
+                motor_pos_corr[i] = motor_pos_max[i]
+                print("Motor position corrected to maximum of motor ", i+1)
+        
+        return motor_pos_corr
+
     def write_desired_joint_angles(self, joint_angles: np.array):
         """
         Command joint angles in deg
@@ -286,6 +312,7 @@ class GripperController:
         #adder = np.array([0, 45, 0, 45, 0, 45, 0, 45, 0, 45, 0])
         #joint_angles = joint_angles + adder
         motor_pos_des = self.pose2motors(np.deg2rad(joint_angles)) - self.motor_pos_norm + self.motor_id2init_pos
+        #motor_pos_des = self.correct_desired_motor_pos(motor_pos_des)
         self.write_desired_motor_pos(motor_pos_des)
         time.sleep(0.01) # wait for the command to be sent
     
@@ -298,6 +325,7 @@ class GripperController:
         #adder = np.array([0, 45, 0, 45, 0, 45, 0, 45, 0, 45, 0])
         #joint_angles = joint_angles + adder
         motor_pos_des = self.pose2motors(np.deg2rad(joint_angles)) - self.motor_pos_norm + self.motor_id2init_pos
+        #motor_pos_des = self.correct_desired_motor_pos(motor_pos_des)
         return motor_pos_des
     
     def compare_joint_angles_to_limits(self, joint_angles: np.array)->np.array:
