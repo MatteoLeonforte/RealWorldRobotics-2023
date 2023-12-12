@@ -6,7 +6,6 @@ from torch.nn.functional import normalize
 import os
 import pytorch_kinematics as pk
 import rospy
-import tf2_ros
 from std_msgs.msg import Float32MultiArray, MultiArrayDimension 
 from visualization_msgs.msg import Marker, MarkerArray
 from geometry_msgs.msg import Point, TransformStamped
@@ -93,29 +92,7 @@ class RetargeterNode:
         self.pub = rospy.Publisher(
             '/faive/policy_output', Float32MultiArray, queue_size=10)
         
-        # RVIZ
-        tf_buffer = tf2_ros.Buffer()
-        tf_broadcaster = tf2_ros.TransformBroadcaster()
-        print("AAAAAAAAAAAAAAAAAA")
-        # Set up map fram in RVIZ
-        transform_stamped = TransformStamped()
-        transform_stamped.header.stamp = rospy.Time.now()
-        transform_stamped.header.frame_id = "world"
-        transform_stamped.child_frame_id = "map"  # Replace with your desired child frame
-        transform_stamped.transform.translation.x = 0.0  # Adjust translation values
-        transform_stamped.transform.translation.y = 0.0
-        transform_stamped.transform.translation.z = 0.0
-        transform_stamped.transform.rotation.x = 0.0  # Adjust rotation values
-        transform_stamped.transform.rotation.y = 0.0
-        transform_stamped.transform.rotation.z = 0.0
-        transform_stamped.transform.rotation.w = 1.0
-        print("BBBBBBBBBBBBBBBBBBB")
-
-        tf_broadcaster.sendTransform(transform_stamped)
-
-        print("CCCCCCCCCCCCCCCCCCCCC")
-        print("DDDDDDDDDDDDDDDDDDDD")
-        
+        # RVIZ       
         # Set up hand visualization publisher
         self.pub_marker = rospy.Publisher(
             '/mano_viz', MarkerArray, queue_size=10)
@@ -445,31 +422,21 @@ class RetargeterNode:
         line_palm.type = Marker.LINE_STRIP
         line_palm.header.frame_id = "map"
 
-        line_thumb = Marker()
+        line_thumb = Marker(type=Marker.LINE_STRIP, header=Header(frame_id="base_link"))
         line_thumb.points = [wrist_point, thumb_0_point, thumb_1_point, thumb_2_point, thumb_tip_point]
-        line_thumb.type = Marker.LINE_STRIP
-        line_thumb.header.frame_id = "map"
 
-        line_index = Marker()
+        line_index = Marker(type=Marker.LINE_STRIP, header=Header(frame_id="base_link"))
         line_index.points = [index_0_point, index_1_point, index_2_point, index_tip_point]
-        line_index.type = Marker.LINE_STRIP
-        line_index.header.frame_id = "map"
-
-        line_middle = Marker()
+        
+        line_middle = Marker(type=Marker.LINE_STRIP, header=Header(frame_id="base_link"))
         line_middle.points = [middle_0_point, middle_1_point, middle_2_point, middle_tip_point]
-        line_middle.type = Marker.LINE_STRIP
-        line_middle.header.frame_id = "map"
-
-        line_ring = Marker()
+        
+        line_ring = Marker(type=Marker.LINE_STRIP, header=Header(frame_id="base_link"))
         line_ring.points = [ring_0_point, ring_1_point, ring_2_point, ring_tip_point]
-        line_ring.type = Marker.LINE_STRIP
-        line_ring.header.frame_id = "map"
-
-        line_pinky = Marker()
+      
+        line_pinky = Marker(type=Marker.LINE_STRIP, header=Header(frame_id="base_link"))
         line_pinky.points = [pinky_0_point, pinky_1_point, pinky_2_point, pinky_tip_point]
-        line_pinky.type = Marker.LINE_STRIP
-        line_pinky.header.frame_id = "map"
-
+    
         lines.markers.append(line_palm)
         lines.markers.append(line_thumb)
         lines.markers.append(line_index)
