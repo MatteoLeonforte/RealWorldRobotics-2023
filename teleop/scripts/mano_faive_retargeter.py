@@ -336,16 +336,86 @@ class RetargeterNode:
         angle_high_ring = calculate_angle(vector(ring_0, ring_1), vector(ring_1, ring_2))
         angle_high_ring = angle_high_ring + np.deg2rad(-15) # RADIANS
         #angle_high_ring = map_angle(angle_high_ring, from_range=[0,90], to_range=[0,90])
+        
         # Pinky
         angle_low_pinky = calculate_angle(vector(wrist, pinky_0), vector(pinky_0, pinky_1))
         angle_low_pinky = angle_low_pinky + np.deg2rad(-10) # RADIANS
-
         #angle_low_pinky = map_angle(angle_low_pinky, from_range=[0,90], to_range=[0,90])
         angle_high_pinky = calculate_angle(vector(pinky_0, pinky_1), vector(pinky_1, pinky_2))
         angle_high_pinky = angle_high_pinky + np.deg2rad(-15) # RADIANS
 
         #angle_high_pinky = map_angle(angle_high_pinky, from_range=[0,90], to_range=[0,90])
+
+
+        # Check Joint Limits (GC_Limits)
+        gc_limits_lower = gripper_utils.GC_LIMITS_LOWER
+        gc_limits_upper = gripper_utils.GC_LIMITS_UPPER
+
+        # Rotating thumb
+        if angle_plate <= np.deg2rad(gc_limits_lower[0]):
+            angle_plate = np.deg2rad(gc_limits_lower[0])
+        elif angle_plate >= np.deg2rad(gc_limits_upper[0]):
+            angle_plate = np.deg2rad(gc_limits_upper[0])
         
+        # Thumb low
+        if angle_low_thumb <= np.deg2rad(gc_limits_lower[1]):
+            angle_low_thumb =  np.deg2rad(gc_limits_lower[1])
+        elif angle_low_thumb >= np.deg2rad(gc_limits_upper[1]):
+            angle_low_thumb = np.deg2rad(gc_limits_upper[1])
+        
+        # Thumb high
+        if angle_high_thumb <= np.deg2rad(gc_limits_lower[2]):
+            angle_high_thumb = np.deg2rad(gc_limits_lower[2])
+        elif angle_high_thumb >= np.deg2rad(gc_limits_upper[2]):
+            angle_high_thumb = np.deg2rad(gc_limits_upper[2])
+        
+        # Index low
+        if angle_low_index <= np.deg2rad(gc_limits_lower[3]):
+            angle_low_index = np.deg2rad(gc_limits_lower[3])
+        elif angle_low_index >= np.deg2rad(gc_limits_upper[3]):
+            angle_low_index = np.deg2rad(gc_limits_upper[3])
+        
+        # Index high
+        if angle_high_index <= np.deg2rad(gc_limits_lower[4]):
+            angle_high_index = np.deg2rad(gc_limits_lower[4])
+        elif angle_high_index >= np.deg2rad(gc_limits_upper[4]):
+            angle_high_index = np.deg2rad(gc_limits_upper[4])
+        
+        # Middle low
+        if angle_low_middle <= np.deg2rad(gc_limits_lower[5]):
+            angle_low_middle = np.deg2rad(gc_limits_lower[5])
+        elif angle_low_middle >= np.deg2rad(gc_limits_upper[5]):
+            angle_low_middle = np.deg2rad(gc_limits_upper[5])
+        
+        # Middle high
+        if angle_high_middle <= np.deg2rad(gc_limits_lower[6]):
+            angle_high_middle = np.deg2rad(gc_limits_lower[6])
+        elif angle_high_middle >= np.deg2rad(gc_limits_upper[6]):
+            angle_high_middle = np.deg2rad(gc_limits_upper[6])
+        
+        # Ring low
+        if angle_low_ring <= np.deg2rad(gc_limits_lower[7]):
+            angle_low_ring = np.deg2rad(gc_limits_lower[7])
+        elif angle_low_ring >= np.deg2rad(gc_limits_upper[7]):
+            angle_low_ring = np.deg2rad(gc_limits_upper[7])
+
+        # Ring high
+        if angle_high_ring <= np.deg2rad(gc_limits_lower[8]):
+            angle_high_ring = np.deg2rad(gc_limits_lower[8])
+        elif angle_high_ring >= np.deg2rad(gc_limits_upper[8]):
+            angle_high_ring = np.deg2rad(gc_limits_upper[8])
+
+        # Pinky low
+        if angle_low_pinky <= np.deg2rad(gc_limits_lower[9]):
+            angle_low_pinky = np.deg2rad(gc_limits_lower[9])
+        elif angle_low_pinky >= np.deg2rad(gc_limits_upper[9]):
+            angle_low_pinky = np.deg2rad(gc_limits_upper[9])
+        
+        # Pinky high
+        if angle_high_pinky <= np.deg2rad(gc_limits_lower[10]):
+            angle_high_pinky = np.deg2rad(gc_limits_lower[10])
+        elif angle_high_pinky >= np.deg2rad(gc_limits_upper[10]):
+            angle_high_pinky = np.deg2rad(gc_limits_upper[10])
 
 
         # Mapping
