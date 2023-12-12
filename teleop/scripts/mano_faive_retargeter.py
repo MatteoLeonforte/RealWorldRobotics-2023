@@ -6,6 +6,7 @@ from torch.nn.functional import normalize
 import os
 import pytorch_kinematics as pk
 import rospy
+
 from std_msgs.msg import Float32MultiArray, MultiArrayDimension 
 from visualization_msgs.msg import Marker, MarkerArray
 from geometry_msgs.msg import Point, TransformStamped
@@ -420,23 +421,33 @@ class RetargeterNode:
         line_palm  = Marker()
         line_palm.points = [wrist_point, index_0_point, middle_0_point, ring_0_point, pinky_0_point, wrist_point]
         line_palm.type = Marker.LINE_STRIP
-        line_palm.header.frame_id = "map"
+        line_palm.header.frame_id = "base_link"
 
-        line_thumb = Marker(type=Marker.LINE_STRIP, header=Header(frame_id="base_link"))
+        line_thumb = Marker()
         line_thumb.points = [wrist_point, thumb_0_point, thumb_1_point, thumb_2_point, thumb_tip_point]
+        line_thumb.type = Marker.LINE_STRIP
+        line_thumb.header.frame_id = "base_link"
 
-        line_index = Marker(type=Marker.LINE_STRIP, header=Header(frame_id="base_link"))
+        line_index = Marker()
         line_index.points = [index_0_point, index_1_point, index_2_point, index_tip_point]
-        
-        line_middle = Marker(type=Marker.LINE_STRIP, header=Header(frame_id="base_link"))
+        line_index.type = Marker.LINE_STRIP
+        line_index.header.frame_id = "base_link"
+
+        line_middle = Marker()
         line_middle.points = [middle_0_point, middle_1_point, middle_2_point, middle_tip_point]
-        
-        line_ring = Marker(type=Marker.LINE_STRIP, header=Header(frame_id="base_link"))
+        line_middle.type = Marker.LINE_STRIP
+        line_middle.header.frame_id = "base_link"
+
+        line_ring = Marker()
         line_ring.points = [ring_0_point, ring_1_point, ring_2_point, ring_tip_point]
-      
-        line_pinky = Marker(type=Marker.LINE_STRIP, header=Header(frame_id="base_link"))
+        line_ring.type = Marker.LINE_STRIP
+        line_ring.header.frame_id = "base_link"
+
+        line_pinky = Marker()
         line_pinky.points = [pinky_0_point, pinky_1_point, pinky_2_point, pinky_tip_point]
-    
+        line_pinky.type = Marker.LINE_STRIP
+        line_pinky.header.frame_id = "base_link"
+
         lines.markers.append(line_palm)
         lines.markers.append(line_thumb)
         lines.markers.append(line_index)
