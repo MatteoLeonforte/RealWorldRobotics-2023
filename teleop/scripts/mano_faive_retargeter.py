@@ -278,10 +278,18 @@ class RetargeterNode:
         pinky_tip_point = self.convert_to_point(pinky_tip)
 
 
-        # Plate
-        angle_plate = calculate_angle(vector(thumb_0, thumb_2), vector(thumb_0, index_0)) # RADIANS
-        angle_plate = np.deg2rad(50)-angle_plate*1.5                                        # RADIANS
-        #angle_plate = map_angle(angle_plate, from_range=range, to_range=[50,-50])
+        # # Plate - old mapping
+        # angle_plate = calculate_angle(vector(thumb_0, thumb_2), vector(thumb_0, index_0)) # RADIANS
+        # print("DEBUG DETECTED ANGLE: ", angle_plate)
+        # angle_plate = np.deg2rad(60)-angle_plate                                          # RADIANS
+        # #angle_plate = map_angle(angle_plate, from_range=range, to_range=[50,-50])
+
+        # Plate - new mapping
+        angle_plate = calculate_angle(vector(wrist, thumb_2), vector(wrist, pinky_0)) # RADIANS --> this mapping gives us more or less 20 deg range (on S-L hand)
+        # print("DEBUG DETECTED ANGLE: ", angle_plate)
+        angle_plate = (angle_plate*4.0) - np.deg2rad(150) # angle*scaling - offset
+        # print("DEBUG Scaled and substract offset angle plate:", angle_plate)
+
 
         # Thumb
         angle_low_thumb = calculate_angle(vector(thumb_0, thumb_1), vector(thumb_1, thumb_2))
@@ -399,6 +407,7 @@ class RetargeterNode:
         # Mapping
         # real_hand_joint_angles[0] = np.deg2rad(60) # blocking the thumb
         real_hand_joint_angles[0] = angle_plate
+        # print("DEBUG ANGLE_PLATE",angle_plate)
         real_hand_joint_angles[1] = angle_low_thumb
         real_hand_joint_angles[2] = angle_high_thumb
         real_hand_joint_angles[3] = angle_low_index
