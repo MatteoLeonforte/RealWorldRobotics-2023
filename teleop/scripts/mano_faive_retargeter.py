@@ -332,78 +332,6 @@ class RetargeterNode:
 
         #angle_high_pinky = map_angle(angle_high_pinky, from_range=[0,90], to_range=[0,90])
 
-
-        # Check Joint Limits (GC_Limits)
-        gc_limits_lower = gripper_utils.GC_LIMITS_LOWER
-        gc_limits_upper = gripper_utils.GC_LIMITS_UPPER
-
-        # Rotating thumb
-        if angle_plate <= np.deg2rad(gc_limits_lower[0]):
-            angle_plate = np.deg2rad(gc_limits_lower[0])
-        elif angle_plate >= np.deg2rad(gc_limits_upper[0]):
-            angle_plate = np.deg2rad(gc_limits_upper[0])
-        
-        # Thumb low
-        if angle_low_thumb <= np.deg2rad(gc_limits_lower[1]):
-            angle_low_thumb =  np.deg2rad(gc_limits_lower[1])
-        elif angle_low_thumb >= np.deg2rad(gc_limits_upper[1]):
-            angle_low_thumb = np.deg2rad(gc_limits_upper[1])
-        
-        # Thumb high
-        if angle_high_thumb <= np.deg2rad(gc_limits_lower[2]):
-            angle_high_thumb = np.deg2rad(gc_limits_lower[2])
-        elif angle_high_thumb >= np.deg2rad(gc_limits_upper[2]):
-            angle_high_thumb = np.deg2rad(gc_limits_upper[2])
-        
-        # Index low
-        if angle_low_index <= np.deg2rad(gc_limits_lower[3]):
-            angle_low_index = np.deg2rad(gc_limits_lower[3])
-        elif angle_low_index >= np.deg2rad(gc_limits_upper[3]):
-            angle_low_index = np.deg2rad(gc_limits_upper[3])
-        
-        # Index high
-        if angle_high_index <= np.deg2rad(gc_limits_lower[4]):
-            angle_high_index = np.deg2rad(gc_limits_lower[4])
-        elif angle_high_index >= np.deg2rad(gc_limits_upper[4]):
-            angle_high_index = np.deg2rad(gc_limits_upper[4])
-        
-        # Middle low
-        if angle_low_middle <= np.deg2rad(gc_limits_lower[5]):
-            angle_low_middle = np.deg2rad(gc_limits_lower[5])
-        elif angle_low_middle >= np.deg2rad(gc_limits_upper[5]):
-            angle_low_middle = np.deg2rad(gc_limits_upper[5])
-        
-        # Middle high
-        if angle_high_middle <= np.deg2rad(gc_limits_lower[6]):
-            angle_high_middle = np.deg2rad(gc_limits_lower[6])
-        elif angle_high_middle >= np.deg2rad(gc_limits_upper[6]):
-            angle_high_middle = np.deg2rad(gc_limits_upper[6])
-        
-        # Ring low
-        if angle_low_ring <= np.deg2rad(gc_limits_lower[7]):
-            angle_low_ring = np.deg2rad(gc_limits_lower[7])
-        elif angle_low_ring >= np.deg2rad(gc_limits_upper[7]):
-            angle_low_ring = np.deg2rad(gc_limits_upper[7])
-
-        # Ring high
-        if angle_high_ring <= np.deg2rad(gc_limits_lower[8]):
-            angle_high_ring = np.deg2rad(gc_limits_lower[8])
-        elif angle_high_ring >= np.deg2rad(gc_limits_upper[8]):
-            angle_high_ring = np.deg2rad(gc_limits_upper[8])
-
-        # Pinky low
-        if angle_low_pinky <= np.deg2rad(gc_limits_lower[9]):
-            angle_low_pinky = np.deg2rad(gc_limits_lower[9])
-        elif angle_low_pinky >= np.deg2rad(gc_limits_upper[9]):
-            angle_low_pinky = np.deg2rad(gc_limits_upper[9])
-        
-        # Pinky high
-        if angle_high_pinky <= np.deg2rad(gc_limits_lower[10]):
-            angle_high_pinky = np.deg2rad(gc_limits_lower[10])
-        elif angle_high_pinky >= np.deg2rad(gc_limits_upper[10]):
-            angle_high_pinky = np.deg2rad(gc_limits_upper[10])
-
-
         # Mapping
         # real_hand_joint_angles[0] = np.deg2rad(60) # blocking the thumb
         real_hand_joint_angles[0] = angle_plate
@@ -420,6 +348,13 @@ class RetargeterNode:
         real_hand_joint_angles[10] = angle_high_pinky
             
         assert len(real_hand_joint_angles) == 11, "Expected 11 joint angles"
+
+        # clip to joint limits
+        # print("DEBUG joint angles: ", real_hand_joint_angles)
+        gc_limits_lower = np.deg2rad(gripper_utils.GC_LIMITS_LOWER)
+        gc_limits_upper = np.deg2rad(gripper_utils.GC_LIMITS_UPPER)
+        real_hand_joint_angles = np.clip(real_hand_joint_angles,gc_limits_lower,gc_limits_upper)
+        # print("DEBUG joing angles clipped: ", real_hand_joint_angles)
 
         
         # RVIZ
