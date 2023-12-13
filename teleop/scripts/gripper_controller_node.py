@@ -19,14 +19,16 @@ import argparse
 class GripperControlNode:
     def __init__(self, sim=False, sub_queue_size=1) -> None:
         if not sim:
-            self.gripper_controller = GripperController("/dev/ttyUSB0")
-            self.gripper_controller.connect_to_dynamixels() # changed this (maybe delete again)
+            self.gripper_controller = GripperController("/dev/ttyUSB0", calibration=True)
+            # self.gripper_controller.connect_to_dynamixels() # changed this (maybe delete again)
+            print("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
 
         else:
             self.gripper_controller = GripperControllerMujocoSim()
         # self.gripper_controller.connect_to_dynamixels()
-        self.gripper_controller.init_joints(calibrate=False)
-
+        # print("[gripper_controller_node] starting calibration")
+        # self.gripper_controller.init_joints(calibrate=True) # CHANGED HERE to TRUE
+        # print("[gripper_controller_node] done with calibration")
         self.commmand_subscriber = rospy.Subscriber(
             '/faive/policy_output', Float32MultiArray, self.write_gripper_angles, queue_size=sub_queue_size)
         
@@ -53,7 +55,7 @@ if __name__ == "__main__":
 
     rospy.init_node("gripper_control_node")
     # gc_node = GripperControlNode(sim=args.sim, sub_queue_size=args.sub_queue_size)
-    gc_node = GripperControlNode(sim=True, sub_queue_size=args.sub_queue_size)
+    gc_node = GripperControlNode(sim=False, sub_queue_size=args.sub_queue_size) # CHOOSE HERE MUJOCO SIM OR REAL MOTORS
 
     r = rospy.Rate(50)
     while not rospy.is_shutdown():

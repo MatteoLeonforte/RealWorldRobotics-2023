@@ -292,12 +292,14 @@ class RetargeterNode:
 
 
         # Thumb
-        angle_low_thumb = calculate_angle(vector(thumb_0, thumb_1), vector(thumb_1, thumb_2))
-        angle_low_thumb = angle_low_thumb + np.deg2rad(-10) # RADIANS
+        # angle_low_thumb = calculate_angle(vector(thumb_0, thumb_1), vector(thumb_1, thumb_2))
+        angle_low_thumb = calculate_angle(vector(wrist, thumb_1), vector(thumb_1, thumb_2))
+        angle_low_thumb = (angle_low_thumb *2) - np.deg2rad(10) # RADIANS
         #angle_low_thumb = map_angle(angle_low_thumb, from_range=[5,30], to_range=[0,90])
         angle_high_thumb = calculate_angle(vector(thumb_1, thumb_2), vector(thumb_2, thumb_tip))
-        angle_high_thumb = angle_high_thumb + np.deg2rad(-15) # RADIANS
+        angle_high_thumb = (angle_high_thumb*3) - np.deg2rad(85) # RADIANS
         #angle_high_thumb = map_angle(angle_high_thumb, from_range=[5,80], to_range=[0,90])
+        print("DEBUG ANGLE HIGH THUMB: ", np.rad2deg(angle_high_thumb))
         
         # Index
         angle_low_index = calculate_angle(vector(wrist, index_0), vector(index_0, index_1))
@@ -337,6 +339,7 @@ class RetargeterNode:
         real_hand_joint_angles[0] = angle_plate
         # print("DEBUG ANGLE_PLATE",angle_plate)
         real_hand_joint_angles[1] = angle_low_thumb
+        # real_hand_joint_angles[1] = angle_high_thumb # couple the thumb angles
         real_hand_joint_angles[2] = angle_high_thumb
         real_hand_joint_angles[3] = angle_low_index
         real_hand_joint_angles[4] = angle_high_index
@@ -354,7 +357,7 @@ class RetargeterNode:
         gc_limits_lower = np.deg2rad(gripper_utils.GC_LIMITS_LOWER)
         gc_limits_upper = np.deg2rad(gripper_utils.GC_LIMITS_UPPER)
         real_hand_joint_angles = np.clip(real_hand_joint_angles,gc_limits_lower,gc_limits_upper)
-        # print("DEBUG joing angles clipped: ", real_hand_joint_angles)
+        print("[mano_faive_retargeter] joing angles teleop: ", np.rad2deg(real_hand_joint_angles))
 
         
         # RVIZ

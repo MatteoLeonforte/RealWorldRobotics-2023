@@ -240,7 +240,7 @@ class GripperController:
 
              # Set to current based position control mode
             self.set_operating_mode(5)
-            self.write_desired_motor_current(maxCurrent * np.ones(len(self.motor_ids)))
+            self.write_desired_motor_current(maxCurrent * np.ones(len(self.motor_ids))) # ADAPTED MAX CURRENT HERE multiplied 0.3*
             self.write_desired_motor_pos(self.motor_id2init_pos)
             time.sleep(0.01)   
             self.wait_for_motion()
@@ -312,6 +312,19 @@ class GripperController:
         #adder = np.array([0, 45, 0, 45, 0, 45, 0, 45, 0, 45, 0])
         #joint_angles = joint_angles + adder
         motor_pos_des = self.pose2motors(np.deg2rad(joint_angles)) - self.motor_pos_norm + self.motor_id2init_pos
+        #motor_pos_des = self.correct_desired_motor_pos(motor_pos_des)
+        self.write_desired_motor_pos(motor_pos_des)
+        time.sleep(0.01) # wait for the command to be sent
+    
+    def command_joint_angles(self, joint_angles: np.array):
+        """
+        Command joint angles in rad
+        :param: joint_angles: [joint 1 angle, joint 2 angle, ...]
+        """
+        #Correction for when the intial position is the leaning back position
+        #adder = np.array([0, 45, 0, 45, 0, 45, 0, 45, 0, 45, 0])
+        #joint_angles = joint_angles + adder
+        motor_pos_des = self.pose2motors(joint_angles) - self.motor_pos_norm + self.motor_id2init_pos
         #motor_pos_des = self.correct_desired_motor_pos(motor_pos_des)
         self.write_desired_motor_pos(motor_pos_des)
         time.sleep(0.01) # wait for the command to be sent
