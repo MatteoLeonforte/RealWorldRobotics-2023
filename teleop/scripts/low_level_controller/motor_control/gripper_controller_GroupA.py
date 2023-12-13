@@ -1,12 +1,12 @@
 from re import L
-#from .dynamixel_client import *
-from dynamixel_client import *
+from .dynamixel_client import *
+# from dynamixel_client import *
 import numpy as np
 import time
 import yaml
 import os
-#from . import finger_kinematics_GroupA as fk
-import finger_kinematics_GroupA as fk
+from . import finger_kinematics_GroupA as fk
+# import finger_kinematics_GroupA as fk
 from threading import RLock
 
 
