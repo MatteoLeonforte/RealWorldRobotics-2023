@@ -59,7 +59,7 @@ if __name__ == '__main__':
   gc = GripperControllerMujocoSim()
 
   # Read file
-  file_path = '/home/matteo/isaac_ws_RWR/faive_gym_oss/faive_gym/recordings/Sphere_UP_XNEG_15_scaled.npy'
+  file_path = '/home/matteo/isaac_ws_RWR/Teleoperation/RealWorldRobotics-2023/motor_control_RL/recorded_policies/Sphere_UP_XNEG_15_scaled.npy'
   data = np.load(file_path)
   # (num_envs, num_steps, num_actions) -> (2, # , 11)
   cmd_sequence = data[0, :, :]
@@ -80,4 +80,4 @@ if __name__ == '__main__':
 
   for i in range(cmd_sequence_len):
     gc.command_joint_angles(cmd_sequence[i,:])
-    time.sleep(0.01)
+    time.sleep(0.5)
