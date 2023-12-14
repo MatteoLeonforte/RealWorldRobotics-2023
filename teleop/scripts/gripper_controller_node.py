@@ -21,7 +21,6 @@ class GripperControlNode:
         if not sim:
             self.gripper_controller = GripperController("/dev/ttyUSB0", calibration=True)
             # self.gripper_controller.connect_to_dynamixels() # changed this (maybe delete again)
-            print("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
 
         else:
             self.gripper_controller = GripperControllerMujocoSim()
@@ -53,12 +52,24 @@ if __name__ == "__main__":
 
     #print(f"GC Subscriber queue size: {args.sub_queue_size}")  # uncomment
 
+    # Policy loading
+    policy_path = "RealWorldRobotics-2023/teleop/scripts/low_level_controller/recorded_policies/Sphere_UP_XNEG_15_scaled.npy" # CHANGE HERE
+    data = np.load(policy_path)
+    data_len = data.shape[0]
+
     rospy.init_node("gripper_control_node")
     # gc_node = GripperControlNode(sim=args.sim, sub_queue_size=args.sub_queue_size)
     gc_node = GripperControlNode(sim=False, sub_queue_size=args.sub_queue_size) # CHOOSE HERE MUJOCO SIM OR REAL MOTORS
 
     r = rospy.Rate(50)
+
+    cmd_idx = 0 # ADDED
     while not rospy.is_shutdown():
+
+        if cmd_idx >=data_len:
+            cmd_idx=0 
+        angles = data[cmd_idx, :] # ADDED
         if time.monotonic() - gc_node.last_received_gc > 3.0:
-            gc_node.gripper_controller.command_joint_angles(np.zeros(11,))
+            gc_node.gripper_controller.command_joint_angles(angles) # CHANGED
+            cmd_idx += 1 # ADDED
         r.sleep()
