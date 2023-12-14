@@ -1,0 +1,5 @@
+<launch>
+  
+  <node name="gripper_controller_node" pkg="teleop" type="gripper_controller_node.py" output="screen"/>
+
+</launch>

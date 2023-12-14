@@ -1,10 +1,12 @@
 from re import L
+#from .dynamixel_client import *
 from dynamixel_client import *
 import numpy as np
 import time
 import yaml
 import os
-import finger_kinematics_GroupA as fk
+#from . import finger_kinematics_GroupA as fk
+import finger_kinematics_GroupA_RL as fk
 from threading import RLock
 
 
@@ -106,7 +108,7 @@ class GripperController:
 
     def motor_pos2tendon_pos(self, motor_pos):
         """ Input: motor positions
-        Output: tendon lengths """        
+        Output: tendon lengths """
         tendon_lengths = np.zeros(len(self.tendon_ids))
         m_idx = 0
         t_idx = 0
@@ -203,17 +205,17 @@ class GripperController:
             j_nr = len(muscle_group.joint_ids)
             if muscle_group.name == "finger1":
                 #tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger1(joint_angles[j_idx],joint_angles[j_idx+1])
-                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger1(joint_angles[j_idx],joint_angles[j_idx+1], joint_angles[j_idx+2])
+                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_thumb(joint_angles[j_idx],joint_angles[j_idx+1], joint_angles[j_idx+2])
             # TODO: Extend the calculations here for your own fingers:
             # DONE:
             elif muscle_group.name == "finger2":
-                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger2(joint_angles[j_idx],joint_angles[j_idx+1])
+                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger(joint_angles[j_idx],joint_angles[j_idx+1])
             elif muscle_group.name == "finger3":
-                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger3(joint_angles[j_idx],joint_angles[j_idx+1])
+                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger(joint_angles[j_idx],joint_angles[j_idx+1])
             elif muscle_group.name == "finger4":
-                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger4(joint_angles[j_idx],joint_angles[j_idx+1])
+                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger(joint_angles[j_idx],joint_angles[j_idx+1])
             elif muscle_group.name == "finger5":
-                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger5(joint_angles[j_idx],joint_angles[j_idx+1])
+                tendon_lengths[t_idx:t_idx+t_nr] = fk.pose2tendon_finger(joint_angles[j_idx],joint_angles[j_idx+1])
 
             j_idx += j_nr
             t_idx += t_nr
@@ -223,7 +225,7 @@ class GripperController:
         """
         Set the offsets based on the current (initial) motor positions
         :param calibrate: if True, perform calibration and set the offsets else move to the initial position
-        TODO: Think of a clever way to perform the calibration. How can you make sure that all the motor are in the corect position?
+        TODO: Think of a clever way to perform the calibration. How can you make sure that all the motor are in the correct position?
         """
 
         cal_yaml_fname = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cal.yaml")
@@ -238,7 +240,7 @@ class GripperController:
 
              # Set to current based position control mode
             self.set_operating_mode(5)
-            self.write_desired_motor_current(maxCurrent * np.ones(len(self.motor_ids)))
+            self.write_desired_motor_current(maxCurrent * np.ones(len(self.motor_ids))) # ADAPTED MAX CURRENT HERE multiplied 0.3*
             self.write_desired_motor_pos(self.motor_id2init_pos)
             time.sleep(0.01)   
             self.wait_for_motion()
@@ -250,7 +252,7 @@ class GripperController:
             input("Move fingers to init posiiton and press Enter to continue...")
             
             # TODO: Add your own calibration procedure here, that move the motors to a defined initial position:
-        
+
 
 
 
@@ -272,16 +274,96 @@ class GripperController:
             with open(cal_yaml_fname, 'w') as cal_file:
                 yaml.dump(cal_orig, cal_file, default_flow_style=False)
 
-        self.motor_pos_norm = self.pose2motors(np.zeros(len(self.joint_ids)))
+        #self.motor_pos_norm = self.pose2motors(np.zeros(len(self.joint_ids)))
+        #Correction for when norm position is the leaning back position
+        thetas_norm = np.array([0, -45, 0, -45, 0, -45, 0, -45, 0, -45, 0])
+        self.motor_pos_norm = self.pose2motors(np.deg2rad(thetas_norm))
+
+    def correct_desired_motor_pos(self, motor_pos_des: np.array)->np.array:
+
+        motor_pos_max = self.motor_id2init_pos
+        motor_pos_max[0] = 5.510058879852295
+        
+        motor_pos_min = np.array([-0.5783107280731201,-1.9435536861419678,
+                                  2.0340585708618164, 1.7165244817733765,
+                                  1.6582332849502563, 2.420621633529663,
+                                  -0.1227184608578682, -1.7763497829437256,
+                                  1.4526797533035278, -0.6626796722412109,
+                                  1.5278449058532715])
+        
+        motor_pos_corr = np.array(motor_pos_des)
+        
+        for i in range(11):
+            if motor_pos_des[i] < motor_pos_min[i]:
+                motor_pos_corr[i] = motor_pos_min[i]
+                print("Motor position corrected to minimum of motor ", i+1)
+            elif motor_pos_des[i] > motor_pos_max[i]:
+                motor_pos_corr[i] = motor_pos_max[i]
+                print("Motor position corrected to maximum of motor ", i+1)
+        
+        return motor_pos_corr
 
     def write_desired_joint_angles(self, joint_angles: np.array):
         """
         Command joint angles in deg
         :param: joint_angles: [joint 1 angle, joint 2 angle, ...]
         """
+        #Correction for when the intial position is the leaning back position
+        #adder = np.array([0, 45, 0, 45, 0, 45, 0, 45, 0, 45, 0])
+        #joint_angles = joint_angles + adder
         motor_pos_des = self.pose2motors(np.deg2rad(joint_angles)) - self.motor_pos_norm + self.motor_id2init_pos
+        #motor_pos_des = self.correct_desired_motor_pos(motor_pos_des)
         self.write_desired_motor_pos(motor_pos_des)
         time.sleep(0.01) # wait for the command to be sent
+    
+    def command_joint_angles(self, joint_angles: np.array):
+        """
+        Command joint angles in rad
+        :param: joint_angles: [joint 1 angle, joint 2 angle, ...]
+        """
+        #Correction for when the intial position is the leaning back position
+        #adder = np.array([0, 45, 0, 45, 0, 45, 0, 45, 0, 45, 0])
+        #joint_angles = joint_angles + adder
+        motor_pos_des = self.pose2motors(joint_angles) - self.motor_pos_norm + self.motor_id2init_pos
+        #motor_pos_des = self.correct_desired_motor_pos(motor_pos_des)
+        self.write_desired_motor_pos(motor_pos_des)
+        time.sleep(0.01) # wait for the command to be sent
+    
+    def test_desired_joint_angles(self, joint_angles: np.array)->np.array:
+        #Input Alessio to see whether motor positions make sense
+        """
+        Command joint angles in deg
+        :param: joint_angles: [joint 1 angle, joint 2 angle, ...]
+        """
+        #adder = np.array([0, 45, 0, 45, 0, 45, 0, 45, 0, 45, 0])
+        #joint_angles = joint_angles + adder
+        motor_pos_des = self.pose2motors(np.deg2rad(joint_angles)) - self.motor_pos_norm + self.motor_id2init_pos
+        #motor_pos_des = self.correct_desired_motor_pos(motor_pos_des)
+        return motor_pos_des
+    
+    def compare_joint_angles_to_limits(self, joint_angles: np.array)->np.array:
+        #Input Alessio
+        """
+        Input Joint angles 
+        """
+        joint_angles_deg = np.rad2deg(joint_angles)
+        ja_upper_limits = np.array([70.0, 90.0, 90.0, 90.0, 90.0, 90.0, 90.0, 90.0, 90.0, 90.0, 90.0])
+        ja_lower_limits = np.array([-60.0, -20.0, 0.0, -20.0, 0.0, -20.0, 0.0, -20.0, 0.0, -20.0, 0.0])
+        
+        upper_reach = np.full(11, True)
+        lower_reach = np.full(11, True)
+        
+        
+        for i in range(len(joint_angles_deg)):
+            if joint_angles_deg[i] > ja_upper_limits[i]:
+                upper_reach[i] = False
+            elif joint_angles_deg[i] < ja_lower_limits[i]:
+                lower_reach[i] = False
+                
+            assert(joint_angles_deg[i] <= ja_upper_limits[i] and joint_angles_deg[i] >= ja_lower_limits[i])
+        
+        reach = np.array([upper_reach, lower_reach])
+        return reach
 
 if __name__ == "__main__" :
     gc = GripperController("/dev/ttyUSB0")

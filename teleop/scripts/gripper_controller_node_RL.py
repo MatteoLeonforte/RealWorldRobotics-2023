@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     rospy.init_node("gripper_control_node")
     # gc_node = GripperControlNode(sim=args.sim, sub_queue_size=args.sub_queue_size)
-    gc_node = GripperControlNode(sim=False, sub_queue_size=args.sub_queue_size) # CHOOSE HERE MUJOCO SIM OR REAL MOTORS
+    gc_node = GripperControlNode(sim=True, sub_queue_size=args.sub_queue_size) # CHOOSE HERE MUJOCO SIM OR REAL MOTORS
 
     r = rospy.Rate(50)
 
