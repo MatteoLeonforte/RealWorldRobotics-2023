@@ -2,6 +2,7 @@ from gripper_controller_GroupA_RL import GripperController
 import time
 import numpy as np
 import finger_kinematics_GroupA_RL as fk
+import os
 
 
 """
@@ -240,20 +241,46 @@ def test_hand_with_arm(gc: GripperController):
     
 
 def set_RL_policy(gc: GripperController):
-    
+     # Policy loading
+    base_path = os.path.dirname(os.path.realpath(__file__))
+    policy_path = base_path + "/recorded_policies/Sphere_UP_XNEG_15_scaled_500epochs.npy"
+    data = np.load(policy_path)
+    data = data[0, :, :]
+    data_len = data.shape[0]
+    print(data.shape) #should be (1000,11)
+
+    max_angles = np.array([60, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90])
+    max_angles_rad = np.deg2rad(max_angles)
+    min_angles = np.array([-60, -45, 0, -45, 0, -45, 0, -45, 0, -45, 0])
+    min_angles_rad = np.deg2rad(min_angles)
+
+    cmd_idx = 0
+    while True:
+        if cmd_idx >=data_len:
+            cmd_idx=0
+            print("RESTARTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        
+        angles = data[cmd_idx, :]
+        
+        np.clip(angles, min_angles_rad, max_angles_rad)
+        print("Following joint angles commanded to robot: ", np.rad2deg(angles))
+        print(len(angles))
+
+        gc.command_joint_angles(angles)
+        #gc.wait_for_motion()
+        cmd_idx += 1 # ADDED
+        time.sleep(0.1)
 
 def main():
     
-    homepos = []
-    goalpos = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    
-    #curr_joint_angles = []
-    #curr_joint_angles = gc.
-    #print("Current joint_angles: {}")
+    #Gripper intialization & calibration
     global gc
     gc = GripperController(port="/dev/ttyUSB0",calibration=True)
     
-    manipulate(gc)
+   
+
+    
+    #manipulate(gc)
     #test_hand_with_arm(gc)
     set_RL_policy(gc)
     
@@ -264,32 +291,7 @@ def main():
     
     
     gc.terminate()
-
+    pass
 
 if __name__ == "__main__":
     main()
-
-
-
-
-    # Policy loading
-    policy_path = "RealWorldRobotics-2023/teleop/scripts/low_level_controller/recorded_policies/Sphere_UP_XNEG_15_scaled.npy" # CHANGE HERE
-    data = np.load(policy_path)
-    data_len = data.shape[0]
-
-    rospy.init_node("gripper_control_node")
-    # gc_node = GripperControlNode(sim=args.sim, sub_queue_size=args.sub_queue_size)
-    gc_node = GripperControlNode(sim=True, sub_queue_size=args.sub_queue_size) # CHOOSE HERE MUJOCO SIM OR REAL MOTORS
-
-    r = rospy.Rate(50)
-
-    cmd_idx = 0 # ADDED
-    while not rospy.is_shutdown():
-
-        if cmd_idx >=data_len:
-            cmd_idx=0 
-        angles = data[cmd_idx, :] # ADDED
-        if time.monotonic() - gc_node.last_received_gc > 3.0:
-            gc_node.gripper_controller.command_joint_angles(angles) # CHANGED
-            cmd_idx += 1 # ADDED
-        r.sleep()
