@@ -48,8 +48,9 @@ class GripperControllerMujocoSim:
 
 def flex_finger(finger: int, gc: GripperControllerMujocoSim, angle: float, finger_dict: dict):
   pass
-def extend_finger(finger:int, gc: GripperControllerMujocoSim, angle: float):
-  pass
+
+
+
 
 # Main function
 
@@ -58,7 +59,7 @@ if __name__ == '__main__':
   gc = GripperControllerMujocoSim()
 
   # Read file
-  file_path = '/home/matteo/isaac_ws_RWR/faive_gym_oss/faive_gym/recordings/test.npy'
+  file_path = '/home/matteo/isaac_ws_RWR/faive_gym_oss/faive_gym/recordings/Sphere_UP_XNEG_15_scaled.npy'
   data = np.load(file_path)
   # (num_envs, num_steps, num_actions) -> (2, # , 11)
   cmd_sequence = data[0, :, :]
@@ -75,6 +76,8 @@ if __name__ == '__main__':
   target = math.pi/2
   angles = [0]*11
 
+  # Scale the cmd_sequence to the correct range
+
   for i in range(cmd_sequence_len):
-    gc.command_joint_angles(cmd_sequence[i, :])
+    gc.command_joint_angles(cmd_sequence[i,:])
     time.sleep(0.01)
