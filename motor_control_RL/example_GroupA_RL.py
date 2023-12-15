@@ -243,7 +243,8 @@ def test_hand_with_arm(gc: GripperController):
 def set_RL_policy(gc: GripperController):
      # Policy loading
     base_path = os.path.dirname(os.path.realpath(__file__))
-    policy_path = base_path + "/recorded_policies/Sphere_UP_XNEG_15_scaled.npy"
+    policy_path = base_path + "/working_policies/Sphere_UP_XNEG_15_scaled.npy" #NEGATIVE DIRECTION
+    #policy_path = base_path + "/working_policies/Sphere_UP_XPOS_15_scaled.npy" #POSITIVE DIRECION
     data = np.load(policy_path)
     data = data[0, :, :]
     data_len = data.shape[0]
