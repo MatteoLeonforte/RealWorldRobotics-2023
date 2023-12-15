@@ -21,7 +21,7 @@ class GripperControlNode:
         if not sim:
             self.gripper_controller = GripperController("/dev/ttyUSB0", calibration=True)
             # self.gripper_controller.connect_to_dynamixels() # changed this (maybe delete again)
-
+            print("TELEOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPP NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOWWWWWWWWWW")
         else:
             self.gripper_controller = GripperControllerMujocoSim()
         # self.gripper_controller.connect_to_dynamixels()
