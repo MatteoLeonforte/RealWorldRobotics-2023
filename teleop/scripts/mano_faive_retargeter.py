@@ -286,15 +286,17 @@ class RetargeterNode:
 
         # Plate - new mapping
         angle_plate = calculate_angle(vector(wrist, thumb_2), vector(wrist, pinky_0)) # RADIANS --> this mapping gives us more or less 20 deg range (on S-L hand)
-        # print("DEBUG DETECTED ANGLE: ", angle_plate)
-        angle_plate = (angle_plate*4.0) - np.deg2rad(150) # angle*scaling - offset
-        # print("DEBUG Scaled and substract offset angle plate:", angle_plate)
+        # print("DEBUG DETECTED ANGLE: ", np.rad2deg(angle_plate))
+        #angle_plate = (angle_plate*4.0) - np.deg2rad(150) # angle*scaling - offset
+        angle_plate = (angle_plate - np.deg2rad(50.0)) * 2.5
+        # print("DEBUG Scaled and substract offset angle plate:", np.rad2deg(angle_plate))
 
 
         # Thumb
         # angle_low_thumb = calculate_angle(vector(thumb_0, thumb_1), vector(thumb_1, thumb_2))
         angle_low_thumb = calculate_angle(vector(wrist, thumb_1), vector(thumb_1, thumb_2))
         angle_low_thumb = (angle_low_thumb *2) - np.deg2rad(10) # RADIANS
+        print("DEBUG DETECTED ANGLE: ", np.rad2deg(angle_low_thumb))
         #angle_low_thumb = map_angle(angle_low_thumb, from_range=[5,30], to_range=[0,90])
         angle_high_thumb = calculate_angle(vector(thumb_1, thumb_2), vector(thumb_2, thumb_tip))
         angle_high_thumb = (angle_high_thumb*3) - np.deg2rad(85) # RADIANS
@@ -327,7 +329,7 @@ class RetargeterNode:
         # Pinky
         angle_low_pinky = calculate_angle(vector(wrist, pinky_0), vector(pinky_0, pinky_1))
         angle_low_pinky = (angle_low_pinky + np.deg2rad(-8))*2.0 # RADIANS
-        print("DEBUG PINKY LOW: ", np.rad2deg(angle_low_pinky))
+        #print("DEBUG PINKY LOW: ", np.rad2deg(angle_low_pinky))
         #angle_low_pinky = map_angle(angle_low_pinky, from_range=[0,90], to_range=[0,90])
         angle_high_pinky = calculate_angle(vector(pinky_0, pinky_1), vector(pinky_1, pinky_2))
         angle_high_pinky = ((angle_high_pinky+np.deg2rad(-20))*6.0) + np.deg2rad(-50)# RADIANS
