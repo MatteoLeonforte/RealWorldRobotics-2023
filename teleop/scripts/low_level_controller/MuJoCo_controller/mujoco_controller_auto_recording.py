@@ -59,11 +59,11 @@ if __name__ == '__main__':
   gc = GripperControllerMujocoSim()
 
   # Read file
-  file_path = '/home/matteo/isaac_ws_RWR/Teleoperation/RealWorldRobotics-2023/motor_control_RL/recorded_policies/Sphere_UP_XNEG_15_scaled.npy'
+  file_path = '/home/matteo/isaac_ws_RWR/Teleoperation/RealWorldRobotics-2023/motor_control_RL/recorded_policies/Scale_033/Sphere_XPOS_UP22_2000epochs_seed42_scaled.npy'
   data = np.load(file_path)
   # (num_envs, num_steps, num_actions) -> (2, # , 11)
-  cmd_sequence = data[0, :, :]
-  cmd_sequence_len = cmd_sequence.shape[0]
+  data = data[0,:,:]
+  cmd_sequence_len = data.shape[0]
 
   finger_dict = {
     'thumb': [0,1,2],
@@ -79,5 +79,5 @@ if __name__ == '__main__':
   # Scale the cmd_sequence to the correct range
 
   for i in range(cmd_sequence_len):
-    gc.command_joint_angles(cmd_sequence[i,:])
+    gc.command_joint_angles(data[i,:])
     time.sleep(0.2 )
