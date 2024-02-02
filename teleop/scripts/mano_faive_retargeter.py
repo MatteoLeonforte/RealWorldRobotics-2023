@@ -285,7 +285,7 @@ class RetargeterNode:
         # #angle_plate = map_angle(angle_plate, from_range=range, to_range=[50,-50])
 
         # Plate - new mapping
-        angle_plate = calculate_angle(vector(wrist, thumb_2), vector(wrist, pinky_0)) # RADIANS --> this mapping gives us more or less 20 deg range (on S-L hand)
+        angle_plate = calculate_angle(vector(wrist, thumb_1), vector(wrist, pinky_0)) # RADIANS --> Changed thumb_2 --> thumb_1: To Do fine tune mapping to real hand
         # print("DEBUG DETECTED ANGLE: ", np.rad2deg(angle_plate))
         #angle_plate = (angle_plate*4.0) - np.deg2rad(150) # angle*scaling - offset
         angle_plate = (angle_plate - np.deg2rad(50.0)) * 2.5
