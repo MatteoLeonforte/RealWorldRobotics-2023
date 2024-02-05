@@ -14,6 +14,8 @@ from geometry_msgs.msg import Point, TransformStamped
 from utils import retarget_utils, gripper_utils
 import numpy as np
 
+import keyboard
+
 
 class RetargeterNode:
     def __init__(
@@ -278,18 +280,17 @@ class RetargeterNode:
         pinky_tip_point = self.convert_to_point(pinky_tip)
 
 
-        # # Plate - old mapping
-        # angle_plate = calculate_angle(vector(thumb_0, thumb_2), vector(thumb_0, index_0)) # RADIANS
-        # print("DEBUG DETECTED ANGLE: ", angle_plate)
-        # angle_plate = np.deg2rad(60)-angle_plate                                          # RADIANS
-        # #angle_plate = map_angle(angle_plate, from_range=range, to_range=[50,-50])
 
-        # Plate - new mapping
+        # Plate - right hand
         angle_plate = calculate_angle(vector(wrist, thumb_1), vector(wrist, pinky_0)) # RADIANS --> Changed thumb_2 --> thumb_1: To Do fine tune mapping to real hand
         # print("DEBUG DETECTED ANGLE: ", np.rad2deg(angle_plate))
         #angle_plate = (angle_plate*4.0) - np.deg2rad(150) # angle*scaling - offset
         angle_plate = (angle_plate - np.deg2rad(50.0)) * 2.5
         # print("DEBUG Scaled and substract offset angle plate:", np.rad2deg(angle_plate))
+
+        # Plate - left hand
+        angle_plate_left = calculate_angle(vector(wrist, thumb_1), vector(wrist, pinky_0)) # RADIANS --> To Do fine tune mapping to real hand
+        angle_plate_left = -((angle_plate_left - np.deg2rad(50.0)) * 2.5) # for left should be same as right but negative (To Do verify)
 
 
         # Thumb
@@ -336,10 +337,21 @@ class RetargeterNode:
         
         #angle_high_pinky = map_angle(angle_high_pinky, from_range=[0,90], to_range=[0,90])
 
+
         # Mapping
-        # real_hand_joint_angles[0] = np.deg2rad(60) # blocking the thumb
-        real_hand_joint_angles[0] = angle_plate
-        # print("DEBUG ANGLE_PLATE",angle_plate)
+            
+        # Thumb modes
+        real_hand_joint_angles[0] = angle_plate # thumb movements right hand
+
+        # real_hand_joint_angles[0] = angle_plate_left # thumb movements left hand
+
+        # real_hand_joint_angles[0] = np.deg2rad(50) # blocking the thumb on right
+
+        # real_hand_joint_angles[0] = np.deg2rad(-50) # blocking the thumb on left
+
+        # real_hand_joint_angles[0] = np.deg2rad(0) # blocking the thumb on middle
+
+
         real_hand_joint_angles[1] = angle_low_thumb
         # real_hand_joint_angles[1] = angle_high_thumb # couple the thumb angles
         real_hand_joint_angles[2] = angle_high_thumb
