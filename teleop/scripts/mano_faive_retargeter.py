@@ -340,18 +340,42 @@ class RetargeterNode:
 
         # Mapping
             
-        # Thumb modes
-        real_hand_joint_angles[0] = angle_plate # thumb movements right hand
+        # LEFT HAND modes (and middle)
+        # -----------------------------------------------------------------------------
 
+        # # rot thumb modes
+        
         # real_hand_joint_angles[0] = angle_plate_left # thumb movements left hand
+
+        # # real_hand_joint_angles[0] = np.deg2rad(-50) # blocking the thumb on left
+
+        # # fingers 
+        # real_hand_joint_angles[1] = angle_low_thumb
+        # real_hand_joint_angles[2] = angle_high_thumb
+        # real_hand_joint_angles[3] = angle_low_pinky # angle_low_index
+        # real_hand_joint_angles[4] = angle_high_pinky # angle_high_index
+        # real_hand_joint_angles[5] = angle_low_ring # angle_low_middle
+        # real_hand_joint_angles[6] = angle_high_ring # angle_high_middle
+        # real_hand_joint_angles[7] = angle_low_middle # angle_low_ring
+        # real_hand_joint_angles[8] = angle_high_middle # angle_high_ring
+        # real_hand_joint_angles[9] = angle_low_index # angle_low_pinky
+        # real_hand_joint_angles[10] = angle_high_index # angle_high_pinky
+
+        # -----------------------------------------------------------------------------
+
+
+        # RIGHT HAND modes (and middle)
+        # -----------------------------------------------------------------------------
+
+        # Rot thumb modes
+
+        real_hand_joint_angles[0] = angle_plate # thumb movements right hand
 
         # real_hand_joint_angles[0] = np.deg2rad(50) # blocking the thumb on right
 
-        # real_hand_joint_angles[0] = np.deg2rad(-50) # blocking the thumb on left
-
         # real_hand_joint_angles[0] = np.deg2rad(0) # blocking the thumb on middle
 
-
+        # fingers
         real_hand_joint_angles[1] = angle_low_thumb
         # real_hand_joint_angles[1] = angle_high_thumb # couple the thumb angles
         real_hand_joint_angles[2] = angle_high_thumb
@@ -363,6 +387,8 @@ class RetargeterNode:
         real_hand_joint_angles[8] = angle_high_ring
         real_hand_joint_angles[9] = angle_low_pinky
         real_hand_joint_angles[10] = angle_high_pinky
+
+        # -----------------------------------------------------------------------------
             
         assert len(real_hand_joint_angles) == 11, "Expected 11 joint angles"
 
