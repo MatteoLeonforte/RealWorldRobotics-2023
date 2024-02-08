@@ -7,7 +7,7 @@ from low_level_controller.motor_control.gripper_controller_GroupA import Gripper
 # TODO: change it so that we don't copy gripper_controller.py to this faive_control
 # Do so by making faive_integration as a python package that is installed in the env, then can be called from anywhere
 # faive_integration is NOT a ROS package, it is a python package
-from low_level_controller.MuJoCo_controller.mujoco_controller import GripperControllerMujocoSim
+from teleop.scripts.low_level_controller.MuJoCo_controller.others.mujoco_controller import GripperControllerMujocoSim
 # from low_level_control.gripper_controller_mujoco_sim import GripperControllerMujocoSim
 
 import rospy

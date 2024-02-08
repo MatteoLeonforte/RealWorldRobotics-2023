@@ -2,6 +2,7 @@ from gripper_controller_GroupA import GripperController
 import time
 import numpy as np
 import finger_kinematics_GroupA as fk
+from MuJoCo_controller import trajectories
 
 
 """

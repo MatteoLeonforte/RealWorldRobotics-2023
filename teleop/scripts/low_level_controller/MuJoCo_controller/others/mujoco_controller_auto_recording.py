@@ -47,20 +47,23 @@ class GripperControllerMujocoSim:
 
 
 def flex_finger(finger: int, gc: GripperControllerMujocoSim, angle: float, finger_dict: dict):
-
-
-
   pass
-def extend_finger(finger:int, gc: GripperControllerMujocoSim, angle: float):
- 
 
-  pass
+
+
 
 # Main function
 
 if __name__ == '__main__':
 
   gc = GripperControllerMujocoSim()
+
+  # Read file
+  file_path = '/home/matteo/isaac_ws_RWR/Teleoperation/RealWorldRobotics-2023/motor_control_RL/working_policies/Sphere_UP_XPOS_15_scaled.npy'
+  data = np.load(file_path)
+  # (num_envs, num_steps, num_actions) -> (2, # , 11)
+  data = data[0,:,:]
+  cmd_sequence_len = data.shape[0]
 
   finger_dict = {
     'thumb': [0,1,2],
@@ -73,70 +76,8 @@ if __name__ == '__main__':
   target = math.pi/2
   angles = [0]*11
 
-  while True:
-    
-    angles = [0]*11
-    angles[0] = target
-    gc.command_joint_angles(angles)
-    time.sleep(1)
+  # Scale the cmd_sequence to the correct range
 
-    angles[0] = -target
-    gc.command_joint_angles(angles)
-    time.sleep(1)
-
-
-    angles = [0]*11
-    gc.command_joint_angles(angles)
-    time.sleep(1)
-
-    angles[1] = target
-    gc.command_joint_angles(angles)
-    time.sleep(1)
-
-    angles = [0]*11
-    angles[2] = target
-    gc.command_joint_angles(angles)
-    time.sleep(1)
-    
-    
-    angles = [0]*11
-    angles[3] = target
-    gc.command_joint_angles(angles)
-    time.sleep(1)
-
-
-    angles = [0]*11
-    angles[4] = target
-    gc.command_joint_angles(angles)
-    time.sleep(1)
-    
-
-    angles = [0]*11
-    angles[5] = target
-    gc.command_joint_angles(angles)
-    time.sleep(1)
-
-    angles = [0]*11
-    angles[6] = target
-    gc.command_joint_angles(angles)
-    time.sleep(1)
-    
-    angles = [0]*11
-    angles[7] = target
-    gc.command_joint_angles(angles)
-    time.sleep(1)
-
-    angles = [0]*11
-    angles[8] = target
-    gc.command_joint_angles(angles)
-    time.sleep(1)
-    
-    angles = [0]*11
-    angles[9] = target
-    gc.command_joint_angles(angles)
-    time.sleep(1)
-
-    angles = [0]*11
-    angles[10] = target
-    gc.command_joint_angles(angles)
-    time.sleep(1)
+  for i in range(cmd_sequence_len):
+    gc.command_joint_angles(data[i,:])
+    time.sleep(0.2 )
